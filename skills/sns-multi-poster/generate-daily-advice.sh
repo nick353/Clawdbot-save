@@ -1,7 +1,5 @@
 #!/bin/bash
-# generate-daily-advice.sh
-# バズ調査データと自分のパフォーマンスデータを分析してDiscordに改善提案を送信
-# Usage: bash generate-daily-advice.sh
+# generate-daily-advice.sh - ログ出力最適化版
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DISCORD_CHANNEL_ID="1470060780111007950"
@@ -10,9 +8,6 @@ YESTERDAY=$(date -d 'yesterday' '+%Y%m%d' 2>/dev/null || date -v-1d '+%Y%m%d' 2>
 BUZZ_DIR="/root/clawd/data/buzz"
 PERF_DIR="/root/clawd/data/sns-performance"
 ADVICE_SCRIPT="/tmp/generate_advice_$$.js"
-
-echo "💡 SNS改善提案生成開始..."
-echo "📅 バズデータ参照日: $YESTERDAY"
 
 cat > "$ADVICE_SCRIPT" << 'JSEOF'
 const fs = require('fs');
@@ -216,12 +211,7 @@ console.log(`\n✅ アドバイス生成・保存完了: ${adviceFile}`);
 process.exit(0);
 JSEOF
 
-node "$ADVICE_SCRIPT" "$YESTERDAY" "$DATE_STR"
+node "$ADVICE_SCRIPT" "$YESTERDAY" "$DATE_STR" 2>/dev/null
 EXIT_CODE=$?
 rm -f "$ADVICE_SCRIPT"
-
-if [ $EXIT_CODE -eq 0 ]; then
-  echo "✅ 改善提案生成・Discord送信完了"
-else
-  echo "⚠️  改善提案生成エラー"
-fi
+[ $EXIT_CODE -ne 0 ] && echo "❌ 改善提案生成エラー" >&2

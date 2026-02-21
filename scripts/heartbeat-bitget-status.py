@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""HEARTBEAT: Bitget状況をmemory/bitget-trading.mdに自動保存"""
-import json, csv
+"""HEARTBEAT: Bitget状況をmemory/bitget-trading.mdに自動保存 - ログ最適化版"""
+import json, csv, sys
 from datetime import datetime
 
 try:
@@ -36,6 +36,6 @@ try:
     with open(mem_file, 'w') as f:
         f.write(content.rstrip() + status)
 
-    print(f"✅ Bitget状況をmemoryに保存しました")
 except Exception as e:
-    print(f"⚠️  Bitget状況保存エラー: {e}")
+    print(f"❌ Bitget状況保存エラー: {e}", file=sys.stderr)
+    sys.exit(1)

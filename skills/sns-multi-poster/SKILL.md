@@ -100,6 +100,63 @@ ls /root/clawd/skills/sns-multi-poster/cookies/
 
 ---
 
+## 🗑️ 投稿削除機能 (v4.1)
+
+### 削除スクリプト一覧
+
+| スクリプト | 対応SNS | 動作 |
+|-----------|---------|------|
+| `delete-instagram-post.cjs` | Instagram | Puppeteerで自動削除 |
+| `delete-threads-post.cjs` | Threads | Puppeteerで自動削除 |
+| `delete-facebook-post.cjs` | Facebook | Puppeteerで自動削除 |
+| `delete-pinterest-pin.cjs` | Pinterest | Puppeteerで自動削除 |
+| `delete-x-post.sh` | X (Twitter) | 手動削除URL案内 |
+| `delete-all-sns-posts.sh` | 全SNS一括 | JSONから削除 |
+
+### 個別削除
+
+```bash
+cd /root/clawd/skills/sns-multi-poster
+
+# Instagram投稿削除
+node delete-instagram-post.cjs "https://www.instagram.com/p/ABC123/"
+
+# Threads投稿削除
+node delete-threads-post.cjs "https://www.threads.net/@username/post/ABC123"
+
+# Facebook投稿削除
+node delete-facebook-post.cjs "https://www.facebook.com/username/posts/123456"
+
+# Pinterestピン削除
+node delete-pinterest-pin.cjs "https://www.pinterest.com/pin/123456789/"
+
+# X投稿削除（手動案内）
+bash delete-x-post.sh "https://x.com/username/status/123456789"
+```
+
+### 一括削除（推奨）
+
+投稿時に保存されたJSONファイルから全SNSの投稿を一括削除：
+
+```bash
+# post_idを指定して一括削除
+bash delete-all-sns-posts.sh 2026-02-18_001
+
+# 削除対象が見つからない場合はスキップされる
+```
+
+**動作：**
+1. `/root/clawd/data/sns-posts/<post_id>.json` を読み込み
+2. 各SNSのURLを抽出
+3. 各削除スクリプトを順次実行
+4. URLがない場合はスキップ
+
+**注意：**
+- X (Twitter) は bird CLI に削除機能がないため手動削除URLを表示
+- Cookie期限切れの場合は削除失敗（`cookies/<platform>.json` 更新が必要）
+
+---
+
 ## 🔧 トラブルシューティング
 
 | 症状 | 対処法 |
@@ -113,6 +170,8 @@ ls /root/clawd/skills/sns-multi-poster/cookies/
 
 ## 更新履歴
 
+- 2026-02-21 v4.1: 投稿削除機能追加（Instagram, Threads, Facebook, Pinterest自動削除、X手動案内、一括削除スクリプト）
+- 2026-02-21 v4.0: 動画投稿対応（Instagram Reels, Threads, Facebook動画スクリプト追加）
 - 2026-02-17 v3.0: 全スクリプトにDRY_RUN早期終了追加、post-to-all-sns.sh修正（5SNS対応、タイムアウト管理）
 - 2026-02-17 v2.0: post-to-instagram-v5.cjs完成（Cookie認証方式）
 - 2026-02-08: Clawdbot標準browserツール版に変換（VPS対応）

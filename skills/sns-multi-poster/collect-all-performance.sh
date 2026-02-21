@@ -1,29 +1,15 @@
 #!/bin/bash
-# collect-all-performance.sh
-# 全SNSのパフォーマンスを収集（順次実行）
-# Usage: bash collect-all-performance.sh
+# collect-all-performance.sh - ログ出力最適化版
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DISCORD_CHANNEL_ID="1470060780111007950"
 DATE_STR=$(date '+%Y%m%d')
 
-echo "🚀 全SNSパフォーマンス収集開始 (${DATE_STR})"
-echo "=========================================="
-
-bash "$SCRIPT_DIR/collect-instagram-performance.sh"
-echo ""
-bash "$SCRIPT_DIR/collect-threads-performance.sh"
-echo ""
-bash "$SCRIPT_DIR/collect-x-performance.sh"
-echo ""
-bash "$SCRIPT_DIR/collect-facebook-performance.sh"
-echo ""
-bash "$SCRIPT_DIR/collect-pinterest-performance.sh"
-
-echo ""
-echo "=========================================="
-echo "📊 パフォーマンス収集結果サマリー (${DATE_STR})"
-echo "=========================================="
+bash "$SCRIPT_DIR/collect-instagram-performance.sh" 2>/dev/null
+bash "$SCRIPT_DIR/collect-threads-performance.sh" 2>/dev/null
+bash "$SCRIPT_DIR/collect-x-performance.sh" 2>/dev/null
+bash "$SCRIPT_DIR/collect-facebook-performance.sh" 2>/dev/null
+bash "$SCRIPT_DIR/collect-pinterest-performance.sh" 2>/dev/null
 
 RESULTS=""
 for PLATFORM in instagram threads x facebook pinterest; do

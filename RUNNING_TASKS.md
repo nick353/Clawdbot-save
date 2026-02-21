@@ -1,6 +1,10 @@
 # 実行中のバックグラウンドタスク
 
-(なし)
+### ログ出力最適化 (optimize-logs サブエージェント) - 2026-02-21 14:59 UTC
+- **開始**: 2026-02-21 14:59 UTC
+- **内容**: 主要スクリプトのログ出力を90%削減（トークン節約）
+- **対象**: backup-with-retry.sh, daily-research.sh, auto-video-processor.sh, sns-multi-poster系全スクリプト
+- **完了後**: Discord #一般に報告予定
 
 ---
 
