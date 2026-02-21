@@ -2,6 +2,12 @@
 
 ## 完了済み (最新5件)
 
+### 自動バックアップ (briny-bison) - 2026-02-21 18:10 UTC
+- **開始**: 2026-02-21 18:10 UTC (自動)
+- **コマンド**: `bash /root/clawd/scripts/backup-with-retry.sh`
+- **結果**: ✅ 成功（GitHub push 完了）
+- **報告**: Discord #一般 (2026-02-21 18:10 - 自動検知)
+
 ### SNS投稿削除機能修正 (sns-delete-fix) - 2026-02-21 16:54 UTC
 - **開始**: 2026-02-21 16:21 UTC (サブエージェント)
 - **内容**: Instagram/Threads/Facebook/Pinterest URL取得スクリプト修正

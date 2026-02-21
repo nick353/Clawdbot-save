@@ -37,6 +37,57 @@
 | 11 | web-search | `/root/clawd/skills/web-search/` | "検索して" | `web-search.sh "<query>"` |
 | 12 | x-search | `/root/clawd/skills/x-search/` | "Xで〜" | x-search skill |
 | 13 | duckduckgo-search | `/root/clawd/scripts/duckduckgo-search.sh` | Braveレート制限時のフォールバック | `bash duckduckgo-search.sh "クエリ"` |
+| 14 | obsidian-auto-save | `/root/clawd/scripts/obsidian-auto-save.sh` | 重要な情報を自動的にObsidianに保存 | `obsidian-auto-save.sh <category> <message>` |
+
+---
+
+## Obsidian統合（#一般チャンネル忘れっぽさ対策）
+
+**実施日**: 2026-02-21  
+**目的**: compaction頻発による会話履歴消失を防ぐため、重要な情報をObsidian vaultに永続化
+
+### Vault構造
+```
+/root/obsidian-vault/
+├── daily/           # デイリーノート（日付ごと）
+├── projects/        # プロジェクト管理
+└── README.md        # Vault説明
+```
+
+### 自動保存スクリプト
+```bash
+# タスク完了報告
+bash /root/clawd/scripts/obsidian-auto-save.sh task "〇〇を完了しました"
+
+# 重要な決定事項
+bash /root/clawd/scripts/obsidian-auto-save.sh decision "〇〇について△△することに決定"
+
+# Cronジョブ実行ログ
+bash /root/clawd/scripts/obsidian-auto-save.sh cron "〇〇ジョブ実行完了"
+
+# 会話の要点
+bash /root/clawd/scripts/obsidian-auto-save.sh note "〇〇について話し合った"
+```
+
+### Gateway設定変更（compaction頻発解決）
+```json
+{
+  "agents": {
+    "defaults": {
+      "contextTokens": 1000000,        // 600,000 → 1,000,000 (66%増加)
+      "compaction": {
+        "mode": "safeguard",
+        "reserveTokensFloor": 500000   // 300,000 → 500,000 (66%増加)
+      }
+    }
+  }
+}
+```
+
+**効果:**
+- compaction頻度: 大幅に減少
+- 会話履歴保持期間: 約2倍に延長
+- 重要な情報: Obsidianに永続化（compactionで消えても検索可能）
 
 ---
 
