@@ -9,6 +9,7 @@
     "playwright": "^1.40.0",
     "puppeteer": "^21.0.0",
     "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.2"
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "undetected-browser": "^2.0.6"
   }
 }

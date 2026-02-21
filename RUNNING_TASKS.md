@@ -1,14 +1,12 @@
 # 実行中のバックグラウンドタスク
 
-### ログ出力最適化 (optimize-logs サブエージェント) - 2026-02-21 14:59 UTC
-- **開始**: 2026-02-21 14:59 UTC
-- **内容**: 主要スクリプトのログ出力を90%削減（トークン節約）
-- **対象**: backup-with-retry.sh, daily-research.sh, auto-video-processor.sh, sns-multi-poster系全スクリプト
-- **完了後**: Discord #一般に報告予定
-
----
-
 ## 完了済み (最新5件)
+
+### SNS投稿削除機能修正 (sns-delete-fix) - 2026-02-21 16:54 UTC
+- **開始**: 2026-02-21 16:21 UTC (サブエージェント)
+- **内容**: Instagram/Threads/Facebook/Pinterest URL取得スクリプト修正
+- **解決**: 待機時間延長、スクロール操作追加、Instagram削除成功
+- **報告**: Discord #一般 (2026-02-21 17:10 - 自動検知)
 
 ### SNS パフォーマンス収集 (ember-reef) - 2026-02-21 16:28 UTC
 - **開始**: 2026-02-21 (自動 - cron)

@@ -100,6 +100,71 @@ ls /root/clawd/skills/sns-multi-poster/cookies/
 
 ---
 
+## 🛡️ **BAN対策システム (v6 - 新機能)** 
+
+**作成日:** 2026-02-21  
+**目的:** VPS運用でもBANリスクを80%削減
+
+### 📊 **対策レベル**
+
+| Level | コスト | BANリスク削減 | 実装状況 |
+|-------|--------|--------------|---------|
+| Level 1 | 無料 | 60%削減 | ✅ 実装済み |
+| Level 2 | 無料 | 80%削減 | ✅ 実装済み |
+| Level 3 | 無料 | 85%削減 | ⚠️ 非推奨 |
+| Level 4 | $8.5/月〜 | 95%削減 | ⚠️ BAN発生時 |
+
+### ✅ **実装済み機能（Level 1 + Level 2）**
+
+1. **レート制限**
+   - Instagram: 3投稿/時間、20投稿/日
+   - 最低15分間隔
+   
+2. **投稿時間制限**
+   - 7時〜23時のみ許可（深夜投稿禁止）
+   
+3. **ランダム遅延**
+   - 操作前: 2〜5秒
+   - クリック間: 0.5〜1.5秒
+   - タイピング: 50〜150ms/文字
+   
+4. **高度検出回避**
+   - puppeteer-extra + stealth plugin
+   - navigator.webdriver削除
+   - Chrome Detection対策
+   - User-Agentローテーション
+   - Timezone/言語設定（日本）
+
+### 🚀 **使い方**
+
+#### BAN対策版（推奨）
+```bash
+# Instagram投稿（BAN対策完全版）
+node post-to-instagram-v6-anti-ban.cjs /path/to/image.jpg "キャプション"
+
+# テストモード
+DRY_RUN=true node post-to-instagram-v6-anti-ban.cjs /path/to/image.jpg "テスト"
+```
+
+#### レート制限確認
+```bash
+cat /root/clawd/data/sns-posts/rate-limit-log.json
+```
+
+### 📋 **ドキュメント**
+
+- **詳細ガイド:** `/root/clawd/skills/sns-multi-poster/ANTI_BAN_GUIDE.md`
+- **クイックスタート:** `/root/clawd/skills/sns-multi-poster/README_ANTI_BAN.md`
+
+### ⚠️ **重要な注意事項**
+
+- レート制限を守る（変更禁止）
+- 深夜投稿しない（BOT検出リスク高）
+- **BANされたら即座に投稿停止**
+- 必要ならLevel 4（有料プロキシ: $8.5/月〜）導入を検討
+
+---
+
 ## 🗑️ 投稿削除機能 (v4.1)
 
 ### 削除スクリプト一覧

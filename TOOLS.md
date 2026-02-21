@@ -36,6 +36,7 @@
 | 10 | web+X research | web_search + bird | "リサーチして"/"調べて" | web_search + bird 統合 |
 | 11 | web-search | `/root/clawd/skills/web-search/` | "検索して" | `web-search.sh "<query>"` |
 | 12 | x-search | `/root/clawd/skills/x-search/` | "Xで〜" | x-search skill |
+| 13 | duckduckgo-search | `/root/clawd/scripts/duckduckgo-search.sh` | Braveレート制限時のフォールバック | `bash duckduckgo-search.sh "クエリ"` |
 
 ---
 

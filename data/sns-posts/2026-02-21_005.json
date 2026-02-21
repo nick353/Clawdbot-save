@@ -1,0 +1,16 @@
+{
+  "post_id": "2026-02-21_005",
+  "timestamp": "2026-02-21T18:04:15Z",
+  "media_path": "/tmp/test-anti-ban.jpg",
+  "media_type": "image",
+  "anti_ban_version": "v2",
+  "dry_run": true,
+  "caption": "BAN\u5bfe\u7b56\u30c6\u30b9\u30c8 20260221_180415 #test #automation \ud83d\udee1\ufe0f",
+  "platforms": {
+    "instagram": {"status": "dry_run"},
+    "threads": {"status": "dry_run"},
+    "x": {"status": "dry_run"},
+    "facebook": {"status": "dry_run"},
+    "pinterest": {"status": "dry_run", "board": "Animal"}
+  }
+}

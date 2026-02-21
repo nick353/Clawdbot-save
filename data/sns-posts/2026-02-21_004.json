@@ -1,0 +1,16 @@
+{
+  "post_id": "2026-02-21_004",
+  "timestamp": "2026-02-21T18:02:58Z",
+  "media_path": "/tmp/test-anti-ban-1771696866.jpg",
+  "media_type": "image",
+  "anti_ban_version": "v2",
+  "dry_run": true,
+  "caption": "\u30c6\u30b9\u30c8\u6295\u7a3f #test #automation",
+  "platforms": {
+    "instagram": {"status": "dry_run"},
+    "threads": {"status": "dry_run"},
+    "x": {"status": "dry_run"},
+    "facebook": {"status": "dry_run"},
+    "pinterest": {"status": "dry_run", "board": "Animal"}
+  }
+}
