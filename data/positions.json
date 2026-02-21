@@ -59,10 +59,10 @@
       "trailing_stop": null,
       "trailing_stop_used": false,
       "highest_price": null,
-      "lowest_price": 0.12792,
+      "lowest_price": 0.1279,
       "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
     }
   },
   "capital": 522.1493075038636,
-  "timestamp": "2026-02-21T14:06:12.334386"
+  "timestamp": "2026-02-21T14:08:58.059120"
 }
