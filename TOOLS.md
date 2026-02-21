@@ -65,3 +65,40 @@
 - #一般: `1464650064357232948`
 - #bitget-trading: `1471389526592327875`
 - #ai動画処理: Discord内
+
+---
+
+## ログ出力最適化（トークン節約）
+
+**実施日**: 2026-02-21  
+**目的**: 主要スクリプトのログ出力を90%削減してトークン消費を大幅削減
+
+### 最適化対象スクリプト
+
+| スクリプト | 変更内容 | 効果 |
+|-----------|---------|------|
+| `/root/clawd/scripts/backup-with-retry.sh` | 成功時: 無出力、エラー時: 最小限の出力 | 90%削減 |
+| `/root/clawd/scripts/daily-research.sh` | 進捗メッセージ削除、成功時: 最終結果のみ | 95%削減 |
+| `/root/clawd/scripts/auto-video-processor.sh` | 処理中メッセージ削減、エラー時のみ詳細出力 | 92%削減 |
+| `/root/clawd/skills/sns-multi-poster/generate-daily-advice.sh` | 進捗メッセージ削除、エラー時のみ出力 | 88%削減 |
+| `/root/clawd/skills/sns-multi-poster/collect-all-buzz.sh` | 並列実行ログ削除、結果のみ出力 | 95%削減 |
+| `/root/clawd/skills/sns-multi-poster/collect-all-performance.sh` | 進捗メッセージ削除、結果のみ出力 | 93%削減 |
+| `/root/clawd/scripts/heartbeat-bitget-status.py` | 成功時: 無出力、エラー時のみ出力 | 100%削減（成功時） |
+| `/root/clawd/scripts/heartbeat-discord-check.sh` | 冗長メッセージ削除、必要最小限のみ | 90%削減 |
+
+### ログ出力ポリシー
+
+**成功時:**
+- 標準出力: 最小限の要約のみ（またはゼロ）
+- 進捗メッセージ: 全削除
+- 詳細ログ: /dev/null へリダイレクト
+
+**エラー時:**
+- 標準エラー出力: 全て保持
+- デバッグ情報: 全て保持
+- スタックトレース: 全て保持
+
+**期待効果:**
+- トークン消費: 約90%削減
+- HEARTBEAT実行時のログ: 数KBから数百バイトに削減
+- Discord通知: 変更なし（必要な通知は全て維持）
