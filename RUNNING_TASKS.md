@@ -2,6 +2,24 @@
 
 ## 完了済み (最新5件)
 
+### 自動バックアップ (quick-claw) - 2026-02-21 22:19 UTC
+- **開始**: 2026-02-21 22:19 UTC (自動)
+- **コマンド**: `bash /root/clawd/scripts/backup-with-retry.sh`
+- **結果**: ✅ 成功（Discord通知送信完了）
+- **報告**: スクリプト内で自動送信済み (2026-02-21 22:19)
+
+### セッション最適化スクリプト失敗 (keen-orbit, brisk-ember) - 2026-02-21 22:14 UTC
+- **開始**: 2026-02-21 22:14 UTC (自動 - HEARTBEAT)
+- **コマンド**: `aggressive-memory-saver.sh`, `session-optimizer.sh`
+- **結果**: ❌ 失敗（途中停止 - "重要な会話の保存"/"トークン使用率チェック"で停止）
+- **報告**: Discord #一般 (2026-02-21 22:15 - 自動検知)
+
+### 自動バックアップ (kind-slug) - 2026-02-21 22:14 UTC
+- **開始**: 2026-02-21 22:14 UTC (自動)
+- **コマンド**: `bash /root/clawd/scripts/backup-with-retry.sh`
+- **結果**: ✅ 成功（出力なし = 成功仕様）
+- **報告**: Discord #一般 (2026-02-21 22:15 - 自動検知)
+
 ### 自動バックアップ (briny-bison) - 2026-02-21 18:10 UTC
 - **開始**: 2026-02-21 18:10 UTC (自動)
 - **コマンド**: `bash /root/clawd/scripts/backup-with-retry.sh`
