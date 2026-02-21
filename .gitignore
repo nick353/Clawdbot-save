@@ -26,6 +26,7 @@ Thumbs.db
 
 # Clawdbot runtime
 .clawdbot/
+.clawdbot-backup/
 *.pid
 *.sock
 
