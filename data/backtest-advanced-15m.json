@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-02-12T07:20:01.347402",
+  "timeframe": "15m",
+  "initial_capital": 10000.0,
+  "count": 9,
+  "results": [
+    {
+      "symbol": "STGUSDT",
+      "timeframe": "15m",
+      "trades": 1,
+      "total_pnl": 45.22448979591847,
+      "total_pnl_pct": 0.45224489795919,
+      "win_rate": 100.0,
+      "win_trades": 1,
+      "loss_trades": 0,
+      "final_capital": 10045.224489795919,
+      "avg_pnl": 45.22448979591847,
+      "best_trade": 45.22448979591847,
+      "worst_trade": 45.22448979591847,
+      "trades_detail": [
+        {
+          "entry_time": 

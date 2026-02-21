@@ -1,0 +1,194 @@
+{
+  "timestamp": "2026-02-12T07:38:42.157310",
+  "timeframe": "5m",
+  "initial_capital": 10000.0,
+  "count": 9,
+  "results": [
+    {
+      "symbol": "STGUSDT",
+      "timeframe": "5m",
+      "trades": 0,
+      "total_pnl": 0.0,
+      "win_rate": 0.0,
+      "final_capital": 10000.0
+    },
+    {
+      "symbol": "JASMYUSDT",
+      "timeframe": "5m",
+      "trades": 1,
+      "total_pnl": 100.00000000000001,
+      "total_pnl_pct": 1.0,
+      "win_rate": 100.0,
+      "win_trades": 1,
+      "loss_trades": 0,
+      "final_capital": 10100.0,
+      "avg_pnl": 100.00000000000001,
+      "best_trade": 100.00000000000001,
+      "worst_trade": 100.00000000000001,
+      "trades_detail": [
+        {
+          "entry_time": "2026-02-11 13:30:00",
+          "entry_price": 0.005449,
+          "exit_time": "2026-02-11 21:25:00",
+          "exit_price": 0.0059939,
+          "quantity": 183519.9119104423,
+          "pnl": 100.00000000000001,
+          "pnl_pct": 10.000000000000002,
+          "exit_reason": "Take Profit",
+          "entry_reason": "\u5168\u6761\u4ef6\u30af\u30ea\u30a2"
+        }
+      ]
+    },
+    {
+      "symbol": "XVGUSDT",
+      "timeframe": "5m",
+      "trades": 1,
+      "total_pnl": 27.430925004290458,
+      "total_pnl_pct": 0.27430925004289747,
+      "win_rate": 100.0,
+      "win_trades": 1,
+      "loss_trades": 0,
+      "final_capital": 10027.43092500429,
+      "avg_pnl": 27.430925004290458,
+      "best_trade": 27.430925004290458,
+      "worst_trade": 27.430925004290458,
+      "trades_detail": [
+        {
+          "entry_time": "2026-02-11 14:10:00",
+          "entry_price": 0.005827,
+          "exit_time": "2026-02-11 23:00:00",
+          "exit_price": 0.00598684,
+          "quantity": 171614.89617298782,
+          "pnl": 27.430925004290458,
+          "pnl_pct": 2.743092500429046,
+          "exit_reason": "Trailing Stop",
+          "entry_reason": "\u5168\u6761\u4ef6\u30af\u30ea\u30a2"
+        }
+      ]
+    },
+    {
+      "symbol": "CYBERUSDT",
+      "timeframe": "5m",
+      "trades": 1,
+      "total_pnl": 65.74314024390229,
+      "total_pnl_pct": 0.6574314024390151,
+      "win_rate": 100.0,
+      "win_trades": 1,
+      "loss_trades": 0,
+      "final_capital": 10065.743140243902,
+      "avg_pnl": 65.74314024390229,
+      "best_trade": 65.74314024390229,
+      "worst_trade": 65.74314024390229,
+      "trades_detail": [
+        {
+          "entry_time": "2026-02-11 12:30:00",
+          "entry_price": 0.5248,
+          "exit_time": "2026-02-11 23:00:00",
+          "exit_price": 0.559302,
+          "quantity": 1905.4878048780486,
+          "pnl": 65.74314024390229,
+          "pnl_pct": 6.574314024390228,
+          "exit_reason": "Trailing Stop",
+          "entry_reason": "\u5168\u6761\u4ef6\u30af\u30ea\u30a2"
+        }
+      ]
+    },
+    {
+      "symbol": "DYMUSDT",
+      "timeframe": "5m",
+      "trades": 1,
+      "total_pnl": 37.63348885432864,
+      "total_pnl_pct": 0.3763348885432788,
+      "win_rate": 100.0,
+      "win_trades": 1,
+      "loss_trades": 0,
+      "final_capital": 10037.633488854328,
+      "avg_pnl": 37.63348885432864,
+      "best_trade": 37.63348885432864,
+      "worst_trade": 37.63348885432864,
+      "trades_detail": [
+        {
+          "entry_time": "2026-02-11 13:35:00",
+          "entry_price": 0.03858,
+          "exit_time": "2026-02-11 21:15:00",
+          "exit_price": 0.0400319,
+          "quantity": 25920.16588906169,
+          "pnl": 37.63348885432864,
+          "pnl_pct": 3.763348885432864,
+          "exit_reason": "Trailing Stop",
+          "entry_reason": "\u5168\u6761\u4ef6\u30af\u30ea\u30a2"
+        }
+      ]
+    },
+    {
+      "symbol": "TNSRUSDT",
+      "timeframe": "5m",
+      "trades": 1,
+      "total_pnl": 64.27994296577954,
+      "total_pnl_pct": 0.642799429657789,
+      "win_rate": 100.0,
+      "win_trades": 1,
+      "loss_trades": 0,
+      "final_capital": 10064.279942965779,
+      "avg_pnl": 64.27994296577954,
+      "best_trade": 64.27994296577954,
+      "worst_trade": 64.27994296577954,
+      "trades_detail": [
+        {
+          "entry_time": "2026-02-11 13:30:00",
+          "entry_price": 0.04208,
+          "exit_time": "2026-02-11 21:10:00",
+          "exit_price": 0.0447849,
+          "quantity": 23764.25855513308,
+          "pnl": 64.27994296577954,
+          "pnl_pct": 6.427994296577955,
+          "exit_reason": "Trailing Stop",
+          "entry_reason": "\u5168\u6761\u4ef6\u30af\u30ea\u30a2"
+        }
+      ]
+    },
+    {
+      "symbol": "ZROUSDT",
+      "timeframe": "5m",
+      "trades": 0,
+      "total_pnl": 0.0,
+      "win_rate": 0.0,
+      "final_capital": 10000.0
+    },
+    {
+      "symbol": "OGUSDT",
+      "timeframe": "5m",
+      "trades": 1,
+      "total_pnl": -50.00000000000009,
+      "total_pnl_pct": -0.5,
+      "win_rate": 0.0,
+      "win_trades": 0,
+      "loss_trades": 1,
+      "final_capital": 9950.0,
+      "avg_pnl": -50.00000000000009,
+      "best_trade": -50.00000000000009,
+      "worst_trade": -50.00000000000009,
+      "trades_detail": [
+        {
+          "entry_time": "2026-02-11 14:55:00",
+          "entry_price": 4.92,
+          "exit_time": "2026-02-11 20:20:00",
+          "exit_price": 4.6739999999999995,
+          "quantity": 203.2520325203252,
+          "pnl": -50.00000000000009,
+          "pnl_pct": -5.000000000000009,
+          "exit_reason": "Stop Loss",
+          "entry_reason": "\u5168\u6761\u4ef6\u30af\u30ea\u30a2"
+        }
+      ]
+    },
+    {
+      "symbol": "THEUSDT",
+      "timeframe": "5m",
+      "trades": 0,
+      "total_pnl": 0.0,
+      "win_rate": 0.0,
+      "final_capital": 10000.0
+    }
+  ]
+}

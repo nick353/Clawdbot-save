@@ -1,0 +1,80 @@
+{
+  "paper_trade": true,
+  "initial_capital": 10000.0,
+  "discord_channel": "1471389526592327875",
+  "symbols": [
+    "APEUSDT",
+    "OPUSDT",
+    "ARBUSDT",
+    "HNTUSDT",
+    "RPLUSDT",
+    "BANUSDT",
+    "MORPHOUSDT",
+    "ORCAUSDT",
+    "BIOUSDT",
+    "PIPPINUSDT",
+    "VVVUSDT",
+    "SIRENUSDT",
+    "INITUSDT",
+    "MYXUSDT",
+    "AWEUSDT"
+  ],
+  "strategy": {
+    "sma_period": 200,
+    "ema_period": 200,
+    "volatility_threshold": 10.0,
+    "proximity_pct": 3.0,
+    "stop_loss_pct": 5.0,
+    "take_profit_pct": 10.0,
+    "fixed_position_size": 2000.0,
+    "position_size_pct": 20.0,
+    "trailing_stop_activation_pct": 2.0,
+    "trailing_stop_distance_pct": 2.0,
+    "max_hold_time_minutes": 1440,
+    "btc_trend_filter": true,
+    "rsi_filter": {
+      "enabled": true,
+      "min_rsi": 45,
+      "max_rsi": 65
+    },
+    "entry_conditions": {
+      "min_matches": 2,
+      "options": [
+        "sma_ema_bounce",
+        "macd_cross",
+        "volume_spike",
+        "rsi_bounce"
+      ]
+    }
+  },
+  "risk_management": {
+    "max_daily_loss": -300.0,
+    "max_daily_trades": 30,
+    "max_positions": 5
+  },
+  "timeframes": [
+    "5m",
+    "15m",
+    "1h"
+  ],
+  "check_interval": 30,
+  "auto_update_symbols": true,
+  "max_monitored_symbols": 15,
+  "comment": "V3設定ファイル - ハイブリッド戦法（ロング/ショート両対応）実装版（2026-02-20）",
+  "_変更点": {
+    "long_pattern_1": "ロング: ゴールデンクロス(EMA>SMA) + 価格>EMA200 + MACD上抜け + 出来高増",
+    "long_pattern_2": "ロング: SMA/EMA接近(±3%) + ゴールデンクロス + MACD上抜け + 出来高増",
+    "short_pattern_1": "ショート: デッドクロス(EMA<SMA) + 価格<EMA200 + MACD下抜け + 出来高増",
+    "short_pattern_2": "ショート: SMA/EMA接近(±3%) + デッドクロス + MACD下抜け + 出来高増",
+    "rsi_filter_long": "RSI 45〜65（ロング）",
+    "rsi_filter_short": "RSI 35〜55（ショート）",
+    "btc_trend_filter": "BTCトレンド確認（無効化可能）",
+    "max_hold_time_minutes": "1440分（24時間）",
+    "stop_loss_pct": "5%",
+    "take_profit_pct": "10%",
+    "trailing_stop_activation_pct": "2.0%",
+    "max_positions": "5個固定（ロング/ショート合計）",
+    "fixed_position_size": "$2,000/ポジション（総資金÷5で動的計算）"
+  },
+  "last_symbol_update": "2026-02-20T15:07:25.197202Z"
+}

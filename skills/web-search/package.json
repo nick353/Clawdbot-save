@@ -1,0 +1,14 @@
+{
+  "name": "web-search-skill",
+  "version": "1.0.0",
+  "description": "Universal web search (Google + X) automation using Puppeteer",
+  "main": "search-google.js",
+  "scripts": {
+    "search": "node search-google.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  },
+  "author": "Ricky 🐥",
+  "license": "MIT"
+}

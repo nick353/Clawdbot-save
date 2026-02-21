@@ -1,0 +1,51 @@
+{
+  "symbol": "BTC/USDT",
+  "timeframe": "5m",
+  "period_days": 30,
+  "total_trades": 3,
+  "long_trades": 3,
+  "short_trades": 0,
+  "win_rate": 33.33333333333333,
+  "winning_trades": 1,
+  "losing_trades": 2,
+  "avg_win": 0.38468184830981295,
+  "avg_loss": -0.36130907783122757,
+  "total_return_pct": -0.3395158108065334,
+  "max_drawdown_pct": -0.7214224777946583,
+  "exit_reasons": {
+    "stop_loss": 2,
+    "take_profit": 1
+  },
+  "trades": [
+    {
+      "action": "long",
+      "entry_time": "2026-01-19 00:05:00",
+      "entry_price": 92881.51,
+      "exit_time": "2026-01-19 00:10:00",
+      "exit_price": 92448.61,
+      "exit_reason": "stop_loss",
+      "pnl_pct": -0.4660776940426509,
+      "divergence": null
+    },
+    {
+      "action": "long",
+      "entry_time": "2026-01-19 00:15:00",
+      "entry_price": 92792.38,
+      "exit_time": "2026-01-19 00:30:00",
+      "exit_price": 92554.33,
+      "exit_reason": "stop_loss",
+      "pnl_pct": -0.2565404616198042,
+      "divergence": null
+    },
+    {
+      "action": "long",
+      "entry_time": "2026-01-29 15:45:00",
+      "entry_price": 84488.0,
+      "exit_time": "2026-01-29 15:50:00",
+      "exit_price": 84813.01,
+      "exit_reason": "take_profit",
+      "pnl_pct": 0.38468184830981295,
+      "divergence": null
+    }
+  ]
+}

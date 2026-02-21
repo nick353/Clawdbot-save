@@ -1,0 +1,12 @@
+{
+  "build": {
+    "env": []
+  },
+  "crons": [
+    {
+      "schedule": "0 */2 * * *",
+      "command": "cd /root/clawd && bash scripts/backup-config.sh",
+      "name": "auto-backup"
+    }
+  ]
+}

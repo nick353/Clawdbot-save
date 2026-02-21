@@ -1,0 +1,40 @@
+name: Auto Backup to GitHub
+
+on:
+  schedule:
+    # 2時間ごとに実行（UTC時間）
+    - cron: '0 */2 * * *'
+  workflow_dispatch: # 手動実行も可能
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Check for changes
+        id: check
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to commit"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected"
+          fi
+      
+      - name: Commit and Push
+        if: steps.check.outputs.has_changes == 'true'
+        run: |
+          git commit -m "Auto backup: $(date '+%Y-%m-%d %H:%M UTC')"
+          git push origin main

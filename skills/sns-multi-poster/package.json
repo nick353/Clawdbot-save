@@ -1,0 +1,14 @@
+{
+  "name": "sns-multi-poster",
+  "version": "1.0.0",
+  "description": "Multi-SNS posting scripts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "playwright": "^1.40.0",
+    "puppeteer": "^21.0.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}

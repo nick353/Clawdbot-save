@@ -1,0 +1,11 @@
+{
+  "name": "sns-curator",
+  "version": "1.0.0",
+  "description": "SNSコンテンツキュレーター",
+  "main": "curate-and-post.sh",
+  "dependencies": {
+    "puppeteer-extra": "*",
+    "puppeteer-extra-plugin-stealth": "*"
+  },
+  "note": "node_modulesはsns-multi-posterからシンボリックリンク"
+}

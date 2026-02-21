@@ -1,0 +1,125 @@
+{
+  "timestamp": "2026-02-12T06:59:19.678851",
+  "initial_capital": 10000.0,
+  "count": 10,
+  "results": [
+    {
+      "symbol": "STGUSDT",
+      "trades": 3,
+      "total_pnl": -7.518846185319333,
+      "total_pnl_pct": -0.07518846185319489,
+      "win_rate": 33.33333333333333,
+      "win_trades": 1,
+      "loss_trades": 2,
+      "final_capital": 9992.48115381468,
+      "avg_pnl": -2.506282061773111,
+      "best_trade": 121.9801394560023,
+      "worst_trade": -73.84441939120632
+    },
+    {
+      "symbol": "JASMYUSDT",
+      "trades": 0,
+      "total_pnl": 0.0,
+      "win_rate": 0.0,
+      "final_capital": 10000.0
+    },
+    {
+      "symbol": "XVGUSDT",
+      "trades": 2,
+      "total_pnl": -105.19601309376685,
+      "total_pnl_pct": -1.0519601309376776,
+      "win_rate": 0.0,
+      "win_trades": 0,
+      "loss_trades": 2,
+      "final_capital": 9894.803986906232,
+      "avg_pnl": -52.598006546883425,
+      "best_trade": -52.17245428619368,
+      "worst_trade": -53.023558807573174
+    },
+    {
+      "symbol": "CYBERUSDT",
+      "trades": 1,
+      "total_pnl": -53.18840579710139,
+      "total_pnl_pct": -0.5318840579710195,
+      "win_rate": 0.0,
+      "win_trades": 0,
+      "loss_trades": 1,
+      "final_capital": 9946.811594202898,
+      "avg_pnl": -53.18840579710139,
+      "best_trade": -53.18840579710139,
+      "worst_trade": -53.18840579710139
+    },
+    {
+      "symbol": "DYMUSDT",
+      "trades": 1,
+      "total_pnl": 322.26607847689814,
+      "total_pnl_pct": 3.2226607847689777,
+      "win_rate": 100.0,
+      "win_trades": 1,
+      "loss_trades": 0,
+      "final_capital": 10322.266078476898,
+      "avg_pnl": 322.26607847689814,
+      "best_trade": 322.26607847689814,
+      "worst_trade": 322.26607847689814
+    },
+    {
+      "symbol": "TNSRUSDT",
+      "trades": 0,
+      "total_pnl": 0.0,
+      "win_rate": 0.0,
+      "final_capital": 10000.0
+    },
+    {
+      "symbol": "ZROUSDT",
+      "trades": 3,
+      "total_pnl": -21.42910405688548,
+      "total_pnl_pct": -0.21429104056885992,
+      "win_rate": 33.33333333333333,
+      "win_trades": 1,
+      "loss_trades": 2,
+      "final_capital": 9978.570895943114,
+      "avg_pnl": -7.143034685628493,
+      "best_trade": 107.92122143546527,
+      "worst_trade": -79.5746953439821
+    },
+    {
+      "symbol": "SYNUSDT",
+      "trades": 3,
+      "total_pnl": 148.70419585074805,
+      "total_pnl_pct": 1.4870419585074888,
+      "win_rate": 33.33333333333333,
+      "win_trades": 1,
+      "loss_trades": 2,
+      "final_capital": 10148.704195850749,
+      "avg_pnl": 49.56806528358268,
+      "best_trade": 261.54015607606294,
+      "worst_trade": -59.945431320025854
+    },
+    {
+      "symbol": "OGUSDT",
+      "trades": 2,
+      "total_pnl": 230.89258651779272,
+      "total_pnl_pct": 2.3089258651779345,
+      "win_rate": 100.0,
+      "win_trades": 2,
+      "loss_trades": 0,
+      "final_capital": 10230.892586517793,
+      "avg_pnl": 115.44629325889636,
+      "best_trade": 129.24912678693485,
+      "worst_trade": 101.64345973085787
+    },
+    {
+      "symbol": "THEUSDT",
+      "trades": 2,
+      "total_pnl": 36.16529564169437,
+      "total_pnl_pct": 0.36165295641694684,
+      "win_rate": 50.0,
+      "win_trades": 1,
+      "loss_trades": 1,
+      "final_capital": 10036.165295641695,
+      "avg_pnl": 18.082647820847185,
+      "best_trade": 100.37797457829966,
+      "worst_trade": -64.21267893660529
+    }
+  ]
+}

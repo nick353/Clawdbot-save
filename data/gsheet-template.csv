@@ -1,0 +1,4 @@
+Entry Time,Exit Time,Symbol,Entry Price,Exit Price,Quantity,PnL ($),PnL (%),Win/Loss,Entry Reason,Exit Reason,Hold Time (min),Trailing Stop Used,Highest Price,Capital After,Notes
+2026-02-11 13:30:00,2026-02-11 21:25:00,JASMYUSDT,0.005449,0.005994,1835.38,100.00,10.00,Win,全条件クリア,Take Profit,475,Yes,0.006000,10100.00,Screenshot: /root/clawd/data/screenshots/20260211_133000_JASMYUSDT.png
+2026-02-11 14:10:00,2026-02-11 23:00:00,XVGUSDT,0.005827,0.005987,1717.20,27.43,2.74,Win,全条件クリア,Trailing Stop,530,Yes,0.006120,10127.43,Screenshot: /root/clawd/data/screenshots/20260211_141000_XVGUSDT.png
+2026-02-11 14:55:00,2026-02-11 20:20:00,OGUSDT,4.920000,4.674000,203.25,-50.00,-5.00,Loss,全条件クリア,Stop Loss,325,No,4.920000,10077.43,Screenshot: /root/clawd/data/screenshots/20260211_145500_OGUSDT.png

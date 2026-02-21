@@ -1,0 +1,27 @@
+{
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "anthropic/claude-sonnet-4-5",
+        "maxTokens": 4096
+      },
+      "models": {
+        "anthropic/claude-sonnet-4-5": {
+          "alias": "sonnet",
+          "maxTokens": 4096
+        },
+        "anthropic/claude-3-5-haiku-20241022": {
+          "alias": "haiku",
+          "maxTokens": 2048
+        }
+      },
+      "contextTokens": 200000,
+      "compactionThreshold": 100000
+    }
+  },
+  "comment": {
+    "maxTokens": "出力トークン制限（デフォルト8192→4096に削減）",
+    "haiku": "軽量タスク用（コスト90%削減）",
+    "compactionThreshold": "10万トークンで自動圧縮"
+  }
+}

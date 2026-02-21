@@ -1,0 +1,37 @@
+{
+  "collectedAt": "2026-02-19T09:02:20.227082Z",
+  "platform": "threads",
+  "keywords": [
+    "浮世絵",
+    "japanart",
+    "ukiyoe"
+  ],
+  "totalPosts": 3,
+  "posts": [
+    {
+      "keyword": "ukiyoe",
+      "url": "https://www.threads.net/@poshichi_rou/post/DMXuO6Npxe0",
+      "text": "07/21/25",
+      "likes": 0
+    },
+    {
+      "keyword": "ukiyoe",
+      "url": "https://www.threads.net/@poshichi_rou/post/DMXuO6Npxe0/media",
+      "text": "Instagram logoposhichi_rou",
+      "likes": 0
+    },
+    {
+      "keyword": "ukiyoe",
+      "url": "https://www.threads.net/@tokyovice/post/DJ9wR3EBnp1",
+      "text": "05/22/25",
+      "likes": 0
+    }
+  ],
+  "topPost": {
+    "keyword": "ukiyoe",
+    "url": "https://www.threads.net/@poshichi_rou/post/DMXuO6Npxe0",
+    "text": "07/21/25",
+    "likes": 0
+  },
+  "maxLikes": 0
+}

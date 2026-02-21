@@ -1,0 +1,37 @@
+{
+  "post_id": "TEST-DEMO-001",
+  "timestamp": "2026-02-15T11:00:36.715300",
+  "media_type": "画像",
+  "analysis": {
+    "error": "404 models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+    "image_path": "data/media/test-demo.jpg"
+  },
+  "captions": {
+    "X": {
+      "error": "404 models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "caption": "",
+      "hashtags": []
+    },
+    "Threads": {
+      "error": "404 models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "caption": "",
+      "hashtags": []
+    },
+    "Instagram": {
+      "error": "404 models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "caption": "",
+      "hashtags": []
+    },
+    "Facebook": {
+      "error": "404 models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "caption": "",
+      "hashtags": []
+    },
+    "Pinterest": {
+      "error": "404 models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "caption": "",
+      "hashtags": []
+    }
+  },
+  "image_url": "/root/clawd/skills/sns-growth-tracker/data/media/TEST-DEMO-001.jpg"
+}

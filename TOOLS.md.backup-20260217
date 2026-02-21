@@ -1,0 +1,249 @@
+# TOOLS.md - Local Notes
+
+Skills define *how* tools work. This file is for *your* specifics — the stuff that's unique to your setup.
+
+## What Goes Here
+
+Things like:
+- Camera names and locations
+- SSH hosts and aliases  
+- Preferred voices for TTS
+- Speaker/room names
+- Device nicknames
+- Anything environment-specific
+
+## Examples
+
+```markdown
+### Cameras
+- living-room → Main area, 180° wide angle
+- front-door → Entrance, motion-triggered
+
+### SSH
+- home-server → 192.168.1.100, user: admin
+
+### TTS
+- Preferred voice: "Nova" (warm, slightly British)
+- Default speaker: Kitchen HomePod
+```
+
+## Why Separate?
+
+Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
+
+---
+
+## 🔐 スマート秘書機能（認証情報クロスチャンネル管理）
+
+**確立: 2026-02-17**
+
+### 仕組み
+- 全認証情報は `gateway config env.vars` に登録済み
+- **全チャンネル（Discord全チャンネル）から自動的にアクセス可能**
+- `~/.profile` は参考のみ（gatewayは読み込まない）
+
+### 新しい認証情報を追加するとき（必須手順）
+```javascript
+// gateway config.patchを使う（自動で再起動・全チャンネル反映）
+gateway.config.patch({
+  env: { vars: { "新しいキー": "値" } }
+})
+// ~/.profileにも追加（シェル用）
+exec("echo 'export 新しいキー=\"値\"' >> ~/.profile")
+```
+
+### 現在登録済みの認証情報（env.vars）
+| キー名 | サービス | 状態 |
+|--------|---------|------|
+| GEMINI_API_KEY | Google Gemini | ✅ 全チャンネル |
+| AUTH_TOKEN | X/Twitter (bird) | ✅ 全チャンネル |
+| CT0 | X/Twitter (bird) | ✅ 全チャンネル |
+| BITGET_API_KEY | Bitget取引所 | ✅ 全チャンネル |
+| BITGET_SECRET_KEY | Bitget取引所 | ✅ 全チャンネル |
+| BITGET_PASSPHRASE | Bitget取引所 | ✅ 全チャンネル |
+| BRAVE_API_KEY | Brave Search | ✅ 全チャンネル（tools.web.searchにも登録） |
+| AUPHONIC_API_KEY | Auphonic音声処理 | ✅ 全チャンネル |
+| SNS_SHEETS_ID | Google Sheets | ✅ 全チャンネル |
+| CLOUDINARY_CLOUD_NAME | Cloudinary | ✅ 全チャンネル |
+| CLOUDINARY_API_KEY | Cloudinary | ✅ 全チャンネル |
+| CLOUDINARY_API_SECRET | Cloudinary | ✅ 全チャンネル |
+| ADOBE_PODCAST_TOKEN | Adobe Podcast AI | ✅ 全チャンネル |
+| REPLICATE_API_TOKEN | Replicate AI | ✅ 全チャンネル |
+| WAVESPEED_API_KEY | WaveSpeed動画処理 | ✅ 全チャンネル |
+| IG_PASSWORD | Instagram | ✅ 全チャンネル |
+
+### スマート秘書の提案ルール
+- 新しいチャンネルで認証が必要 → 「以前〜で使った〇〇があります。使いますか？」
+- 新しい認証情報が入力された → 即座にenv.varsに保存
+- 認証エラーが発生した → 保存済み認証情報で自動リトライ提案
+
+---
+
+## 🔧 andoさん環境の設定
+
+### インストール済みSkills（自動トリガー対応）
+
+**1. bird (X/Twitter)**
+- **CLI**: `bird` (@steipete/bird)
+- **場所**: `/root/.npm-global/lib/node_modules/@steipete/bird`
+- **認証**: 未設定（要クッキー設定）
+  - 必要: `AUTH_TOKEN`, `CT0` 環境変数
+  - 設定先: `~/.profile` or `~/.config/bird/config.json5`
+- **トリガー**: "Xで調べて"、"Twitterで検索"
+- **用途**: トレンド調査、ツール評判確認、リアルタイム情報収集
+
+**2. 1password-cli**
+- **CLI**: `op` (v2.32.1)
+- **場所**: `/usr/bin/op`
+- **認証**: 要セットアップ（`op signin`）
+- **トリガー**: "パスワード取得"、"APIキー取得"（確認必須）
+- **用途**: セキュアな認証情報管理
+
+**3. summarize**
+- **CLI**: `summarize`
+- **場所**: npm global
+- **トリガー**: "要約して"、"このURL/記事/動画は？"
+- **用途**: URL/YouTube/記事の要約・文字起こし
+
+**4. blogwatcher**
+- **CLI**: `blogwatcher`
+- **場所**: `~/go/bin/blogwatcher`
+- **トリガー**: "ブログを監視"、"RSS追加"
+- **用途**: RSS/Atom フィード監視
+
+**5. gifgrep**
+- **CLI**: `gifgrep`
+- **場所**: `~/go/bin/gifgrep`
+- **トリガー**: "GIF探して"、"面白いGIF見つけて"
+- **用途**: GIF検索・ダウンロード
+
+**6. obsidian-vps**
+- **CLI**: `/root/clawd/scripts/obsidian-helper.sh` (エイリアス: `obs`)
+- **Vault**: `/root/obsidian-vault`
+- **トリガー**: "メモして"、"記録して"、"今日のメモに"
+- **用途**: Markdown管理、デイリーノート、知識ベース
+
+**7. Go (v1.23.4 → 1.25.7)**
+- **場所**: `/usr/local/go/bin/go`
+- **用途**: blogwatcher、gifgrepのビルド環境
+
+**8. youtube-analyzer**
+- **CLI**: Python script + Gemini API
+- **場所**: `/tmp/analyze_yt_gemini.py`
+- **認証**: `GEMINI_API_KEY` 環境変数
+- **トリガー**: "この動画を分析して"、"YouTube動画の内容は？"
+- **用途**: YouTube動画の詳細分析（テーマ、ポイント、手法、学び）
+
+**9. sns-multi-poster**
+- **場所**: `/root/clawd/skills/sns-multi-poster/`
+- **対応SNS**: Instagram, Threads, Facebook, Pinterest, X
+- **トリガー**: "SNS投稿"、"マルチ投稿"
+- **用途**: 浮世絵などの画像を5つのSNSに自動投稿
+- **必須情報**: 画像パス、キャプション
+- **オプション**: Pinterestボード名（デフォルト: Animal）
+- **Instagram投稿方式**: `post-to-instagram-v5.cjs`（Cookie認証方式 - **2026-02-17確定**）
+  - Cookie: `cookies/instagram.json`（期限切れ時はandoさんのブラウザから再取得）
+  - 直接実行: `node post-to-instagram-v5.cjs <画像> "キャプション"`
+  - 接続制限時は30分待機して再試行
+- **注意**: Cookieは定期的に更新が必要（通常数ヶ月〜1年有効）
+
+**10. ffmpeg-video-processor (DeepFilterNet3統合版・最新 2026-02-17)**
+- **場所**: `/root/clawd/skills/ffmpeg-video-processor/`
+- **メインスクリプト**: `process-with-deepfilternet.sh`
+- **依存**: ffmpeg 6.1+, rclone, WaveSpeedAI API, DeepFilterNet3
+- **トリガー**: Discord #ai動画処理チャンネルで動画投稿 → 自動処理
+- **処理フロー**:
+  1. 🧹 WaveSpeedAI Watermark Remover（Soraウォーターマーク除去）
+  2. 🎨 WaveSpeedAI Video Upscaler Pro（4K超解像・2倍）
+  3. 🎙️ DeepFilterNet3（AI音声改善・RNNベース）
+  4. ☁️ Google Drive（元動画 + 処理済み自動アップロード）
+  5. 💬 Discord通知（完了時にリンク送信）
+- **処理時間**: 約6-9分（15秒動画）
+- **コスト**: $0.13-0.16/本（DeepFilterNet3は無料）
+- **認証情報**:
+  - WaveSpeedAI: `$WAVESPEED_API_KEY` (環境変数 ~/.profile)
+  - rclone: `~/.config/rclone/rclone.conf` (gdrive:)
+  - DeepFilterNet3環境: `/root/clawd/envs/deepfilternet/`
+- **⚠️ 重要な仕様（2026-02-17確定）**:
+  - WaveSpeedAI v3 API: ファイル直接送信NG
+    → まず `POST /api/v3/media/upload/binary` でアップロード → URLをAPIに渡す
+  - WaveSpeedAI APIの成功ステータスは **"completed"**（"succeeded"ではない）
+  - DeepFilterNet3: `$PYTHON $DEEPFILTER_CMD` 形式で実行（shebang修正済み）
+  - 出力ファイル名: `<入力ファイル名>_DeepFilterNet3.wav`（自動付与）
+- **自動化**:
+  - `/root/clawd/scripts/auto-video-processor.sh` (HEARTBEAT統合)
+  - 5分ごとに `/root/.clawdbot/media/inbound/` をチェック
+- **セットアップ（初回・再構築時）**:
+  ```bash
+  bash /root/clawd/skills/ffmpeg-video-processor/setup-deepfilternet.sh
+  ```
+- **手動実行**:
+  ```bash
+  bash /root/clawd/skills/ffmpeg-video-processor/process-with-deepfilternet.sh <動画>
+  ```
+
+### VPS環境
+- **場所**: Zeabur（ボリューム永続化: /root/clawd）
+- **GPU**: なし（AI upscaling 制限あり）
+- **Node**: v22.22.0
+- **自動バックアップ**: GitHub（scripts/backup-with-retry.sh）
+
+### Clawdbot再起動（エラーハンドリング強化版）
+- **推奨方法**: `/root/clawd/scripts/safe-restart.sh`
+- **機能**:
+  - 再起動前の状態確認
+  - 再起動実行 + エラーメッセージ記録
+  - 再起動後の状態確認
+  - 結果の明確な報告
+- **利点**: エラーメッセージが出ても正常動作を確認できる
+- **使用例**: `bash /root/clawd/scripts/safe-restart.sh`
+
+**11. Web + X 統合リサーチ（2026-02-16更新）**
+- **ツール**: web_search（Brave Search API）+ bird（X/Twitter CLI）
+- **トリガー**: "〜についてリサーチして"、"〜を調べて"、"〜の情報を教えて"
+- **用途**: Web + X両方でリサーチして統合報告
+- **特徴**: 
+  - **Web検索**: Brave Search APIで上位10件取得（公式情報・技術情報）
+  - **X検索**: bird CLIで最新10件取得（ユーザーの声・評判）
+  - **統合報告**: 両方の結果を組み合わせて要約
+  - 結果を読みやすく整理（生データを垂れ流さない）
+  - 参考URLを提示
+- **使用例**:
+  - "Soraのウォーターマーク除去方法についてリサーチして"
+    → Web検索で公式手順 + X検索でユーザー体験談 → 統合報告
+  - "最新のAI動画編集ツールを調べて"
+    → Web検索で製品情報 + X検索で評判 → おすすめツール紹介
+  - "プロンプトエンジニアリングの情報を教えて"
+    → Web検索で技術記事 + X検索で実践者の声 → 統合報告
+
+**12. web-search (Google + X統合検索 - Skill版)**
+- **場所**: `/root/clawd/skills/web-search/`
+- **CLI**: Puppeteer (Node.js)
+- **トリガー（Google）**: "〜を検索して"、"〜について調べて"、"〜の情報を探して"
+- **トリガー（X）**: "Xで〜を調べて"、"Twitterで検索"
+- **用途**: Web検索全般（Google + X両対応）
+- **特徴**: 
+  - 自動でGoogle/Xを判別
+  - 最新10件の結果を取得
+  - 結果を要約して報告（生データを垂れ流さない）
+  - JSON出力対応
+- **使用例**:
+  ```bash
+  # Google検索
+  bash /root/clawd/skills/web-search/web-search.sh "Sora watermark removal"
+  
+  # X検索
+  bash /root/clawd/skills/web-search/web-search.sh --x "AI video tools"
+  ```
+
+**12. x-search (X/Twitter専用検索)**
+- **場所**: `/root/clawd/skills/x-search/`
+- **CLI**: Puppeteer (Node.js)
+- **トリガー**: "Xで〜"、"Twitterで〜"
+- **用途**: X (Twitter) のツイート検索
+- **特徴**: 最新10件のツイートを取得、ユーザー名・本文・URLを抽出
+- **認証**: `AUTH_TOKEN`, `CT0` 環境変数（オプション）
+
+---
+
+Add whatever helps you do your job. This is your cheat sheet.

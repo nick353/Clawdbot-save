@@ -1,0 +1,5 @@
+2026/02/16-17:13:55.180 598db Recovering log #6
+2026/02/16-17:13:55.187 598db Level-0 table #8: started
+2026/02/16-17:13:55.189 598db Level-0 table #8: 124 bytes OK
+2026/02/16-17:13:55.209 598db Delete type=0 #6
+2026/02/16-17:13:55.210 598db Delete type=3 #4

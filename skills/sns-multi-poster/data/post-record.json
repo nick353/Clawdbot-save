@@ -1,0 +1,20 @@
+{
+  "post_id": "2026-02-17_001",
+  "timestamp": "2026-02-17T09:00:00Z",
+  "image_path": "/path/to/image.jpg",
+  "caption": "時を超えて、美は語りかける。\n江戸の匠が描いた一瞬が、今もここに息づいている。✨\n\nAcross centuries, beauty speaks to us.\nA fleeting moment captured by an Edo master, still alive today. ✨\n\n#浮世絵 #ukiyoe #japanart #japanesepainting #artofinstagram",
+  "hashtags": ["#浮世絵", "#ukiyoe", "#japanart", "#japanesepainting", "#artofinstagram", "#artprint", "#woodblockprint", "#traditionaljapan", "#asianart", "#ukiyoeprints"],
+  "platforms": {
+    "instagram": {"status": "success", "post_id": "xxx", "url": "https://www.instagram.com/p/xxx/"},
+    "threads": {"status": "success"},
+    "x": {"status": "success", "url": "https://x.com/nisen_prints/status/xxx"},
+    "facebook": {"status": "success"},
+    "pinterest": {"status": "success", "board": "Animal"}
+  },
+  "performance": {
+    "checked_at": "2026-02-18T09:00:00Z",
+    "instagram": {"likes": 0, "comments": 0, "saves": 0},
+    "x": {"likes": 0, "retweets": 0, "impressions": 0},
+    "pinterest": {"saves": 0, "clicks": 0}
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "post_id": "2026-02-21_002",
+  "timestamp": "2026-02-21T13:41:58Z",
+  "media_path": "/tmp/test_image.jpg",
+  "media_type": "image",
+  "is_video": false,
+  "dry_run": true,
+  "caption": "\u30c6\u30b9\u30c8\u753b\u50cf \ud83d\udcf7 #test",
+  "hashtags": ["#test"],
+  "platforms": {
+    "instagram": {"status": "dry_run", "post_id": "", "url": ""},
+    "threads": {"status": "dry_run"},
+    "x": {"status": "dry_run"},
+    "facebook": {"status": "dry_run"},
+    "pinterest": {"status": "dry_run", "board": "Animal"}
+  }
+}

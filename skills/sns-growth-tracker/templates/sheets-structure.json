@@ -1,0 +1,179 @@
+{
+  "spreadsheet_name": "SNS成長トラッカー",
+  "sheets": [
+    {
+      "name": "投稿マスター",
+      "headers": [
+        "投稿ID",
+        "投稿日時",
+        "メディア種別",
+        "Gemini分析",
+        "Gemini評価",
+        "推奨SNS",
+        "Xキャプション",
+        "Threadsキャプション",
+        "IGキャプション",
+        "FBキャプション",
+        "Pinterestタイトル",
+        "画像URL",
+        "実験ID"
+      ],
+      "auto_columns": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"],
+      "manual_columns": []
+    },
+    {
+      "name": "X (Twitter)",
+      "headers": [
+        "投稿ID",
+        "投稿URL",
+        "いいね",
+        "リツイート",
+        "コメント",
+        "インプレッション",
+        "エンゲージメント率"
+      ],
+      "auto_columns": ["A", "B", "G"],
+      "manual_columns": ["C", "D", "E", "F"],
+      "formulas": {
+        "G": "=IF(F2>0,(C2+D2+E2)/F2*100,0)"
+      }
+    },
+    {
+      "name": "Threads",
+      "headers": [
+        "投稿ID",
+        "投稿URL",
+        "いいね",
+        "リポスト",
+        "コメント",
+        "表示回数",
+        "エンゲージメント率"
+      ],
+      "auto_columns": ["A", "B", "G"],
+      "manual_columns": ["C", "D", "E", "F"],
+      "formulas": {
+        "G": "=IF(F2>0,(C2+D2+E2)/F2*100,0)"
+      }
+    },
+    {
+      "name": "Instagram",
+      "headers": [
+        "投稿ID",
+        "投稿URL",
+        "いいね",
+        "コメント",
+        "保存",
+        "シェア",
+        "リーチ",
+        "エンゲージメント率"
+      ],
+      "auto_columns": ["A", "B", "H"],
+      "manual_columns": ["C", "D", "E", "F", "G"],
+      "formulas": {
+        "H": "=IF(G2>0,(C2+D2+E2+F2)/G2*100,0)"
+      }
+    },
+    {
+      "name": "Facebook",
+      "headers": [
+        "投稿ID",
+        "投稿URL",
+        "いいね",
+        "コメント",
+        "シェア",
+        "リーチ",
+        "エンゲージメント率"
+      ],
+      "auto_columns": ["A", "B", "G"],
+      "manual_columns": ["C", "D", "E", "F"],
+      "formulas": {
+        "G": "=IF(F2>0,(C2+D2+E2)/F2*100,0)"
+      }
+    },
+    {
+      "name": "Pinterest",
+      "headers": [
+        "投稿ID",
+        "投稿URL",
+        "保存",
+        "クリック",
+        "インプレッション",
+        "エンゲージメント率"
+      ],
+      "auto_columns": ["A", "B", "F"],
+      "manual_columns": ["C", "D", "E"],
+      "formulas": {
+        "F": "=IF(E2>0,(C2+D2)/E2*100,0)"
+      }
+    },
+    {
+      "name": "週次レポート",
+      "headers": [
+        "週",
+        "期間",
+        "総投稿数",
+        "実験数",
+        "ベスト投稿ID",
+        "ベストSNS",
+        "平均エンゲージメント",
+        "学んだこと",
+        "来週の戦略"
+      ],
+      "auto_columns": ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
+      "manual_columns": []
+    },
+    {
+      "name": "トレンド分析",
+      "headers": [
+        "分析日",
+        "SNS",
+        "投稿URL",
+        "いいね数",
+        "コメント数",
+        "シェア数",
+        "Gemini分析",
+        "バズった理由",
+        "学んだこと",
+        "テスト状況",
+        "テスト結果"
+      ],
+      "auto_columns": ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
+      "manual_columns": ["J", "K"]
+    },
+    {
+      "name": "実験ログ",
+      "headers": [
+        "実験ID",
+        "実験内容",
+        "仮説",
+        "実施日",
+        "実施投稿ID",
+        "対照投稿ID",
+        "実験結果",
+        "対照結果",
+        "差分",
+        "結論",
+        "継続判定"
+      ],
+      "auto_columns": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"],
+      "manual_columns": []
+    }
+  ],
+  "formatting": {
+    "header_row": {
+      "background_color": {"red": 0.2, "green": 0.6, "blue": 0.86},
+      "text_color": {"red": 1, "green": 1, "blue": 1},
+      "font_weight": "bold"
+    },
+    "auto_columns_color": {
+      "red": 0.9,
+      "green": 0.95,
+      "blue": 1
+    },
+    "manual_columns_color": {
+      "red": 1,
+      "green": 0.95,
+      "blue": 0.9
+    }
+  }
+}

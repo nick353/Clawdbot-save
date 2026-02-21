@@ -1,0 +1,98 @@
+{
+  "version": "1.0.0",
+  "system": {
+    "name": "SNS Growth Tracker",
+    "description": "完全自立型SNS成長システム"
+  },
+  "schedule": {
+    "trend_monitoring": {
+      "time": "09:00",
+      "timezone": "UTC",
+      "enabled": true
+    },
+    "weekly_analysis": {
+      "day": "Monday",
+      "time": "08:00",
+      "timezone": "UTC",
+      "enabled": true
+    }
+  },
+  "sns": {
+    "platforms": ["X", "Threads", "Instagram", "Facebook", "Pinterest"],
+    "trend_collection": {
+      "items_per_platform": 10,
+      "min_engagement": 1000
+    }
+  },
+  "gemini": {
+    "model": "gemini-2.0-flash-exp",
+    "temperature": 0.7,
+    "max_tokens": 2048,
+    "analysis_prompts": {
+      "image": "この画像を詳しく分析してください。内容、色彩、構図、テーマ、雰囲気を説明し、SNSでのエンゲージメント予測を行ってください。",
+      "trend": "このバズっている投稿を分析してください。なぜエンゲージメントが高いのか、どのような要素が効果的だったのかを説明してください。",
+      "caption": "この画像に対して、{platform}向けの最適なキャプションを生成してください。アルゴリズムに最適化し、エンゲージメントを最大化する内容にしてください。"
+    }
+  },
+  "captions": {
+    "X": {
+      "max_length": 280,
+      "style": "質問型・会話誘発",
+      "hashtags": 2,
+      "features": ["スレッド", "データ引用", "短く強烈"]
+    },
+    "Threads": {
+      "max_length": 500,
+      "style": "会話型・カジュアル",
+      "hashtags": 3,
+      "features": ["質問", "意見", "ユーモア"]
+    },
+    "Instagram": {
+      "max_length": 2200,
+      "style": "ストーリー型・視覚重視",
+      "hashtags": 10,
+      "features": ["カルーセル", "DM誘発", "保存したくなる"]
+    },
+    "Facebook": {
+      "max_length": 1000,
+      "style": "会話型・ストーリー性",
+      "hashtags": 5,
+      "features": ["Reels", "コメント誘発", "シェア誘発"]
+    },
+    "Pinterest": {
+      "max_length": 500,
+      "style": "SEO重視・検索最適化",
+      "hashtags": 0,
+      "features": ["キーワード5個以上", "テキストオーバーレイ", "縦型"]
+    }
+  },
+  "experiments": {
+    "max_concurrent": 3,
+    "success_threshold": 1.15,
+    "test_duration_days": 3
+  },
+  "learning": {
+    "min_data_points": 5,
+    "confidence_threshold": 0.75,
+    "patterns_to_track": [
+      "カルーセル vs 単一画像",
+      "質問型 vs ストーリー型",
+      "明るい色 vs 暗い色",
+      "短文 vs 長文",
+      "絵文字多 vs 絵文字少"
+    ]
+  },
+  "paths": {
+    "data_dir": "/root/clawd/skills/sns-growth-tracker/data",
+    "trends_dir": "/root/clawd/skills/sns-growth-tracker/data/trends",
+    "experiments_dir": "/root/clawd/skills/sns-growth-tracker/data/experiments",
+    "media_dir": "/root/clawd/skills/sns-growth-tracker/data/media",
+    "credentials": "/root/clawd/skills/sns-growth-tracker/google-credentials.json"
+  },
+  "discord": {
+    "notification_channel": "sns-投稿",
+    "report_format": "markdown",
+    "mention_on_success": false,
+    "mention_on_error": true
+  }
+}

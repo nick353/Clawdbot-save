@@ -1,0 +1,51 @@
+{
+  "paper_trade": true,
+  "initial_capital": 10000.0,
+  "discord_channel": "1471389526592327875",
+  "symbols": [
+    "STGUSDT",
+    "LQTYUSDT",
+    "MANTAUSDT",
+    "TNSRUSDT",
+    "ZROUSDT"
+  ],
+  "strategy": {
+    "sma_period": 200,
+    "ema_period": 200,
+    "volatility_threshold": 10.0,
+    "proximity_pct": 3.0,
+    "stop_loss_pct": 5.0,
+    "take_profit_pct": 15.0,
+    "position_size_pct": 20.0
+  },
+  "risk_management": {
+    "max_daily_loss": -200.0,
+    "max_daily_trades": 20,
+    "max_positions": 3
+  },
+  "timeframe": "5m",
+  "check_interval": 60,
+  "comment": "設定ファイル説明",
+  "_説明": {
+    "paper_trade": "ペーパートレードモード（true=実際には取引しない、false=リアルトレード）",
+    "initial_capital": "初期資金（ペーパートレード用）",
+    "discord_channel": "Discord通知チャンネルID（#一般の例）",
+    "symbols": "監視する銘柄リスト（Bitget形式: XXXUSDT）",
+    "strategy": {
+      "sma_period": "SMA期間（デフォルト200）",
+      "ema_period": "EMA期間（デフォルト200）",
+      "volatility_threshold": "ボラティリティ閾値（前日比±%）",
+      "proximity_pct": "SMA/EMA接近判定（±%）",
+      "stop_loss_pct": "ストップロス（-%）",
+      "take_profit_pct": "利益確定（+%）",
+      "position_size_pct": "ポジションサイズ（資金の%）"
+    },
+    "risk_management": {
+      "max_daily_loss": "1日の最大損失（$）",
+      "max_daily_trades": "1日の最大トレード数",
+      "max_positions": "同時保有ポジション数"
+    },
+    "timeframe": "時間足（5m, 15m, 1h, 4h, 1d）",
+    "check_interval": "チェック間隔（秒）"
+  }
+}

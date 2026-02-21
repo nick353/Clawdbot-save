@@ -1,0 +1,168 @@
+# HEARTBEAT.md - 自動タスク（簡素化版）
+
+**注意: このセッションは軽量タスクのみ実行するため、常にHaikuモデルを使用します。**
+
+---
+
+## 0. 実行中タスクのチェック（最優先）
+
+```bash
+# process listで確認
+# 完了したタスクがあれば即座に報告
+```
+
+**⚠️ 絶対守るルール：**
+- 「完了したら報告する」と言ったら **必ず** 報告する
+- andoさんから聞かれる前に **自分から** 報告する
+- 約束を守らない = 信頼を失う
+
+---
+
+## 1. Discord投稿待ちチェック
+
+**フラグファイル形式:**
+```
+1行目: 日付 (YYYY-MM-DD)
+2行目: レポートファイルパス
+3行目: 投稿先チャンネルID（省略時は #一般）
+```
+
+**処理手順:**
+1. `/root/clawd/.discord_post_pending` 存在確認
+2. フラグファイルから日付・レポートパス・チャンネルIDを読み取り
+3. レポートファイルを読み込み
+4. `message` toolでDiscord投稿
+5. フラグファイル削除
+6. 成功/失敗を報告
+
+**エラー時:**
+- レポートファイルなし → エラー報告 + フラグ削除
+- 投稿失敗 → エラー報告 + フラグ保持（次回リトライ）
+
+---
+
+## 2. 毎朝リサーチの自動実行チェック
+
+**日本時間9:00（UTC 0:00）に自動実行：**
+
+```bash
+TODAY=$(date +%Y-%m-%d)
+LAST_RUN=$(cat /root/clawd/.last_research_date 2>/dev/null || echo "1970-01-01")
+
+if [ "$TODAY" != "$LAST_RUN" ]; then
+    CURRENT_HOUR=$(date +%H)
+    if [ "$CURRENT_HOUR" = "00" ] || [ "$CURRENT_HOUR" = "01" ]; then
+        echo "🔍 毎朝リサーチを開始します..."
+        bash /root/clawd/scripts/daily-research.sh
+        echo "$TODAY" > /root/clawd/.last_research_date
+        echo "✅ リサーチ完了"
+    fi
+fi
+```
+
+---
+
+## 3. 動画ファイルの自動検出＆処理
+
+```bash
+bash /root/clawd/scripts/auto-video-processor.sh
+```
+
+**動作:**
+- `/root/.clawdbot/media/inbound/` で新しい動画を検出（5分以内）
+- Adobe Podcast AI音声改善（約40秒）
+- Google Driveアップロード（元動画 + 処理済み）
+- Discord自動通知（#ai動画処理）
+
+---
+
+## 4. Bitget状況を自動メモリ保存
+
+```bash
+python3 << 'EOF'
+import json, csv, subprocess
+from datetime import datetime
+
+# positions.jsonから現状を取得
+try:
+    with open('/root/clawd/data/positions.json') as f:
+        pos = json.load(f)
+    capital = pos.get('capital', 0)
+    n_pos = len(pos.get('positions', {}))
+    
+    # 確定損益
+    confirmed = 0
+    with open('/root/clawd/data/trade-log.csv') as f:
+        for row in csv.DictReader(f):
+            if row['Exit Time'] and row['PnL ($)']:
+                confirmed += float(row['PnL ($)'])
+    
+    # memory/bitget-trading.md の最終行を更新
+    status = f"\n\n## 📊 最新状況（{datetime.now().strftime('%Y-%m-%d %H:%M')} UTC）\n"
+    status += f"- 現金: ${capital:,.2f}\n"
+    status += f"- ポジション数: {n_pos}個\n"
+    status += f"- 確定損益: ${confirmed:+,.2f}\n"
+    
+    with open('/root/clawd/memory/bitget-trading.md', 'r') as f:
+        content = f.read()
+    
+    # 最新状況セクションを置き換え
+    if '## 📊 最新状況' in content:
+        content = content[:content.index('## 📊 最新状況')]
+    
+    with open('/root/clawd/memory/bitget-trading.md', 'w') as f:
+        f.write(content.rstrip() + status)
+    
+    print(f"✅ Bitget状況をmemoryに保存しました")
+except Exception as e:
+    print(f"⚠️  Bitget状況保存エラー: {e}")
+EOF
+```
+
+---
+
+## 5. 自動バックアップ
+
+```bash
+bash /root/clawd/scripts/backup-with-retry.sh
+```
+
+---
+
+## 5. セッション自動最適化
+
+```bash
+# セッションオプティマイザー（60%閾値 + 週2回リセット）
+bash /root/clawd/scripts/session-optimizer.sh
+
+# 積極的なメモリ保存（重要な会話を自動保存）
+bash /root/clawd/scripts/aggressive-memory-saver.sh
+```
+
+---
+
+## エラーハンドリング
+
+**失敗時の対応:**
+1. 即座にDiscordに報告（#一般チャンネル）
+2. エラー内容を明記
+3. 次回のハートビートでリトライ
+
+**報告先:**
+- デフォルト: #一般 (1464650064357232948)
+- 動画処理: #ai動画処理
+
+---
+
+## その他のタスク（低優先度）
+
+以下は必要に応じて実行:
+
+- **SNS Growth Tracker - トレンド監視**（毎日09:00 UTC）
+- **SNS Growth Tracker - 週次分析**（毎週月曜08:00 UTC）
+- **SNS Growth Tracker - Discord投稿自動検知**（リアルタイム）
+- **SNS Growth Tracker - エンゲージメント自動取得**（30分ごと）
+- **動画処理ファイルの自動クリーンアップ**（24時間以上前の削除）
+- **会話サマリー生成**（1日1回）
+
+詳細は `/root/clawd/docs/HEARTBEAT-FULL.md` 参照。

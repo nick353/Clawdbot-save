@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-02-12T07:20:36.189742",
+  "timeframe": "1H",
+  "initial_capital": 10000.0,
+  "count": 9,
+  "results": [
+    {
+      "symbol": "STGUSDT",
+      "timeframe": "1H",
+      "trades": 0,
+      "total_pnl": 0.0,
+      "win_rate": 0.0,
+      "final_capital": 10000.0
+    },
+    {
+      "symbol": "JASMYUSDT",
+      "timeframe": "1H",
+      "trades": 0,
+      "total_pnl": 0.0,
+      "win_rate": 0.0,
+      "final_capital": 10000.0
+    },
+    {
+      "symbol": "XVGUSDT",
+      "timeframe": "1H",
+      "trades": 2,
+      "total_pnl": -99.75000000000009,
+      "total_pnl_pct": -0.9974999999999999,
+      "win_rate": 0.0,
+      "win_trades": 0,
+      "loss_trades": 2,
+      "final_capital": 9900.25,
+      "avg_pnl": -49.87500000000004,
+      "best_trade": -49.75000000000007,
+      "worst_trade": -50.00000000000002,
+      "trades_detail": [
+        {
+          "entry_time": 

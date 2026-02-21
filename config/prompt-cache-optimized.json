@@ -1,0 +1,22 @@
+{
+  "agents": {
+    "defaults": {
+      "contextTokens": 200000,
+      "compactionThreshold": 100000,
+      "cacheControl": {
+        "enabled": true,
+        "systemPromptCache": true,
+        "conversationCache": true
+      }
+    }
+  },
+  "comment": {
+    "contextTokens": "最大コンテキスト（200k）",
+    "compactionThreshold": "10万トークンで自動圧縮",
+    "cacheControl": {
+      "enabled": "プロンプトキャッシュ有効化",
+      "systemPromptCache": "システムプロンプトをキャッシュ（90%割引）",
+      "conversationCache": "会話履歴の一部をキャッシュ"
+    }
+  }
+}

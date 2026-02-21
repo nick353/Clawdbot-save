@@ -1,0 +1,70 @@
+{
+  "positions": {
+    "LQTYUSDT": {
+      "entry_time": "2026-02-19T14:37:23.616985",
+      "entry_price": 0.282,
+      "quantity": 6856.652219782441,
+      "position_size": 1933.575925978648,
+      "stop_loss": 0.26789999999999997,
+      "take_profit": 0.3242999999999999,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": 0.289,
+      "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
+    },
+    "MANTAUSDT": {
+      "entry_time": "2026-02-19T16:26:47.703620",
+      "entry_price": 0.0707,
+      "quantity": 21879.21839862685,
+      "position_size": 1546.8607407829184,
+      "stop_loss": 0.067165,
+      "take_profit": 0.08130499999999999,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": 0.0722,
+      "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
+    },
+    "TNSRUSDT": {
+      "entry_time": "2026-02-19T19:58:55.230920",
+      "entry_price": 0.04907,
+      "quantity": 25299.361303157308,
+      "position_size": 1241.4396591459292,
+      "stop_loss": 0.0466165,
+      "take_profit": 0.0564305,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": 0.04996,
+      "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
+    },
+    "GPSUSDT": {
+      "entry_time": "2026-02-21T00:19:54.169370",
+      "entry_price": 0.01319,
+      "quantity": 148658.47215025843,
+      "position_size": 1960.8052476619087,
+      "position_type": "long",
+      "stop_loss": 0.0125305,
+      "take_profit": 0.014509000000000001,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": 0.01327,
+      "lowest_price": null,
+      "entry_reason": "\u30ed\u30f3\u30b0: SMA/EMA\u53cd\u767a + \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9"
+    },
+    "OGUSDT": {
+      "entry_time": "2026-02-21T11:11:07.111617",
+      "entry_price": 3.341,
+      "quantity": 589.2835546928222,
+      "position_size": 1968.7963562287193,
+      "position_type": "short",
+      "stop_loss": 3.5080500000000003,
+      "take_profit": 3.0069000000000004,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": null,
+      "lowest_price": 3.308,
+      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
+    }
+  },
+  "capital": 1192.5038513454726,
+  "timestamp": "2026-02-21T13:45:09.062179"
+}

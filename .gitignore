@@ -1,0 +1,56 @@
+# Node
+node_modules/
+.npm/
+.pnpm-store/
+*.log
+.pnpm-debug.log*
+
+# Python
+envs/
+*-venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Clawdbot runtime
+.clawdbot/
+*.pid
+*.sock
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Media (large files)
+media/inbound/*.mp4
+media/inbound/*.mov
+media/inbound/*.avi
+media/processed/*.mp4
+media/processed/*.mov
+
+# Backups
+*.backup
+*.bak
+
+# Secrets (just in case)
+*.pem
+*.key
+credentials/
+cookies/
+
+# Logs
+logs/
+*.log.*

@@ -1,0 +1,30 @@
+{
+  "symbol": "BTC/USDT",
+  "timeframe": "15m",
+  "period_days": 30,
+  "total_trades": 1,
+  "long_trades": 0,
+  "short_trades": 1,
+  "win_rate": 0.0,
+  "winning_trades": 0,
+  "losing_trades": 1,
+  "avg_win": 0,
+  "avg_loss": -0.26814232969544016,
+  "total_return_pct": -0.2681423296954381,
+  "max_drawdown_pct": -0.2681423296954381,
+  "exit_reasons": {
+    "divergence": 1
+  },
+  "trades": [
+    {
+      "action": "short",
+      "entry_time": "2026-01-15 16:00:00",
+      "entry_price": 96377.92,
+      "exit_time": "2026-01-15 17:45:00",
+      "exit_price": 96636.35,
+      "exit_reason": "divergence",
+      "pnl_pct": -0.26814232969544016,
+      "divergence": "bearish"
+    }
+  ]
+}

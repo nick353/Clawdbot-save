@@ -1,0 +1,15 @@
+{
+  "post_id": "2026-02-17_001",
+  "timestamp": "2026-02-17T17:21:40Z",
+  "image_path": "/tmp/test_sns_post.png",
+  "dry_run": true,
+  "caption": "\u30c6\u30b9\u30c8\u6295\u7a3f \ud83d\udc25 #test #automation",
+  "hashtags": ["#test","#automation"],
+  "platforms": {
+    "instagram": {"status": "dry_run", "post_id": "", "url": ""},
+    "threads": {"status": "dry_run"},
+    "x": {"status": "dry_run"},
+    "facebook": {"status": "dry_run"},
+    "pinterest": {"status": "dry_run", "board": "Animal"}
+  }
+}

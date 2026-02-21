@@ -1,0 +1,14 @@
+{
+  "name": "x-search-skill",
+  "version": "1.0.0",
+  "description": "X (Twitter) search automation using Puppeteer",
+  "main": "search-x.js",
+  "scripts": {
+    "search": "node search-x.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  },
+  "author": "Ricky 🐥",
+  "license": "MIT"
+}

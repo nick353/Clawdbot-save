@@ -1,0 +1,443 @@
+[
+  {
+    "timestamp": "2026-02-13T02:10:17.193110",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260213_021017.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 1,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 2,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 3,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 4,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 5,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 6,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 7,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 8,
+        "type": "increase_timeout",
+        "auto_apply": false,
+        "description": "\u30bf\u30a4\u30e0\u30a2\u30a6\u30c8\u5ef6\u9577",
+        "details": "subprocess \u30bf\u30a4\u30e0\u30a2\u30a6\u30c8\u309230\u79d2\u306b\u5ef6\u9577",
+        "status": "applied",
+        "message": "\u30bf\u30a4\u30e0\u30a2\u30a6\u30c8\u309230\u79d2\u306b\u5ef6\u9577\u3057\u307e\u3057\u305f"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T07:00:16.563692",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260213_070016.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T08:00:18.878651",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260213_080018.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T09:00:15.458903",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260213_090015.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T17:00:10.115650",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260213_170010.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T20:00:18.046258",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260213_200018.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T21:00:17.578781",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260213_210017.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:00:17.180912",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260213_220017.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T23:00:18.587235",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260213_230018.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T00:00:32.337697",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_000032.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T01:00:15.880322",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_010015.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T02:00:15.889907",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_020015.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T03:00:12.283589",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_030012.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T04:00:16.076055",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_040016.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T05:00:12.583806",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_050012.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "Discord\u901a\u77e5\u5931\u6557: Invalid config at /root/.clawdbot/clawdbot.json:\\n- agents.defaults: Unrecognized key: \"compactionThreshold\" \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T09:00:18.902933",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_090018.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T10:00:17.325984",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_100017.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_error_handling",
+        "auto_apply": false,
+        "description": "\u30a8\u30e9\u30fc\u30cf\u30f3\u30c9\u30ea\u30f3\u30b0\u5f37\u5316",
+        "details": "\u30b7\u30b0\u30ca\u30eb\u53d7\u4fe1: 15 (SIGTERM) \u3078\u306e\u5bfe\u7b56\u3092\u8ffd\u52a0",
+        "status": "pending",
+        "message": "\u624b\u52d5\u5bfe\u5fdc\u304c\u5fc5\u8981\u3067\u3059"
+      },
+      {
+        "issue_id": 1,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 2,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 3,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 4,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 5,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      },
+      {
+        "issue_id": 6,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T11:00:17.074440",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_110017.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T12:00:17.856236",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_120017.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:00:16.438308",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260214_130016.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-20T15:01:06.030733",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260220_150106.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      }
+    ]
+  }
+]

@@ -1,0 +1,172 @@
+{
+  "timestamp": "2026-02-21T00:02:05.322968",
+  "period": "7days",
+  "count": 15,
+  "results": [
+    {
+      "symbol": "APEUSDT",
+      "score": 200.0,
+      "max_gain": 2.957486136783727,
+      "max_loss": -13.509192645883283,
+      "avg_change": 3.425437548703349,
+      "volatility": 5.17592190537371,
+      "total_change": -17.46268656716418,
+      "current_price": 0.1106,
+      "volume_avg": 5767785.6375
+    },
+    {
+      "symbol": "OPUSDT",
+      "score": 200.0,
+      "max_gain": 0.7555315704263377,
+      "max_loss": -25.22812667740203,
+      "avg_change": 5.672833965804526,
+      "volatility": 8.919418319536476,
+      "total_change": -34.489795918367356,
+      "current_price": 0.1284,
+      "volume_avg": 44798103.525
+    },
+    {
+      "symbol": "ARBUSDT",
+      "score": 200.0,
+      "max_gain": 0.8928571428571397,
+      "max_loss": -12.511170688114381,
+      "avg_change": 3.1137023674202218,
+      "volatility": 4.5403040589232955,
+      "total_change": -18.760469011725295,
+      "current_price": 0.097,
+      "volume_avg": 70533738.28625
+    },
+    {
+      "symbol": "HNTUSDT",
+      "score": 200.0,
+      "max_gain": 31.45091225021719,
+      "max_loss": -6.774193548387098,
+      "avg_change": 8.642741568160021,
+      "volatility": 13.25031090105792,
+      "total_change": 28.736654804270458,
+      "current_price": 1.447,
+      "volume_avg": 1171957.0875
+    },
+    {
+      "symbol": "RPLUSDT",
+      "score": 200.0,
+      "max_gain": 33.71837183718371,
+      "max_loss": -8.679555738379264,
+      "avg_change": 8.581546531247085,
+      "volatility": 13.437107933036978,
+      "total_change": 41.1592505854801,
+      "current_price": 2.411,
+      "volume_avg": 2995936.0250000004
+    },
+    {
+      "symbol": "BANUSDT",
+      "score": 200.0,
+      "max_gain": 12.72761941081133,
+      "max_loss": -0.10988148496978711,
+      "avg_change": 4.563860580958531,
+      "volatility": 4.463637200939831,
+      "total_change": 35.653378810488164,
+      "current_price": 0.12727,
+      "volume_avg": 10841588.25
+    },
+    {
+      "symbol": "MORPHOUSDT",
+      "score": 200.0,
+      "max_gain": 13.766842413591117,
+      "max_loss": -7.019813440457545,
+      "avg_change": 4.769204556264512,
+      "volatility": 6.432708351731762,
+      "total_change": 16.901512357063822,
+      "current_price": 1.5846,
+      "volume_avg": 1267278.5
+    },
+    {
+      "symbol": "ORCAUSDT",
+      "score": 200.0,
+      "max_gain": 51.222651222651216,
+      "max_loss": -7.877813504823161,
+      "avg_change": 10.289858399322966,
+      "volatility": 20.336531846291617,
+      "total_change": 37.561576354679794,
+      "current_price": 1.117,
+      "volume_avg": 17203356.424999997
+    },
+    {
+      "symbol": "BIOUSDT",
+      "score": 200.0,
+      "max_gain": 40.87656529516994,
+      "max_loss": -9.656565656565652,
+      "avg_change": 8.748277991673515,
+      "volatility": 16.83144059424223,
+      "total_change": 21.55038759689922,
+      "current_price": 0.03136,
+      "volume_avg": 152335018.25
+    },
+    {
+      "symbol": "PIPPINUSDT",
+      "score": 200.0,
+      "max_gain": 11.241149005905825,
+      "max_loss": -27.844571744081716,
+      "avg_change": 8.247827387894825,
+      "volatility": 12.29092163335909,
+      "total_change": -26.025787699823745,
+      "current_price": 0.47848,
+      "volume_avg": 64764151.5
+    },
+    {
+      "symbol": "VVVUSDT",
+      "score": 200.0,
+      "max_gain": 33.12607944732298,
+      "max_loss": -7.819513347507668,
+      "avg_change": 13.99853509788419,
+      "volatility": 17.620086935778897,
+      "total_change": 53.43696027633852,
+      "current_price": 4.442,
+      "volume_avg": 5120981.03125
+    },
+    {
+      "symbol": "SIRENUSDT",
+      "score": 200.0,
+      "max_gain": 59.42496594249658,
+      "max_loss": -10.216299729625334,
+      "avg_change": 12.381128965411165,
+      "volatility": 23.49878421790749,
+      "total_change": 48.60306424616968,
+      "current_price": 0.23084,
+      "volume_avg": 83226646.25
+    },
+    {
+      "symbol": "INITUSDT",
+      "score": 200.0,
+      "max_gain": 64.80978260869566,
+      "max_loss": -8.79629629629629,
+      "avg_change": 13.612747678756856,
+      "volatility": 25.889458699812327,
+      "total_change": 40.90267983074752,
+      "current_price": 0.0999,
+      "volume_avg": 141591371.25
+    },
+    {
+      "symbol": "MYXUSDT",
+      "score": 200.0,
+      "max_gain": 26.231017027151402,
+      "max_loss": -33.38953176488619,
+      "avg_change": 16.79694429177126,
+      "volatility": 18.562284153845848,
+      "total_change": -55.176312013565806,
+      "current_price": 1.0309,
+      "volume_avg": 9282853.25
+    },
+    {
+      "symbol": "AWEUSDT",
+      "score": 200.0,
+      "max_gain": 16.638699413777335,
+      "max_loss": -37.50980905048392,
+      "avg_change": 10.187447424905665,
+      "volatility": 16.74389268119152,
+      "total_change": -35.6655083016162,
+      "current_price": 0.058316,
+      "volume_avg": 47066287.375
+    }
+  ]
+}
