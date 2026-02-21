@@ -51,6 +51,8 @@ media/processed/*.mov
 *.key
 credentials/
 cookies/
+**/google-credentials.json
+.google-credentials/
 
 # Logs
 logs/
