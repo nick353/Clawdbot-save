@@ -28,7 +28,13 @@ with Camoufox(headless=True) as browser:
     page = ctx.new_page()
     # Facebookページまたはプロフィールに移動
     page.goto('https://www.facebook.com/profile.php?id=61572333736612', timeout=60000)
-    page.wait_for_timeout(4000)
+    
+    # より長く待機
+    page.wait_for_timeout(10000)
+    
+    # スクロールしてコンテンツをロード
+    page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+    page.wait_for_timeout(3000)
     
     # 投稿のURLを取得
     urls = page.evaluate(f'''() => {{

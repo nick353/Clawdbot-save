@@ -10,6 +10,12 @@
 
 ## 完了済み (最新5件)
 
+### SNS パフォーマンス収集 (ember-reef) - 2026-02-21 16:28 UTC
+- **開始**: 2026-02-21 (自動 - cron)
+- **コマンド**: `cd /root/clawd/skills/sns-multi-poster` (パフォーマンス収集)
+- **結果**: ✅ 成功（X: 1件、他SNS: 0件）
+- **報告**: Discord #一般 (2026-02-21 16:30 - 自動検知)
+
 ### GitHub バックアップ完全復旧 (手動) - 2026-02-21 14:35 UTC
 - **問題**: Secret Scanning（認証情報ファイル検出）でプッシュ拒否
 - **解決**: Git履歴から削除（google-credentials.json, google-sheets-credentials.json, adobe-venv/）

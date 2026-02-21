@@ -60,6 +60,7 @@ bash /root/clawd/scripts/backup-with-retry.sh
 bash /root/clawd/scripts/session-optimizer.sh
 bash /root/clawd/scripts/aggressive-memory-saver.sh
 ```
+**Note**: Compactionは `agents.defaults.compaction.mode=safeguard` 設定で自動動作（手動実行不要）
 
 ---
 

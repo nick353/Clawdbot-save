@@ -27,12 +27,22 @@ with Camoufox(headless=True) as browser:
     ctx = browser.new_context(storage_state=state)
     page = ctx.new_page()
     page.goto('https://www.threads.net/@nisen_prints', timeout=60000)
-    page.wait_for_timeout(4000)
+    
+    # より長く待機
+    page.wait_for_timeout(10000)
+    
+    # スクロールしてコンテンツをロード
+    page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+    page.wait_for_timeout(3000)
     
     # 投稿のURLを取得
     urls = page.evaluate(f'''() => {{
         const links = Array.from(document.querySelectorAll('a[href*="/post/"]'));
-        return links.slice(0, {LIMIT}).map(a => 'https://www.threads.net' + a.getAttribute('href').split('?')[0]);
+        const unique = [...new Set(links.map(a => a.getAttribute('href')))];
+        return unique.slice(0, {LIMIT}).map(href => {{
+            const clean = href.split('?')[0];
+            return clean.startsWith('http') ? clean : 'https://www.threads.net' + clean;
+        }});
     }}''')
     
     for url in urls:
