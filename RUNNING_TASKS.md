@@ -6,10 +6,16 @@
 
 ## 完了済み (最新5件)
 
+### GitHub バックアップ完全復旧 (手動) - 2026-02-21 14:35 UTC
+- **問題**: Secret Scanning（認証情報ファイル検出）でプッシュ拒否
+- **解決**: Git履歴から削除（google-credentials.json, google-sheets-credentials.json, adobe-venv/）
+- **結果**: ✅ 完全成功（SSH接続、プッシュ成功、リポジトリ正常）
+- **報告**: Discord #一般 (2026-02-21 14:35)
+
 ### backup (warm-rook) - 2026-02-21 13:11 UTC
 - **開始**: 2026-02-21 13:11 UTC (自動)
 - **コマンド**: `bash /root/clawd/scripts/backup-with-retry.sh`
-- **結果**: ⚠️ 一部成功（ローカルコミット成功、GitHubプッシュ認証エラー）
+- **結果**: ⚠️ 一部成功（ローカルコミット成功、GitHubプッシュ認証エラー）→ **完全復旧済み**
 - **報告**: Discord #一般 (2026-02-21 13:15 - 自動検知)
 
 ### sns-daily-advice (swift-prairie) - 2026-02-21 09:07 UTC
