@@ -54,16 +54,46 @@ module.exports = {
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Safari/605.1.15',
   ],
 
-  // ブラウザ設定（検出回避）
+  // ブラウザ設定（検出回避 + メモリ最適化）
   browserArgs: [
+    // 検出回避
     '--disable-blink-features=AutomationControlled',
-    '--disable-features=IsolateOrigins,site-per-process',
+    '--disable-features=IsolateOrigins,site-per-process,TranslateUI',
+    '--disable-site-isolation-trials',
     '--no-sandbox',
     '--disable-setuid-sandbox',
-    '--disable-dev-shm-usage',
+    
+    // メモリ最適化（重要）
+    '--single-process',                           // ★ 最重要: プロセス数を1に削減
+    '--disable-dev-shm-usage',                    // /dev/shm 無効
+    '--js-flags=--max-old-space-size=128',        // メモリ上限128MB
     '--disable-accelerated-2d-canvas',
     '--disable-gpu',
-    '--window-size=1920,1080',
+    '--disable-software-rasterizer',
+    
+    // 不要機能無効化
+    '--disable-background-networking',
+    '--disable-background-timer-throttling',
+    '--disable-renderer-backgrounding',
+    '--disable-backgrounding-occluded-windows',
+    '--disable-client-side-phishing-detection',
+    '--disable-sync',
+    '--disable-translate',
+    '--disable-breakpad',
+    '--disable-component-update',
+    '--disable-domain-reliability',
+    '--disable-extensions',
+    '--disable-hang-monitor',
+    '--disable-ipc-flooding-protection',
+    '--disable-popup-blocking',
+    '--disable-prompt-on-repost',
+    
+    // その他
+    '--metrics-recording-only',
+    '--mute-audio',
+    '--no-first-run',
+    '--safebrowsing-disable-auto-update',
+    '--window-size=1280,720',                     // 解像度下げて軽量化
     '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
   ],
 

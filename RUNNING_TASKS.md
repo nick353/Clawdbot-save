@@ -2,6 +2,31 @@
 
 ## 完了済み (最新5件)
 
+### Instagram 投稿テスト (brisk-breeze) - 2026-02-22 04:49 UTC
+- **開始**: 2026-02-22 04:46 UTC (手動テスト)
+- **コマンド**: `cd /root/clawd/skills/sns-multi-poster`
+- **内容**: Cookie直接セッション版 v5 投稿テスト
+- **結果**: ✅ 成功（投稿完了: "Cookie更新テスト 🐥 #test"）
+- **報告**: Discord #一般 (2026-02-22 04:50 - 自動検知, Message ID: 1474991714593669255)
+
+### セッション最適化 (plaid-kelp) - 2026-02-22 04:25 UTC
+- **開始**: 2026-02-22 04:23 UTC (自動 - HEARTBEAT)
+- **コマンド**: `bash /root/clawd/scripts/session-optimizer.sh`
+- **結果**: ✅ 成功（2セッションリセット: #bitget-trading 61%, 別チャンネル 81%）
+- **報告**: Discord #一般 (2026-02-22 04:35 - 自動検知, Message ID: 1474987966039589017)
+
+### 自動メモリセーバー (plaid-coral) - 2026-02-22 04:28 UTC
+- **開始**: 2026-02-22 04:23 UTC (自動 - HEARTBEAT)
+- **コマンド**: `bash /root/clawd/scripts/aggressive-memory-saver.sh`
+- **結果**: ✅ 成功（22セッションチェック、全て重要な会話なし）
+- **報告**: Discord #一般 (2026-02-22 04:35 - 自動検知, Message ID: 1474987969667665964)
+
+### 自動バックアップ (vivid-rook) - 2026-02-22 04:34 UTC
+- **開始**: 2026-02-22 04:34 UTC (自動 - HEARTBEAT)
+- **コマンド**: `bash /root/clawd/scripts/backup-with-retry.sh`
+- **結果**: ✅ 成功（スクリプト内で自動Discord通知送信済み）
+- **報告**: スクリプト内で自動送信済み (Message ID: 1474985073056153650)
+
 ### セッション最適化 (tide-crest) - 2026-02-22 03:15 UTC
 - **開始**: 2026-02-22 03:15 UTC (自動 - HEARTBEAT)
 - **コマンド**: `bash /root/clawd/scripts/session-optimizer.sh`

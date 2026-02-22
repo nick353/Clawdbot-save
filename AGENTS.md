@@ -1,5 +1,28 @@
 # Repository Guidelines
 
+## ⚠️ モデルID管理ルール（廃止モデル使用防止）
+**設定変更時に必ず使用する正しいAnthropicモデルID:**
+
+| エイリアス | 正しいモデルID | 備考 |
+|------------|---------------|------|
+| sonnet | `anthropic/claude-sonnet-4-5` | Sonnet 4.5 |
+| haiku | `anthropic/claude-haiku-4-5-20251001` | Haiku 4.5 ✅ 現行 |
+| opus | `anthropic/claude-opus-4-5` | Opus 4.5 |
+
+**禁止モデルID（廃止済み・404エラー）:**
+- ❌ `claude-3-5-haiku-20241022` → `claude-haiku-4-5-20251001` に変更
+
+**モデル変更のルール:**
+1. `agents.defaults.model.primary` と `agents.defaults.models` の**両方**を更新する
+2. 廃止モデルを使わないよう、上記テーブルのみを参照する
+3. 不明なモデルIDは使わない。`anthropic/claude-haiku-4-5-20251001` がデフォルトHaiku
+4. **モデルID変更前に必ずBrave検索で最新のAnthropicモデルIDを確認する** (`web_search` または `brave_search` ツール使用)
+   - 検索クエリ例: "Anthropic Claude latest model ID 2026"
+   - 公式参照: https://docs.anthropic.com/en/docs/about-claude/models
+5. 古い形式 (`claude-3-X-modelname-YYYYMMDD`) は廃止済みの可能性が高い → 必ず確認してから使用
+
+---
+
 ## ⚠️ Cronジョブ管理ルール（重複防止）
 **新規cronジョブ追加前に必ず確認:**
 1. `cron list` を実行して既存ジョブを確認
