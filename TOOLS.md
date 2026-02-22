@@ -15,6 +15,7 @@
 | OPENAI_API_KEY | OpenAI (memory-lancedb embedding) |
 | BRAVE_API_KEY | Brave Search |
 | SNS_SHEETS_ID | Google Sheets |
+| FACEBOOK_API_TOKEN | Facebook Graph API (2026-02-22) |
 
 新規追加: `gateway.config.patch({ env: { vars: { KEY: "val" } } })` + `echo 'export KEY="val"' >> ~/.profile`
 
@@ -103,7 +104,11 @@ bash /root/clawd/scripts/obsidian-auto-save.sh note "〇〇について話し合
 
 ### sns-multi-poster
 - Instagram: Cookie認証 `cookies/instagram.json`（期限切れ時ブラウザから再取得）
+- Facebook: 2つの認証方式を併用
+  - **Cookie 認証** (従来): `cookies/facebook.json` + post-to-facebook.cjs
+  - **Graph API** (新): FACEBOOK_API_TOKEN + post-to-facebook-api.cjs
 - 接続制限時: 30分待機して再試行
+- Graph API セットアップ (2026-02-22): トークン登録済み・API スクリプト実装済み・DRY RUN 確認済み
 
 ---
 

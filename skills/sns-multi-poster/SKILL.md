@@ -50,6 +50,7 @@ DRY_RUN=true bash post-to-all-sns.sh /tmp/test.mp4 "テスト動画 #test" Anima
 | `post-to-threads-video.cjs` | 🎥 動画 | Cookie JSON | ✅ 対応 |
 | `post-to-facebook.cjs` | 📷 画像 | Cookie JSON | ✅ 対応 |
 | `post-to-facebook-video.cjs` | 🎥 動画 | Cookie JSON | ✅ 対応 |
+| `post-to-facebook-api.cjs` | 📷 画像 | **Graph API Token** ✨新 | ✅ 対応 |
 | `post-to-pinterest.cjs` | 📷 画像 | Cookie JSON | ✅ 対応 |
 | `post-to-x.cjs` | 📷🎥 両対応 | Cookie JSON | ✅ 対応 |
 | `post-to-all-sns.sh` | 📷🎥 自動判別 | - | ✅ 対応 |
@@ -61,7 +62,9 @@ DRY_RUN=true bash post-to-all-sns.sh /tmp/test.mp4 "テスト動画 #test" Anima
 
 ---
 
-## 🔐 Cookie管理
+## 🔐 認証方式
+
+### Cookie ベース認証（既存方式）
 
 ```bash
 # Cookieファイル一覧
@@ -69,10 +72,56 @@ ls /root/clawd/skills/sns-multi-poster/cookies/
 # instagram.json  threads.json  facebook.json  pinterest.json  x.json
 ```
 
-### Cookie更新方法
+#### Cookie更新方法
 1. 対象SNSにブラウザでログイン
 2. Chrome拡張「Cookie-Editor」などでJSON形式でコピー
 3. `cookies/<platform>.json` に保存
+
+---
+
+### Facebook Graph API トークン認証 ✨新 (2026-02-22)
+
+**対応スクリプト:** `post-to-facebook-api.cjs`
+
+Facebook Graph API を使用した認証方式です。Cookie の有効期限切れやアカウントロックの問題を回避できます。
+
+#### セットアップ
+
+```bash
+# 環境変数: FACEBOOK_API_TOKEN （自動で読み込み）
+echo $FACEBOOK_API_TOKEN
+# => EAAauWWKRF7sBQ...（先頭確認）
+
+# PAGE_ID オプション（デフォルト: "me"）
+export PAGE_ID="your_page_id"
+```
+
+#### 直接実行
+
+```bash
+# 基本使用法
+node post-to-facebook-api.cjs /path/to/image.jpg "投稿キャプション"
+
+# テストモード
+DRY_RUN=true node post-to-facebook-api.cjs /tmp/test.jpg "テスト"
+
+# ページIDを指定
+PAGE_ID="123456789" node post-to-facebook-api.cjs /tmp/img.jpg "キャプション"
+```
+
+#### 必要な環境変数
+
+| 変数 | 値 | 必須 |
+|------|-----|------|
+| `FACEBOOK_API_TOKEN` | Graph API アクセストークン | ✅ YES |
+| `PAGE_ID` | Facebook ページID（デフォルト: "me"） | ❌ NO |
+
+#### トークン取得方法
+
+1. [Facebook Developers Console](https://developers.facebook.com/)
+2. Settings → User Token
+3. Permissions: `pages_manage_posts`, `pages_read_engagement`
+4. トークンをコピー → `FACEBOOK_API_TOKEN` に設定
 
 ---
 

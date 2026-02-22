@@ -1,5 +1,5 @@
 {
-  "paper_trade": false,
+  "paper_trade": true,
   "initial_capital": 10000.0,
   "discord_channel": "1471389526592327875",
   "symbols": [
@@ -24,7 +24,7 @@
     "ema_period": 200,
     "volatility_threshold": 10.0,
     "proximity_pct": 3.0,
-    "stop_loss_pct": 5.0,
+    "stop_loss_pct": 3.0,
     "take_profit_pct": 10.0,
     "fixed_position_size": 2000.0,
     "position_size_pct": 20.0,
@@ -46,6 +46,15 @@
         "rsi_bounce"
       ]
     }
+  },
+  "leverage": {
+    "enabled": true,
+    "default": 5,
+    "long_leverage": 5,
+    "short_leverage": 5,
+    "max_leverage": 20,
+    "auto_adjust": false,
+    "comment": "ロング・ショート共に5倍。損切り3%時のリスク: 15%"
   },
   "risk_management": {
     "max_daily_loss": -300.0,

@@ -71,6 +71,14 @@ class BitgetTraderV2:
         self.trailing_stop_distance = strategy.get("trailing_stop_distance_pct", 2.0)
         self.max_hold_time_minutes = strategy.get("max_hold_time_minutes", 240)
         
+        # レバレッジ設定
+        leverage_config = self.config.get("leverage", {})
+        self.leverage_enabled = leverage_config.get("enabled", False)
+        self.default_leverage = leverage_config.get("default", 1.0)
+        self.long_leverage = leverage_config.get("long_leverage", 1.0)
+        self.short_leverage = leverage_config.get("short_leverage", 1.0)
+        self.max_leverage = leverage_config.get("max_leverage", 20)
+        
         # ポジション管理
         self.positions = {}
         self.positions_file = "/root/clawd/data/positions.json"
@@ -93,6 +101,8 @@ class BitgetTraderV2:
         print(f"📊 モード: {'ペーパートレード' if self.paper_trade else 'リアルトレード'}", flush=True)
         print(f"💰 初期資金: ${self.capital:,.2f}", flush=True)
         print(f"📈 監視銘柄: {len(self.config['symbols'])}銘柄", flush=True)
+        if self.leverage_enabled:
+            print(f"🚀 レバレッジ: ロング {self.long_leverage}倍 / ショート {self.short_leverage}倍", flush=True)
     
     def init_trade_log(self):
         """トレード記録CSV初期化"""
@@ -717,7 +727,14 @@ class BitgetTraderV2:
                         price = df.iloc[-1]['close']
                         # 常に「総資金 ÷ 最大ポジション数」で計算（マックス活用）
                         total_capital = self.get_total_capital()
-                        position_size = total_capital / max_positions
+                        
+                        # レバレッジを適用
+                        if self.leverage_enabled:
+                            leverage = self.long_leverage if position_type == "long" else self.short_leverage
+                            position_size = (total_capital * leverage) / max_positions
+                            print(f"  🚀 レバレッジ {leverage}倍 適用", flush=True)
+                        else:
+                            position_size = total_capital / max_positions
                         
                         # 資金チェック
                         if self.capital < position_size:
