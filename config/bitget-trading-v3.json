@@ -4,20 +4,20 @@
   "discord_channel": "1471389526592327875",
   "symbols": [
     "APEUSDT",
+    "C98USDT",
     "OPUSDT",
-    "ARBUSDT",
+    "SNXUSDT",
+    "INJUSDT",
     "HNTUSDT",
     "RPLUSDT",
+    "MERLUSDT",
     "BANUSDT",
     "MORPHOUSDT",
     "ORCAUSDT",
     "BIOUSDT",
     "PIPPINUSDT",
-    "VVVUSDT",
     "SIRENUSDT",
-    "INITUSDT",
-    "MYXUSDT",
-    "AWEUSDT"
+    "GUNUSDT"
   ],
   "strategy": {
     "sma_period": 200,

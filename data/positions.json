@@ -50,21 +50,21 @@
       "lowest_price": 3.307,
       "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
     },
-    "OPUSDT": {
-      "entry_time": "2026-02-21T19:41:37.134520",
-      "entry_price": 0.1289,
-      "quantity": 15307.918546667812,
-      "position_size": 1973.1907006654808,
-      "position_type": "short",
-      "stop_loss": 0.135345,
-      "take_profit": 0.11600999999999999,
+    "BANUSDT": {
+      "entry_time": "2026-02-22T01:18:55.942654",
+      "entry_price": 0.13345,
+      "quantity": 14848.531868543456,
+      "position_size": 1981.5365778571243,
+      "position_type": "long",
+      "stop_loss": 0.12677750000000002,
+      "take_profit": 0.14679500000000004,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": null,
-      "lowest_price": 0.1278,
-      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
+      "highest_price": 0.13345,
+      "lowest_price": null,
+      "entry_reason": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + \u4fa1\u683c>EMA200"
     }
   },
-  "capital": 1202.090120525709,
-  "timestamp": "2026-02-21T23:34:02.654383"
+  "capital": 1235.4736292922814,
+  "timestamp": "2026-02-22T01:18:55.943165"
 }
