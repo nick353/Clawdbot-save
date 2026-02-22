@@ -2,7 +2,35 @@
 
 ## 実行中
 
-（なし）
+- (なし - 2026-02-22 09:40 UTC ハートビート確認)
+
+## 完了済み (新規 - 2026-02-22 09:40 UTC ハートビート検知)
+
+### 日次アドバイス生成 (swift-fjord) - 2026-02-22 09:40 UTC
+- **開始**: (自動 - HEARTBEAT毎朝実行)
+- **コマンド**: `bash /root/clawd/skills/sns-multi-poster/generate-daily-advice.sh`
+- **結果**: ❌ FAILED（スクリプトエラーまたはタイムアウト）
+- **報告**: Discord #一般 (Message ID: 1475064623060488373)
+
+## 完了済み (新規 - 2026-02-22 09:10 UTC ハートビート検知)
+
+### SNS パフォーマンス収集 v2 (briny-mist) - 2026-02-22 09:10 UTC
+- **開始**: (自動 - HEARTBEAT)
+- **コマンド**: `bash /root/clawd/skills/sns-multi-poster/collect-all-performance-v2.sh`
+- **結果**: ❌ FAILED（タイムアウト/スクリプトエラー）
+- **報告**: Discord #一般 (Message ID: 1475057110122500168)
+
+### 自動バックアップ (salty-ember) - 2026-02-22 09:05 UTC
+- **開始**: (自動 - HEARTBEAT)
+- **コマンド**: `bash /root/clawd/scripts/backup-with-retry.sh`
+- **結果**: ✅ 成功（バックアップ完了）
+- **報告**: Discord #一般 (Message ID: 1475055829676986428)
+
+### バズ収集 (gentle-slug) - 2026-02-22 09:05 UTC
+- **開始**: (自動 - HEARTBEAT)
+- **コマンド**: `bash /root/clawd/skills/sns-multi-poster/collect-all-buzz-v2.sh`
+- **結果**: ✅ 成功（バズ収集完了）
+- **報告**: Discord #一般 (Message ID: 1475055829676986428)
 
 ## 完了済み (新規 - 2026-02-22 08:20 UTC ハートビート検知)
 

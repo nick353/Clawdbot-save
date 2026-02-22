@@ -24,49 +24,35 @@
       "highest_price": 0.0183,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
     },
-    "RPLUSDT": {
-      "entry_time": "2026-02-22T00:21:20.263096",
-      "entry_price": 2.344,
-      "quantity": 837.7686950072656,
-      "position_size": 1963.7298210970305,
+    "INJUSDT": {
+      "entry_time": "2026-02-22T00:02:09.221494",
+      "entry_price": 3.74,
+      "quantity": 524.551755052083,
+      "position_size": 1961.8235638947904,
       "position_type": "short",
-      "stop_loss": 2.4612,
-      "take_profit": 2.1096,
-      "trailing_stop": 2.30724,
+      "stop_loss": 3.9270000000000005,
+      "take_profit": 3.366,
+      "trailing_stop": 3.68118,
       "trailing_stop_used": true,
       "highest_price": null,
-      "lowest_price": 2.262,
-      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
+      "lowest_price": 3.609,
+      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
     },
-    "APEUSDT": {
-      "entry_time": "2026-02-22T05:12:02.093050",
-      "entry_price": 0.1077,
-      "quantity": 18294.824462480854,
-      "position_size": 1970.3525946091881,
+    "AVAXUSDT": {
+      "entry_time": "2026-02-22T10:43:55.631422",
+      "entry_price": 9.03,
+      "quantity": 216.01281356459813,
+      "position_size": 1950.595706488321,
       "position_type": "long",
-      "stop_loss": 0.102315,
-      "take_profit": 0.11847000000000002,
+      "stop_loss": 8.578499999999998,
+      "take_profit": 9.933,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": 0.108,
+      "highest_price": 9.03,
       "lowest_price": null,
       "entry_reason": "\u30ed\u30f3\u30b0: SMA/EMA\u53cd\u767a + \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9"
-    },
-    "HNTUSDT": {
-      "entry_time": "2026-02-22T07:24:48.076132",
-      "entry_price": 1.487,
-      "quantity": 1330.4253980781045,
-      "position_size": 1978.3425669421417,
-      "position_type": "short",
-      "stop_loss": 1.5613500000000002,
-      "take_profit": 1.3383,
-      "trailing_stop": null,
-      "trailing_stop_used": false,
-      "highest_price": null,
-      "lowest_price": 1.477,
-      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
     }
   },
-  "capital": 117.68720910179718,
-  "timestamp": "2026-02-22T09:00:51.048831"
+  "capital": 1978.9586190979426,
+  "timestamp": "2026-02-22T10:43:55.632663"
 }
