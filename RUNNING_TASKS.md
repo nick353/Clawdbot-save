@@ -1,5 +1,15 @@
 # 実行中のバックグラウンドタスク
 
+## 実行中（エラー）
+
+### バックアップ＆メモリスクリプト失敗 (good-canyon, gentle-comet) - 2026-02-22 06:45 UTC
+- **開始**: 2026-02-22 06:45 UTC (自動 - HEARTBEAT)
+- **コマンド**: `bash /root/clawd/scripts/backup-with-retry.sh` (good-canyon) / `cat >` (gentle-comet)
+- **結果**: ❌ SIGKILL 強制終了（メモリ/タイムアウト問題）
+- **原因推定**: メモリ枯渇、ディスク容量警告、またはスクリプトハング → systemd強制終了
+- **報告**: Discord #一般 (2026-02-22 06:50 - 自動検知, Message ID: 1475021853700657266)
+- **対応**: 次のハートビートで監視継続、スクリプトリソースチェック推奨
+
 ## 完了済み (最新5件)
 
 ### Instagram 投稿テスト (brisk-breeze) - 2026-02-22 04:49 UTC
