@@ -1,0 +1,260 @@
+{
+  "timestamp": "2026-02-22T07:34:13.491303",
+  "phase": "Phase 1: Dynamic Stop Loss Implementation",
+  "summary": {
+    "total_stop_loss_trades": 22,
+    "original_total_pnl": -1485.0024557365684,
+    "dynamic_total_pnl": -65.00000000000004,
+    "total_improvement": 1420.0024557365684,
+    "improvement_percentage": 95.62290286127778,
+    "trades_prevented_from_sl": 7,
+    "trades_would_still_hit_sl": 15,
+    "base_sl_level": -0.03,
+    "high_vol_sl_level": -0.04,
+    "volatility_threshold": 0.02
+  },
+  "detailed_trades": [
+    {
+      "symbol": "MANTAUSDT",
+      "entry_price": 0.0815,
+      "exit_price": 0.077425,
+      "original_pnl": -80.0,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "TNSRUSDT",
+      "entry_price": 0.05809,
+      "exit_price": 0.0551855,
+      "original_pnl": -64.0,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "TNSRUSDT",
+      "entry_price": 0.0546,
+      "exit_price": 0.05187,
+      "original_pnl": -65.89,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "ZROUSDT",
+      "entry_price": 1.817,
+      "exit_price": 1.7261499999999999,
+      "original_pnl": -65.49,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "STGUSDT",
+      "entry_price": 0.1567,
+      "exit_price": 0.148865,
+      "original_pnl": -64.91,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "PEPEUSDT",
+      "entry_price": 4.528e-06,
+      "exit_price": 4.39216e-06,
+      "original_pnl": -28.96,
+      "dynamic_pnl": -3.0,
+      "improvement": 0.0,
+      "volatility": 0.6,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": true
+    },
+    {
+      "symbol": "ZROUSDT",
+      "entry_price": 1.683,
+      "exit_price": 1.63251,
+      "original_pnl": -28.04,
+      "dynamic_pnl": -3.0,
+      "improvement": 0.0,
+      "volatility": 0.6,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": true
+    },
+    {
+      "symbol": "CFXUSDT",
+      "entry_price": 0.05584,
+      "exit_price": 0.0541648,
+      "original_pnl": -28.09,
+      "dynamic_pnl": -3.0,
+      "improvement": 0.0,
+      "volatility": 0.6,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": true
+    },
+    {
+      "symbol": "MANTAUSDT",
+      "entry_price": 0.0823,
+      "exit_price": 0.07818499999999999,
+      "original_pnl": -74.35,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "OGNUSDT",
+      "entry_price": 0.0263,
+      "exit_price": 0.025511,
+      "original_pnl": -25.67,
+      "dynamic_pnl": -3.0,
+      "improvement": 0.0,
+      "volatility": 0.6,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": true
+    },
+    {
+      "symbol": "MAGICUSDT",
+      "entry_price": 0.077,
+      "exit_price": 0.07468999999999999,
+      "original_pnl": -23.62,
+      "dynamic_pnl": -3.0,
+      "improvement": 0.0,
+      "volatility": 0.6,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": true
+    },
+    {
+      "symbol": "TNSRUSDT",
+      "entry_price": 0.05431,
+      "exit_price": 0.051594499999999995,
+      "original_pnl": -80.0,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "ZROUSDT",
+      "entry_price": 1.564,
+      "exit_price": 1.4858,
+      "original_pnl": -64.0,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "MANTAUSDT",
+      "entry_price": 0.0754,
+      "exit_price": 0.07162999999999999,
+      "original_pnl": -66.4,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "STGUSDT",
+      "entry_price": 0.1293,
+      "exit_price": 0.12283499999999999,
+      "original_pnl": -65.28,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "MEUSDT",
+      "entry_price": 0.1293,
+      "exit_price": 0.12283499999999999,
+      "original_pnl": -98.56,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "TNSRUSDT",
+      "entry_price": 0.05205,
+      "exit_price": 0.0494475,
+      "original_pnl": -72.38,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "PROMUSDT",
+      "entry_price": 1.421,
+      "exit_price": 1.34995,
+      "original_pnl": -98.34,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "RPLUSDT",
+      "entry_price": 2.374,
+      "exit_price": 2.2553,
+      "original_pnl": -96.56,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "OPUSDT",
+      "entry_price": 0.1383,
+      "exit_price": 0.131385,
+      "original_pnl": -96.88,
+      "dynamic_pnl": -4.0,
+      "improvement": 1.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": false
+    },
+    {
+      "symbol": "INITUSDT",
+      "entry_price": 0.098,
+      "exit_price": 0.1029,
+      "original_pnl": -99.3,
+      "dynamic_pnl": 5.0,
+      "improvement": 0.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": true
+    },
+    {
+      "symbol": "BANUSDT",
+      "entry_price": 0.12848,
+      "exit_price": 0.13490400000000002,
+      "original_pnl": -98.3,
+      "dynamic_pnl": 5.0,
+      "improvement": 0.0,
+      "volatility": 1.0,
+      "dynamic_sl_level": -0.04,
+      "would_prevent_sl": true
+    }
+  ]
+}

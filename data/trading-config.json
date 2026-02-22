@@ -1,0 +1,51 @@
+{
+  "strategy": {
+    "name": "Dynamic Stop Loss Optimization (v2)",
+    "version": "2.0",
+    "description": "Enhanced stop loss strategy with volatility-aware dynamic adjustment"
+  },
+  "stoploss": {
+    "base_level": -0.03,
+    "previous_level": -0.05,
+    "high_volatility_level": -0.04,
+    "volatility_threshold": 0.02,
+    "volatility_indicators": ["ATR", "VIX"]
+  },
+  "trailing_stop": {
+    "enabled": true,
+    "trailing_distance": 0.02,
+    "activation_profit": 0.01
+  },
+  "position_sizing": {
+    "base_risk_per_trade": 0.01,
+    "max_position_value": 0.05,
+    "leverage": 1
+  },
+  "entry_conditions": {
+    "sma_period": 50,
+    "ema_period": 12,
+    "macd_enabled": true,
+    "volume_check": true,
+    "min_volume_ratio": 1.5
+  },
+  "session_history": {
+    "session_2": {
+      "trades_total": 89,
+      "win_trades": 45,
+      "loss_trades": 44,
+      "win_rate": 0.506,
+      "stop_loss_events": 22,
+      "stop_loss_pnl": -1485.00,
+      "max_hold_loss_pnl": -209.21,
+      "win_pnl": 1410.04,
+      "confirmed_pnl": -284.17
+    }
+  },
+  "expected_improvements": {
+    "sl_reduction_target": 0.75,
+    "expected_sl_pnl_with_3pct": -450,
+    "expected_sl_pnl_with_dynamic": -350,
+    "expected_total_pnl_improvement": -150,
+    "new_expected_pnl": -134
+  }
+}

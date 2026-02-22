@@ -1,0 +1,8 @@
+{
+  "session_id": "Session 3",
+  "initial_capital": "$10,000",
+  "start_date": "2026-02-22",
+  "status": "準備完了",
+  "symbols_count": 15,
+  "config_path": "/root/clawd/config/bitget-trading-v3.json"
+}

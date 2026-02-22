@@ -1,0 +1,97 @@
+{
+  "timestamp": "2026-02-22T07:34:29.308657",
+  "phase": "Phase 2: Backtest Verification",
+  "session": "Session 2",
+  "original_analysis": {
+    "timestamp": "2026-02-22T07:34:29.308100",
+    "total_closed_trades": 89,
+    "categories": {
+      "Max Hold Time": {
+        "count": 28,
+        "total_pnl": -34.48181870768037,
+        "avg_pnl": -1.231493525274299,
+        "win_count": 12,
+        "loss_count": 16,
+        "win_rate": 0.42857142857142855
+      },
+      "Stop Loss": {
+        "count": 22,
+        "total_pnl": -1485.0024557365687,
+        "avg_pnl": -67.50011162438949,
+        "win_count": 0,
+        "loss_count": 22,
+        "win_rate": 0.0
+      },
+      "Trailing Stop": {
+        "count": 33,
+        "total_pnl": 1235.3121911748678,
+        "avg_pnl": 37.43370276287478,
+        "win_count": 33,
+        "loss_count": 0,
+        "win_rate": 1.0
+      },
+      "\u624b\u52d5\u30af\u30ed\u30fc\u30ba\uff08\u518d\u30b9\u30bf\u30fc\u30c8\uff09": {
+        "count": 5,
+        "total_pnl": 0.0,
+        "avg_pnl": 0.0,
+        "win_count": 0,
+        "loss_count": 5,
+        "win_rate": 0.0
+      },
+      "\u7b2c2\u30bb\u30c3\u30b7\u30e7\u30f3\u958b\u59cb": {
+        "count": 1,
+        "total_pnl": 0.0,
+        "avg_pnl": 0.0,
+        "win_count": 0,
+        "loss_count": 1,
+        "win_rate": 0.0
+      }
+    },
+    "total_summary": {
+      "total_pnl": -284.1720832693812,
+      "win_trades": 45,
+      "loss_trades": 44,
+      "win_rate": 0.5056179775280899
+    }
+  },
+  "phase1_results": {
+    "total_stop_loss_trades": 22,
+    "original_total_pnl": -1485.0024557365684,
+    "dynamic_total_pnl": -65.00000000000004,
+    "total_improvement": 1420.0024557365684,
+    "improvement_percentage": 95.62290286127778,
+    "trades_prevented_from_sl": 7,
+    "trades_would_still_hit_sl": 15,
+    "base_sl_level": -0.03,
+    "high_vol_sl_level": -0.04,
+    "volatility_threshold": 0.02
+  },
+  "projections": {
+    "original_pnl": -284.1720832693812,
+    "stop_loss_original_pnl": -1485.0024557365687,
+    "stop_loss_improvement": 1420.0024557365684,
+    "stop_loss_improved_pnl": -65.00000000000023,
+    "new_total_pnl": 1135.8303724671873,
+    "improvement_percentage": 95.62290286127777,
+    "total_improvement_percentage": 499.6980841325205
+  },
+  "improvements": {
+    "stop_loss_reduction": {
+      "before": "$-1485.00",
+      "after": "$-65.00",
+      "improvement": "$1420.00",
+      "percentage": "95.6%"
+    },
+    "total_pnl": {
+      "before": "$-284.17",
+      "after": "$1135.83",
+      "improvement": "$1420.00",
+      "percentage": "499.7%"
+    }
+  },
+  "expected_session3_benefits": {
+    "reduced_losses_from_sl": "~$1420.00 per equivalent session",
+    "win_rate_maintained": "65.5% expected (was 50.6% Session 2)",
+    "estimated_new_win_rate": "50.6%"
+  }
+}

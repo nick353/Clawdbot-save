@@ -11,6 +11,14 @@
 
 **禁止モデルID（廃止済み・404エラー）:**
 - ❌ `claude-3-5-haiku-20241022` → `claude-haiku-4-5-20251001` に変更
+- ❌ `anthropic/claude-sonnet-4-6` → clawdbot 2026.1.24-3 未対応（"Unknown model"エラー）
+
+**⚠️ clawdbot未対応モデルの確認方法（必須）:**
+新しいモデルを設定する前に、以下コマンドでclawdbotのサポートリストを確認すること:
+```
+grep "ANTHROPIC_PREFIXES\|claude-sonnet\|claude-haiku\|claude-opus" /usr/lib/node_modules/clawdbot/dist/agents/live-model-filter.js
+```
+このリストにないモデルIDは `Unknown model` エラーになる。使えるのはリストにあるモデルのみ。
 
 **モデル変更のルール:**
 1. `agents.defaults.model.primary` と `agents.defaults.models` の**両方**を更新する
