@@ -1,70 +1,72 @@
 {
   "positions": {
-    "LQTYUSDT": {
-      "entry_time": "2026-02-19T14:37:23.616985",
-      "entry_price": 0.282,
-      "quantity": 6856.652219782441,
-      "position_size": 1933.575925978648,
-      "stop_loss": 0.26789999999999997,
-      "take_profit": 0.3242999999999999,
-      "trailing_stop": null,
-      "trailing_stop_used": false,
-      "highest_price": 0.289,
-      "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
-    },
-    "MANTAUSDT": {
-      "entry_time": "2026-02-19T16:26:47.703620",
-      "entry_price": 0.0707,
-      "quantity": 21879.21839862685,
-      "position_size": 1546.8607407829184,
-      "stop_loss": 0.067165,
-      "take_profit": 0.08130499999999999,
-      "trailing_stop": null,
-      "trailing_stop_used": false,
-      "highest_price": 0.0722,
-      "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
-    },
-    "TNSRUSDT": {
-      "entry_time": "2026-02-19T19:58:55.230920",
-      "entry_price": 0.04907,
-      "quantity": 25299.361303157308,
-      "position_size": 1241.4396591459292,
-      "stop_loss": 0.0466165,
-      "take_profit": 0.0564305,
-      "trailing_stop": null,
-      "trailing_stop_used": false,
-      "highest_price": 0.04996,
-      "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
-    },
     "OGUSDT": {
-      "entry_time": "2026-02-21T11:11:07.111617",
-      "entry_price": 3.341,
-      "quantity": 589.2835546928222,
-      "position_size": 1968.7963562287193,
+      "entry_time": "2026-02-20T02:54:38.860263",
+      "entry_price": 3.348,
+      "quantity": 572.9246483193727,
+      "position_size": 1918.15172257326,
+      "stop_loss": 3.1805999999999996,
+      "take_profit": 3.6828000000000003,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": 3.4,
+      "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
+    },
+    "FIDAUSDT": {
+      "entry_time": "2026-02-20T08:38:54.156406",
+      "entry_price": 0.0181,
+      "quantity": 107372.86852968454,
+      "position_size": 1943.4489203872902,
+      "stop_loss": 0.017195000000000002,
+      "take_profit": 0.019910000000000004,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": 0.0183,
+      "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
+    },
+    "INJUSDT": {
+      "entry_time": "2026-02-22T00:02:09.221494",
+      "entry_price": 3.74,
+      "quantity": 524.551755052083,
+      "position_size": 1961.8235638947904,
       "position_type": "short",
-      "stop_loss": 3.5080500000000003,
-      "take_profit": 3.0069000000000004,
+      "stop_loss": 3.9270000000000005,
+      "take_profit": 3.366,
       "trailing_stop": null,
       "trailing_stop_used": false,
       "highest_price": null,
-      "lowest_price": 3.307,
-      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
+      "lowest_price": 3.668,
+      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
     },
-    "BANUSDT": {
-      "entry_time": "2026-02-22T01:18:55.942654",
-      "entry_price": 0.13345,
-      "quantity": 14848.531868543456,
-      "position_size": 1981.5365778571243,
-      "position_type": "long",
-      "stop_loss": 0.12677750000000002,
-      "take_profit": 0.14679500000000004,
+    "HNTUSDT": {
+      "entry_time": "2026-02-22T00:06:16.562546",
+      "entry_price": 1.52,
+      "quantity": 1288.4773369956627,
+      "position_size": 1958.4855522334074,
+      "position_type": "short",
+      "stop_loss": 1.596,
+      "take_profit": 1.368,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": 0.13433,
-      "lowest_price": null,
-      "entry_reason": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + \u4fa1\u683c>EMA200"
+      "highest_price": null,
+      "lowest_price": 1.514,
+      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
+    },
+    "RPLUSDT": {
+      "entry_time": "2026-02-22T00:21:20.263096",
+      "entry_price": 2.344,
+      "quantity": 837.7686950072656,
+      "position_size": 1963.7298210970305,
+      "position_type": "short",
+      "stop_loss": 2.4612,
+      "take_profit": 2.1096,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": null,
+      "lowest_price": 2.325,
+      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
     }
   },
-  "capital": 1235.4736292922814,
-  "timestamp": "2026-02-22T01:58:55.096301"
+  "capital": 73.00952529937399,
+  "timestamp": "2026-02-22T03:12:39.573763"
 }
