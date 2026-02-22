@@ -73,10 +73,30 @@ def get_24h_volume(ticker):
         return 0.0
 
 def check_price_change(ticker):
-    """前日比パーセンテージ"""
+    """前日比パーセンテージ（%単位）
+    
+    計算方法:
+    1. 優先: (現在値 - 24時間前の開場価格) / 開場価格 × 100
+    2. 代替: change24h フィールド（小数表記）を % 変換
+    """
     try:
-        return float(ticker.get("priceChangePercent", 0))
-    except:
+        # 方法1: open24h と lastPr から計算（最も正確）
+        last_price = float(ticker.get("lastPr", 0))
+        open_24h = float(ticker.get("open24h", 0))
+        
+        if open_24h > 0 and last_price > 0:
+            change_pct = ((last_price - open_24h) / open_24h) * 100
+            return change_pct
+        
+        # 方法2: change24h フィールド（小数表記 → % に変換）
+        change = ticker.get("change24h")
+        if change is not None:
+            change_pct = float(change) * 100
+            return change_pct
+        
+        return 0.0
+    except Exception as e:
+        print(f"⚠️ Error calculating price change: {e}")
         return 0.0
 
 def main():
@@ -105,9 +125,9 @@ def main():
             print("SKIP (no ticker)")
             continue
         
-        # 前日比チェック（±10%フィルタ）
+        # 前日比チェック（±5%以上の値動きがある銘柄のみ）
         price_change = check_price_change(ticker)
-        if abs(price_change) > 10:
+        if abs(price_change) < 5:  # 値動きが小さい銘柄は除外
             print(f"FILTERED (change: {price_change:+.2f}%)")
             continue
         
@@ -134,8 +154,8 @@ def main():
         # API制限回避
         time.sleep(0.1)
     
-    # スコアでソート（降順）
-    screened.sort(key=lambda x: x["score"], reverse=True)
+    # 値動き（価格変化率の絶対値）でソート（降順）
+    screened.sort(key=lambda x: abs(x["price_change"]), reverse=True)
     
     print("\n" + "=" * 60)
     print(f"✅ スクリーニング完了: {len(screened)} 銘柄")
@@ -143,14 +163,14 @@ def main():
     
     # 結果サマリー（上位15）
     top_15 = screened[:15]
-    print("🎯 **Top 15 Symbols (出来高×ボラティリティランキング):**")
+    print("🎯 **Top 15 Symbols (値動きランキング ±5%以上):**")
     print("")
     for i, r in enumerate(top_15, 1):
         print(f"  {i:2d}. {r['symbol']:10s} | "
-              f"Score: {r['score']:12.2f} | "
+              f"Change: {r['price_change']:+.2f}% | "
               f"Volatility: {r['volatility']:.6f} | "
               f"Volume: ${r['volume_24h']:,.0f} | "
-              f"Change: {r['price_change']:+.2f}%")
+              f"Score: {r['score']:12.2f}")
     
     print("")
     
@@ -159,8 +179,8 @@ def main():
     
     output = {
         "timestamp": datetime.utcnow().isoformat() + "Z",
-        "method": "Volume × Volatility Ranking",
-        "filter": "Price change: ±10%",
+        "method": "Price Change Ranking (絶対値で降順)",
+        "filter": "Price change: ±5% 以上",
         "total_screened": len(screened),
         "top_15": top_15,
         "results": screened
