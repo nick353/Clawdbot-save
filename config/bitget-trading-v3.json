@@ -4,10 +4,6 @@
   "discord_channel": "1471389526592327875",
   "symbols": [
     "AGLDUSDT",
-    "PIPPINUSDT",
-    "OPNUSDT",
-    "ARCUSDT",
-    "BELUSDT",
     "KITEUSDT",
     "IDOLUSDT",
     "VTHOUSDT",
@@ -15,30 +11,44 @@
     "LAUSDT",
     "ARPAUSDT",
     "IRYSUSDT",
-    "INXUSDT",
     "FLOCKUSDT",
-    "VVVUSDT"
+    "BTCUSDT",
+    "ETHUSDT",
+    "BNBUSDT",
+    "XRPUSDT",
+    "DOGEUSDT",
+    "SOLUSDT",
+    "AVAXUSDT",
+    "ADAUSDT",
+    "MATICUSDT",
+    "LINKUSDT",
+    "LTCUSDT",
+    "UNIUSDT",
+    "WBTCUSDT",
+    "ARBUSDT",
+    "ATOMUSDT",
+    "OPUSDT"
   ],
   "strategy": {
     "sma_period": 200,
     "ema_period": 200,
     "volatility_threshold": 10.0,
     "proximity_pct": 3.0,
-    "stop_loss_pct": 3.0,
-    "take_profit_pct": 10.0,
-    "fixed_position_size": 2000.0,
-    "position_size_pct": 20.0,
-    "trailing_stop_activation_pct": 2.0,
-    "trailing_stop_distance_pct": 2.0,
-    "max_hold_time_minutes": 1440,
-    "btc_trend_filter": true,
+    "stop_loss_pct": 2.0,
+    "take_profit_pct": 5.0,
+    "fixed_position_size": 1000.0,
+    "position_size_pct": 15.0,
+    "trailing_stop_activation_pct": 1.0,
+    "trailing_stop_distance_pct": 1.5,
+    "max_hold_time_minutes": 240,
+    "btc_trend_filter": false,
     "rsi_filter": {
       "enabled": true,
-      "min_rsi": 45,
-      "max_rsi": 65
+      "min_rsi": 30,
+      "max_rsi": 70
     },
     "entry_conditions": {
-      "min_matches": 2,
+      "min_matches": 1,
       "options": [
         "sma_ema_bounce",
         "macd_cross",
@@ -57,18 +67,18 @@
     "comment": "ロング・ショート共に5倍。損切り3%時のリスク: 15%"
   },
   "risk_management": {
-    "max_daily_loss": -300.0,
-    "max_daily_trades": 30,
-    "max_positions": 5
+    "max_daily_loss": -500.0,
+    "max_daily_trades": 100,
+    "max_positions": 15
   },
   "timeframes": [
     "5m",
     "15m",
     "1h"
   ],
-  "check_interval": 30,
+  "check_interval": 10,
   "auto_update_symbols": true,
-  "max_monitored_symbols": 15,
+  "max_monitored_symbols": 25,
   "comment": "V3設定ファイル - ハイブリッド戦法（ロング/ショート両対応）実装版（2026-02-20）",
   "_変更点": {
     "long_pattern_1": "ロング: ゴールデンクロス(EMA>SMA) + 価格>EMA200 + MACD上抜け + 出来高増",
