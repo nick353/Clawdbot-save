@@ -7,7 +7,7 @@
  * Usage: node instagram-login-setup.js [--headless]
  */
 
-const { PlaywrightBrowserAuth, chromium } = require('./playwright-browser-auth');
+const { PlaywrightBrowserAuth, chromium } = require('./playwright-browser-auth.cjs');
 const readline = require('readline');
 
 const args = process.argv.slice(2);

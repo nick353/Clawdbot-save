@@ -19,21 +19,24 @@ if (!imagePathArg || !fs.existsSync(imagePathArg)) {
 
 const SCRIPT_DIR = path.dirname(__filename);
 
-// 試行1: Puppeteer + Stealth (v6.5)
-async function tryPuppeteerStealth() {
-  const script = path.join(SCRIPT_DIR, 'post-to-instagram-v6.5-inspect.cjs');
+// 試行1: Master Auto-Fallback (最新版)
+async function tryMasterAutoFallback() {
+  const script = path.join(SCRIPT_DIR, 'post-to-instagram-master.cjs');
   if (!fs.existsSync(script)) {
-    console.log('⏭️  Puppeteer Stealth not available');
+    console.log('⏭️  Master Auto-Fallback not available');
     return false;
   }
 
-  console.log('\n🔄 Method 1: Puppeteer Stealth (v6.5)...');
+  console.log('\n🔄 Method 1: Master Auto-Fallback (Multi-method)...');
   try {
-    execSync(`node "${script}"`, { stdio: 'inherit', timeout: 120000 });
-    console.log('✅ Puppeteer Stealth succeeded');
+    execSync(`node "${script}" "${imagePathArg}" "${captionArg}"`, { 
+      stdio: 'inherit', 
+      timeout: 180000 
+    });
+    console.log('✅ Master Auto-Fallback succeeded');
     return true;
   } catch (e) {
-    console.log(`❌ Puppeteer Stealth failed: ${e.message}`);
+    console.log(`❌ Master Auto-Fallback failed: ${e.message}`);
     return false;
   }
 }
@@ -113,7 +116,7 @@ async function tryInstagrapi() {
   console.log('---');
 
   const methods = [
-    { name: 'Puppeteer Stealth', fn: tryPuppeteerStealth },
+    { name: 'Master Auto-Fallback', fn: tryMasterAutoFallback },
     { name: 'Playwright Direct Stealth', fn: tryPlaywrightStealth },
     { name: 'Instagrapi', fn: tryInstagrapi },
   ];

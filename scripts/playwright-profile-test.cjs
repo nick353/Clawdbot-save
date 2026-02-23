@@ -6,7 +6,7 @@
  * Usage: node playwright-profile-test.js [instagram|threads|facebook]
  */
 
-const { PlaywrightBrowserAuth, chromium } = require('./playwright-browser-auth');
+const { PlaywrightBrowserAuth, chromium } = require('./playwright-browser-auth.cjs');
 const os = require('os');
 
 const platform = process.argv[2] || 'instagram';

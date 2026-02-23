@@ -37,22 +37,8 @@
       "highest_price": null,
       "lowest_price": 3.74,
       "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
-    },
-    "IDOLUSDT": {
-      "entry_time": "2026-02-23T13:54:34.417387",
-      "entry_price": 0.02377,
-      "quantity": 136922.98744552748,
-      "position_size": 3254.659411580188,
-      "position_type": "short",
-      "stop_loss": 0.0242454,
-      "take_profit": 0.022581499999999997,
-      "trailing_stop": null,
-      "trailing_stop_used": false,
-      "highest_price": null,
-      "lowest_price": 0.02369,
-      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
     }
   },
-  "capital": 685.8946163050368,
-  "timestamp": "2026-02-23T15:16:37.401301"
+  "capital": 3875.460839653621,
+  "timestamp": "2026-02-23T15:39:15.723649"
 }

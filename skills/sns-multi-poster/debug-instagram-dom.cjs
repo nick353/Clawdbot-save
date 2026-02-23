@@ -90,7 +90,7 @@ async function main() {
           byAriaLabel: !!document.querySelector('[aria-label="Create"]'),
           bySVG: !!document.querySelector('svg[aria-label="Create"]'),
           byHref: !!document.querySelector('a[href*="/create"]'),
-          byText: !!document.querySelector('button:has-text("Create")'),
+          byAllButtons: Array.from(document.querySelectorAll('button')).filter(b => b.textContent.includes('Create')).length > 0,
         },
         buttons: {
           all: document.querySelectorAll('button').length,

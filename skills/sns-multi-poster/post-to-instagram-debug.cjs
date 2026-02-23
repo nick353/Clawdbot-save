@@ -1,131 +1,173 @@
 #!/usr/bin/env node
 /**
- * Instagram 投稿スクリプト - デバッグ版
+ * Instagram - Debug Version
+ * /create ページの詳細な DOM 分析
  */
 
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 
-const imagePath = process.argv[2];
-const caption = process.argv[3];
+const COOKIES_PATH = path.join(__dirname, 'cookies', 'instagram.json');
+const imagePathArg = process.argv[2];
 
-if (!imagePath || !caption) {
-  console.error('使い方: node post-to-instagram-debug.cjs <image_path> <caption>');
+if (!imagePathArg) {
+  console.error('❌ Usage: post-to-instagram-debug.cjs <image-path>');
   process.exit(1);
 }
 
-async function debugInstagram(imagePath, caption) {
-  console.log('🔍 Instagram UI デバッグ開始...');
+async function main() {
+  console.log('🔍 Instagram /create Debug Mode');
   
   const browser = await chromium.launch({
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    args: [
+      '--disable-blink-features=AutomationControlled',
+      '--disable-dev-shm-usage',
+      '--no-sandbox',
+      '--disable-gpu',
+    ],
   });
 
+  let context;
   try {
-    const context = await browser.newContext({
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      viewport: { width: 1280, height: 720 }
+    context = await browser.newContext({
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      viewport: { width: 1920, height: 1080 },
     });
-
-    const cookiesPath = path.join(__dirname, 'cookies/instagram.json');
-    const cookies = JSON.parse(fs.readFileSync(cookiesPath, 'utf8'));
-    await context.addCookies(cookies);
 
     const page = await context.newPage();
+    page.setDefaultTimeout(120000);
+
+    // Cookies
+    console.log('\n📂 Loading cookies...');
+    if (fs.existsSync(COOKIES_PATH)) {
+      const cookies = JSON.parse(fs.readFileSync(COOKIES_PATH, 'utf8'));
+      await context.addCookies(cookies);
+      console.log(`✅ Loaded ${cookies.length} cookies`);
+    }
+
+    // Home
+    console.log('\n🌐 Loading Home...');
+    await page.goto('https://www.instagram.com/', {
+      waitUntil: 'domcontentloaded',
+      timeout: 90000,
+    });
+    await page.waitForTimeout(2000);
+    console.log('✅ Home loaded');
+
+    // /create
+    console.log('\n🌐 Loading /create...');
+    await page.goto('https://www.instagram.com/create/', {
+      waitUntil: 'domcontentloaded',
+      timeout: 90000,
+    });
+    console.log(`✅ /create loaded (URL: ${page.url()})`);
+
+    // Wait
+    console.log('\n⏳ Waiting for page to render (10s)...');
+    await page.waitForTimeout(10000);
+
+    // Detailed DOM analysis
+    console.log('\n📊 Detailed DOM Analysis:');
     
-    console.log('📂 Instagram.comにアクセス...');
-    await page.goto('https://www.instagram.com/', { waitUntil: 'networkidle' });
-    await page.waitForTimeout(5000);
+    const domInfo = await page.evaluate(() => {
+      return {
+        // Basic info
+        title: document.title,
+        url: window.location.href,
+        readyState: document.readyState,
+        
+        // Element counts
+        inputs_all: document.querySelectorAll('input').length,
+        inputs_file: document.querySelectorAll('input[type="file"]').length,
+        inputs_text: document.querySelectorAll('input[type="text"]').length,
+        buttons: document.querySelectorAll('button').length,
+        textareas: document.querySelectorAll('textarea').length,
+        iframes: document.querySelectorAll('iframe').length,
+        
+        // Check for specific elements
+        has_file_input: !!document.querySelector('input[type="file"]'),
+        has_canvas: !!document.querySelector('canvas'),
+        has_video: !!document.querySelector('video'),
+        
+        // Look for upload areas
+        has_dropzone: !!document.querySelector('[data-testid="create"]') || 
+                     !!document.querySelector('.upload') ||
+                     !!document.querySelector('[role="dialog"]'),
+        
+        // Get all text content length
+        bodyTextLength: document.body.innerText.length,
+        
+        // Check for React/Vue
+        has_react: !!window.__REACT_DEVTOOLS_GLOBAL_HOOK__ ||
+                  Object.keys(document.documentElement).some(key => key.startsWith('__react')),
+        
+        // All input types
+        input_types: Array.from(document.querySelectorAll('input')).map((el, i) => ({
+          index: i,
+          type: el.type,
+          name: el.name,
+          id: el.id,
+          class: el.className.substring(0, 50),
+          visible: el.offsetParent !== null,
+        })).slice(0, 10),
+        
+        // All button texts (first 10)
+        button_texts: Array.from(document.querySelectorAll('button'))
+          .map(b => b.innerText.trim())
+          .filter(t => t.length > 0)
+          .slice(0, 10),
+      };
+    });
+
+    console.log(JSON.stringify(domInfo, null, 2));
+
+    // Try alternate selectors
+    console.log('\n🔍 Trying alternate selectors...');
     
-    console.log('✅ ログイン確認完了');
-    await page.screenshot({ path: '/tmp/debug-home.png' });
-    
-    console.log('➕ 新規投稿ボタンを探す...');
-    
-    // すべてのクリック可能な要素を列挙
-    const clickableElements = await page.$$eval('[role="link"], [role="button"], a, button', elements => {
-      return elements.map(el => ({
+    const selectors = [
+      'input[type="file"]',
+      '[data-testid*="file"]',
+      '[data-testid*="upload"]',
+      '.upload input',
+      '[role="button"][tabindex="0"]',
+      'div[data-testid="create"]',
+    ];
+
+    for (const sel of selectors) {
+      const count = await page.locator(sel).count();
+      if (count > 0) {
+        console.log(`  ✅ Found ${count} elements: ${sel}`);
+      }
+    }
+
+    // Screenshot
+    console.log('\n📸 Taking screenshot...');
+    await page.screenshot({ path: '/tmp/instagram-debug.png', fullPage: true });
+    console.log('✅ Screenshot saved: /tmp/instagram-debug.png');
+
+    // Try clicking on visible elements
+    console.log('\n🖱️ Analyzing clickable elements...');
+    const clickables = await page.evaluate(() => {
+      const elements = document.querySelectorAll('[role="button"], button, a[href*="create"]');
+      return Array.from(elements).map(el => ({
         tag: el.tagName,
-        text: el.textContent?.substring(0, 50),
-        ariaLabel: el.getAttribute('aria-label'),
-        href: el.getAttribute('href'),
-        role: el.getAttribute('role')
-      })).filter(el => 
-        el.text?.includes('New') || 
-        el.text?.includes('Create') || 
-        el.ariaLabel?.includes('New') ||
-        el.ariaLabel?.includes('Create') ||
-        el.href?.includes('/create/')
-      );
+        text: el.innerText?.substring(0, 50),
+        visible: el.offsetParent !== null,
+        class: el.className.substring(0, 60),
+      })).slice(0, 15);
     });
     
-    console.log('\n📋 新規投稿関連の要素:');
-    console.log(JSON.stringify(clickableElements, null, 2));
-    
-    // 最も可能性の高い要素をクリック
-    const createLocator = page.locator('[aria-label*="New"], a[href*="/create/"]').first();
-    const count = await createLocator.count();
-    
-    console.log(`\n🔍 新規投稿ボタン検出: ${count}個`);
-    
-    if (count > 0) {
-      await createLocator.click();
-      console.log('✅ クリック成功');
-      await page.waitForTimeout(5000);
-      await page.screenshot({ path: '/tmp/debug-after-click.png' });
-      
-      // モーダル内の全要素を列挙
-      const modalElements = await page.$$eval('div[role="dialog"] *, [aria-modal="true"] *', elements => {
-        return elements.slice(0, 50).map(el => ({
-          tag: el.tagName,
-          type: el.getAttribute('type'),
-          text: el.textContent?.substring(0, 30),
-          ariaLabel: el.getAttribute('aria-label'),
-          role: el.getAttribute('role'),
-          className: el.className?.substring(0, 50)
-        }));
-      });
-      
-      console.log('\n📋 モーダル内の要素（最初の50個):');
-      console.log(JSON.stringify(modalElements, null, 2));
-      
-      // input[type="file"]を探す
-      const fileInputs = await page.$$('input[type="file"]');
-      console.log(`\n🔍 ファイル入力検出: ${fileInputs.length}個`);
-      
-      if (fileInputs.length > 0) {
-        console.log('✅ ファイル入力が見つかりました！');
-      } else {
-        console.log('❌ ファイル入力が見つかりません');
-        
-        // すべてのinput要素を確認
-        const allInputs = await page.$$eval('input', inputs => {
-          return inputs.map(input => ({
-            type: input.getAttribute('type'),
-            name: input.getAttribute('name'),
-            id: input.id,
-            className: input.className?.substring(0, 50),
-            style: input.getAttribute('style')?.substring(0, 50)
-          }));
-        });
-        
-        console.log('\n📋 全input要素:');
-        console.log(JSON.stringify(allInputs, null, 2));
-      }
-    } else {
-      console.log('❌ 新規投稿ボタンが見つかりません');
-    }
-    
-    console.log('\n✅ デバッグ完了');
-    
+    console.log(JSON.stringify(clickables, null, 2));
+
   } catch (error) {
-    console.error('❌ エラー:', error.message);
-    throw error;
+    console.error('\n❌ Error:', error.message);
+    process.exit(1);
   } finally {
+    if (context) await context.close();
     await browser.close();
   }
 }
 
-debugInstagram(imagePath, caption).catch(console.error);
+main();
