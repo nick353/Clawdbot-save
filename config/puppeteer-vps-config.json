@@ -1,0 +1,34 @@
+{
+  "navigationTimeout": 30000,
+  "defaultTimeout": 30000,
+  "waitUntilOptions": "networkidle2",
+  "launchOptions": {
+    "headless": true,
+    "args": [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--single-process",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--disable-gpu",
+      "--disable-web-resources",
+      "--disable-sync",
+      "--disable-translate",
+      "--disable-extensions",
+      "--disable-component-extensions-with-background-pages",
+      "--disable-default-apps",
+      "--disable-preconnect",
+      "--enable-features=NetworkService,NetworkServiceInProcess",
+      "--disable-blink-features=AutomationControlled",
+      "--disable-features=IsolateOrigins,site-per-process"
+    ],
+    "timeout": 30000,
+    "protocolTimeout": 30000,
+    "slowMo": 0
+  },
+  "navigationWaitUntil": "networkidle2",
+  "networkTimeout": 30000,
+  "dnsTimeout": 5000,
+  "connectTimeout": 15000
+}
