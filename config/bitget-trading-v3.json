@@ -3,8 +3,21 @@
   "initial_capital": 10000.0,
   "discord_channel": "1471389526592327875",
   "symbols": [
-    "INJUSDT",
-    "APTUSDT"
+    "AGLDUSDT",
+    "PIPPINUSDT",
+    "OPNUSDT",
+    "ARCUSDT",
+    "BELUSDT",
+    "KITEUSDT",
+    "IDOLUSDT",
+    "VTHOUSDT",
+    "MYXUSDT",
+    "LAUSDT",
+    "ARPAUSDT",
+    "IRYSUSDT",
+    "INXUSDT",
+    "FLOCKUSDT",
+    "VVVUSDT"
   ],
   "strategy": {
     "sma_period": 200,
