@@ -52,6 +52,7 @@ python3 /root/clawd/scripts/heartbeat-bitget-status.py
 ```bash
 bash /root/clawd/scripts/backup-with-retry.sh
 ```
+**Note**: 成功時は通知なし。エラー時のみ報告。
 
 ---
 
@@ -64,9 +65,9 @@ bash /root/clawd/scripts/aggressive-memory-saver.sh
 
 ---
 
-## エラーハンドリング
-失敗時 → 即座に Discord #一般 (`1464650064357232948`) に報告
-
-## 報告先
-- デフォルト: **#一般** `1464650064357232948`
-- 動画処理完了: **#ai動画処理**
+## 通知ポリシー（2026-02-23）
+**定期タスクは通知しない** — エラー・問題発生時のみ報告
+- ✅ 重大問題: 即座に #一般 に報告
+- ❌ 定期タスク開始: 通知なし
+- ❌ 定期タスク完了: 通知なし
+- ❌ 進捗報告: 不要

@@ -175,7 +175,7 @@ grep "ANTHROPIC_PREFIXES\|claude-sonnet\|claude-haiku\|claude-opus" /usr/lib/nod
 
 **タスク実行ルール:**
 - **通常タスク（短〜中時間）**: 同期実行 (background:true禁止); 1分以上でもOK; 長時間は分割報告
-- **定期/cronタスク**: バックグラウンド + スクリプト最後に `clawdbot message send` で強制Discord通知
+- **定期/cronタスク**: バックグラウンド実行; **Discord通知なし**（エラー時のみ報告）
 - **禁止**: 「完了したら報告する」と約束してバックグラウンド実行; AIの記憶任せの報告; 長時間タスクの一括実行
 
 ---
@@ -354,3 +354,37 @@ clawdbot memory store \
 ---
 
 **セマンティック検索をマスターすると、重要な情報の発見速度が劇的に向上します。**
+
+---
+
+## バックグラウンドタスク管理（サブエージェント一括通知）
+
+**開始時:**
+- RUNNING_TASKS.md記録
+- 「進めます」と明言（開始報告は不要）
+
+**サブエージェント完了時:**
+- 自動報告禁止 ← **重要: `message` toolを呼び出さない**
+- フラグファイル `~/.clawdbot/subagent_reports.log` に追記（形式: `<timestamp>|<task-name>|<status>|<summary>`）
+
+**毎回の返信前チェック（`process list`実行後）:**
+- 完了したサブエージェントがあれば、フラグファイルから読み取り
+- **複数完了報告を1つのメッセージにまとめて** Discord投稿
+- フラグファイルをクリア
+
+**HEARTBEAT時:**
+- フラグファイルが存在する場合、溜まった報告を一括投稿
+- 投稿後フラグファイル削除
+
+**例:**
+```bash
+# サブエージェント完了直後（報告禁止）
+echo "$(date +%s)|sns-collect-all|completed|Instagram/Threads/Facebook/Pinterestから合計42件のバズ情報を収集" >> ~/.clawdbot/subagent_reports.log
+
+# 返信前チェック時（複数件を一括投稿）
+if [ -f ~/.clawdbot/subagent_reports.log ]; then
+  REPORT=$(cat ~/.clawdbot/subagent_reports.log | awk -F'|' '{print "✅ " $2 ": " $4}' | tr '\n' '\n')
+  message send --channel discord --target "#一般" "【サブエージェント完了報告】\n$REPORT"
+  rm ~/.clawdbot/subagent_reports.log
+fi
+```

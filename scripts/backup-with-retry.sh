@@ -16,12 +16,7 @@ for i in $(seq 1 $MAX_RETRIES); do
   git commit -m "Auto backup: $(date '+%Y-%m-%d %H:%M')" &>/dev/null || continue
   
   if git push origin main &>/dev/null; then
-    bash /root/clawd/scripts/notify.sh \
-      "💾 自動バックアップ完了" \
-      "GitHubへのバックアップが成功しました。" \
-      "1464650064357232948" \
-      "success" 2>/dev/null &
-    exit 0
+    exit 0  # 成功時は通知しない
   else
     sleep $RETRY_DELAY
   fi

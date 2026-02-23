@@ -12,6 +12,7 @@
 | AUPHONIC_API_KEY | Auphonic音声処理 |
 | REPLICATE_API_TOKEN | Replicate AI |
 | IG_PASSWORD | Instagram |
+| IG_API_TOKEN | Instagram Graph API (2026-02-23) |
 | OPENAI_API_KEY | OpenAI (memory-lancedb embedding) |
 | BRAVE_API_KEY | Brave Search |
 | SNS_SHEETS_ID | Google Sheets |
