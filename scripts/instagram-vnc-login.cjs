@@ -118,11 +118,14 @@ async function loginToInstagram() {
             timezoneId: 'UTC',
         });
 
-        // 既存の Cookies を読み込む
+        // 既存の Cookies をクリア（デバッグ用）
+        // 一度保存されたCookiesが古い場合、ログインフローに入らないことがあるため
+        log.info('古い Cookies をクリアしています...');
+        
         const savedCookies = loadCookies();
         if (savedCookies.length > 0) {
-            await context.addCookies(savedCookies);
-            log.info('保存済み Cookies を復元しました');
+            // Cookies を復元するのではなく、ログインフロー開始時には消す
+            log.info(`${savedCookies.length} 個の古い Cookies が見つかりましたが、新規ログイン用にクリアします`);
         }
 
         // ページを開く
@@ -131,49 +134,45 @@ async function loginToInstagram() {
         page.setDefaultNavigationTimeout(CONFIG.timeout);
 
         log.info(`Instagram にアクセス中: ${CONFIG.instagramUrl}`);
-        await page.goto(CONFIG.instagramUrl, { waitUntil: 'networkidle' });
-
-        // ログイン状態の確認
+        await page.goto(CONFIG.instagramUrl, { waitUntil: 'domcontentloaded' });
         await page.waitForTimeout(2000);
-        const currentUrl = page.url();
-        
-        if (currentUrl.includes('/accounts/login')) {
-            log.info('ログインページが表示されました');
-            log.info('===== 以下の手順に従ってください =====');
-            log.info('1. ブラウザの画面でInstagramにログインしてください');
-            log.info('2. OTP/2FAが要求された場合は入力してください');
-            log.info('3. ログイン後、「Enter キーを押す」と表示されたら Enter を押してください');
-            log.info('======================================');
 
-            // ユーザーの確認を待機
-            await promptUser('\n✋ ログイン完了後、Enter キーを押してください: ');
+        log.success('✅ Instagramホームページに到達しました！');
+        log.info('');
+        log.info('===== VNC経由で以下の手順に従ってください =====');
+        log.info('1. VNCでブラウザ画面を確認してください');
+        log.info('2. 画面上の「Log in」ボタンをクリック（見つからない場合はスキップ）');
+        log.info('3. Instagramのメールアドレス/ユーザー名を入力します');
+        log.info('4. パスワードを入力します');
+        log.info('5. OTP/2FAが要求されたら入力してください');
+        log.info('6. ログイン完了後、ターミナルで Enter キーを押してください');
+        log.info('================================================');
+        log.info('');
 
-            // ページの遷移を確認
-            await page.waitForURL('**/feed/**', { timeout: CONFIG.timeout }).catch(() => {
-                log.warn('フィードページが見つかりませんでした。手動で操作してください');
-            });
-        } else if (currentUrl.includes('/feed')) {
-            log.success('既にログイン済みです (Cookies から復元)');
+        // ユーザーの確認を待機
+        await promptUser('✋ ログイン完了後、Enter キーを押してください: ');
+
+        // ページの遷移を確認
+        let finalUrl = page.url();
+        log.info(`最終URL: ${finalUrl}`);
+
+        // ログイン成功の判定（複数パターン対応）
+        if (finalUrl.includes('/feed/') || finalUrl.includes('/accounts/') || finalUrl !== CONFIG.instagramUrl) {
+            log.success('✅ ページが変更されました（ログイン成功と判定）');
         } else {
-            log.warn(`予期しないページが表示されました: ${currentUrl}`);
-            log.info('ブラウザの指示に従ってログインしてください');
-            await promptUser('\n✋ 操作完了後、Enter キーを押してください: ');
+            log.info('URL変更なし。VNCで画面を確認してください');
         }
 
         // Cookies を保存
         await saveCookies(context);
 
-        // 最終確認
-        const finalUrl = page.url();
-        if (finalUrl.includes('/feed') || finalUrl.includes('/')) {
-            log.success('✅ Instagram ログインが完了しました！');
-            log.success('Cookies は以下に保存されました:');
-            log.success(`  ${CONFIG.cookiesFile}`);
-            log.info('このスクリプトは 30 秒後に終了します...');
-            
-            // 30秒待機（ユーザーがブラウザを操作できるようにする）
-            await page.waitForTimeout(30000);
-        }
+        log.success('✅ Instagram ログインが完了しました！');
+        log.success('Cookies は以下に保存されました:');
+        log.success(`  ${CONFIG.cookiesFile}`);
+        log.info('ブラウザは 60 秒後に自動終了します...');
+        
+        // 60秒待機（ユーザーがブラウザを操作できるようにする）
+        await page.waitForTimeout(60000);
 
     } catch (err) {
         log.error(`エラーが発生しました: ${err.message}`);

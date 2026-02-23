@@ -1,0 +1,95 @@
+{
+  "instagram": {
+    "name": "Instagram",
+    "login_url": "https://www.instagram.com/",
+    "cookies_path": "/root/clawd/cookies/instagram.json",
+    "profile_path": "/root/clawd/profiles/instagram",
+    "vnc_port": 5901,
+    "login_timeout_ms": 30000,
+    "wait_after_login_ms": 2000,
+    "username_selector": "input[name=\"username\"]",
+    "password_selector": "input[name=\"password\"]",
+    "submit_button": "button[type=\"submit\"]",
+    "logged_in_indicators": ["a[href*=\"/direct/\"]", "svg[aria-label*=\"Home\"]"],
+    "env_vars": {
+      "username": "IG_USERNAME",
+      "password": "IG_PASSWORD"
+    },
+    "dismissable_dialogs": [
+      { "selector": "button:has-text('Not now'), button:has-text('保存しない')", "label": "Save info dialog" },
+      { "selector": "button:has-text('Not Now'), button:has-text('後で')", "label": "Notification dialog" }
+    ]
+  },
+  "facebook": {
+    "name": "Facebook",
+    "login_url": "https://www.facebook.com/",
+    "cookies_path": "/root/clawd/cookies/facebook.json",
+    "profile_path": "/root/clawd/profiles/facebook",
+    "vnc_port": 5902,
+    "login_timeout_ms": 30000,
+    "wait_after_login_ms": 2000,
+    "username_selector": "input#email",
+    "password_selector": "input#pass",
+    "submit_button": "button[type=\"submit\"]",
+    "logged_in_indicators": ["a[href*=\"/home\"]", "div[data-pagelet=\"LeftRailAds\"]"],
+    "env_vars": {
+      "username": "FB_EMAIL",
+      "password": "FB_PASSWORD"
+    },
+    "dismissable_dialogs": []
+  },
+  "tiktok": {
+    "name": "TikTok",
+    "login_url": "https://www.tiktok.com/",
+    "cookies_path": "/root/clawd/cookies/tiktok.json",
+    "profile_path": "/root/clawd/profiles/tiktok",
+    "vnc_port": 5903,
+    "login_timeout_ms": 30000,
+    "wait_after_login_ms": 2000,
+    "username_selector": "input[placeholder*=\"Phone number\"], input[placeholder*=\"Email\"], input[placeholder*=\"Username\"]",
+    "password_selector": "input[type=\"password\"]",
+    "submit_button": "button[type=\"submit\"]",
+    "logged_in_indicators": ["a[href*=\"/upload\"]", "svg[aria-label*=\"Profile\"]"],
+    "env_vars": {
+      "username": "TT_USERNAME",
+      "password": "TT_PASSWORD"
+    },
+    "dismissable_dialogs": []
+  },
+  "pinterest": {
+    "name": "Pinterest",
+    "login_url": "https://www.pinterest.com/login/",
+    "cookies_path": "/root/clawd/cookies/pinterest.json",
+    "profile_path": "/root/clawd/profiles/pinterest",
+    "vnc_port": 5904,
+    "login_timeout_ms": 30000,
+    "wait_after_login_ms": 2000,
+    "username_selector": "input[type=\"email\"]",
+    "password_selector": "input[type=\"password\"]",
+    "submit_button": "button[type=\"submit\"]",
+    "logged_in_indicators": ["a[href*=\"/home/\"]", "svg[aria-label*=\"home\"]"],
+    "env_vars": {
+      "username": "PINTEREST_EMAIL",
+      "password": "PINTEREST_PASSWORD"
+    },
+    "dismissable_dialogs": []
+  },
+  "x": {
+    "name": "X (Twitter)",
+    "login_url": "https://x.com/",
+    "cookies_path": "/root/clawd/cookies/x.json",
+    "profile_path": "/root/clawd/profiles/x",
+    "vnc_port": 5905,
+    "login_timeout_ms": 30000,
+    "wait_after_login_ms": 2000,
+    "username_selector": "input[name=\"text\"]",
+    "password_selector": "input[name=\"password\"]",
+    "submit_button": "button[type=\"submit\"]",
+    "logged_in_indicators": ["a[href*=\"/explore\"]", "svg[aria-label*=\"Explore\"]"],
+    "env_vars": {
+      "username": "X_USERNAME",
+      "password": "X_PASSWORD"
+    },
+    "dismissable_dialogs": []
+  }
+}

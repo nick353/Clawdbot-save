@@ -129,11 +129,8 @@ setup_vnc_password() {
         return 0
     fi
     
-    # vncpasswd でパスワード設定（対話的）
-    log_info "VNC パスワードを設定してください（vncpasswd）"
-    vncpasswd "$passwd_file" || {
-        log_warn "VNC パスワード設定をスキップしました"
-    }
+    # 初回起動時はパスワード設定をスキップ（必要に応じて後で手動設定）
+    log_info "VNC パスワードはセットアップ後に手動設定可能: vncpasswd ~/.vnc/passwd"
 }
 
 ###############################################################################
