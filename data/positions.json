@@ -38,21 +38,21 @@
       "lowest_price": 3.74,
       "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
     },
-    "VTHOUSDT": {
-      "entry_time": "2026-02-23T15:44:27.311915",
-      "entry_price": 0.000616,
-      "quantity": 5248314.419106581,
-      "position_size": 3232.961682169654,
-      "position_type": "long",
-      "stop_loss": 0.00060368,
-      "take_profit": 0.0006468,
+    "FLOCKUSDT": {
+      "entry_time": "2026-02-23T16:09:11.780311",
+      "entry_price": 0.0712,
+      "quantity": 45104.05343101858,
+      "position_size": 3211.408604288523,
+      "position_type": "short",
+      "stop_loss": 0.072624,
+      "take_profit": 0.06763999999999999,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": 0.000617,
-      "lowest_price": null,
-      "entry_reason": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + \u4fa1\u683c>EMA200"
+      "highest_price": null,
+      "lowest_price": 0.0712,
+      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
     }
   },
-  "capital": 642.4991574839669,
-  "timestamp": "2026-02-23T16:07:45.639239"
+  "capital": 599.3930017217049,
+  "timestamp": "2026-02-23T16:09:11.781118"
 }
