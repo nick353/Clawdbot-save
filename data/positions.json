@@ -24,6 +24,20 @@
       "highest_price": 0.0183,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
     },
+    "OPUSDT": {
+      "entry_time": "2026-02-21T00:02:19.723401",
+      "entry_price": 0.1287,
+      "quantity": 15172.78027901247,
+      "position_size": 1952.736821908905,
+      "position_type": "long",
+      "stop_loss": 0.122265,
+      "take_profit": 0.14157000000000003,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": 0.1287,
+      "lowest_price": null,
+      "entry_reason": "\u30ed\u30f3\u30b0: SMA/EMA\u53cd\u767a + \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9"
+    },
     "INJUSDT": {
       "entry_time": "2026-02-22T00:02:09.221494",
       "entry_price": 3.74,
@@ -37,22 +51,8 @@
       "highest_price": null,
       "lowest_price": 3.74,
       "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
-    },
-    "FLOCKUSDT": {
-      "entry_time": "2026-02-23T17:46:56.220417",
-      "entry_price": 0.0714,
-      "quantity": 44380.00773346374,
-      "position_size": 3168.732552169311,
-      "position_type": "short",
-      "stop_loss": 0.072828,
-      "take_profit": 0.06783,
-      "trailing_stop": 0.07155749999999998,
-      "trailing_stop_used": true,
-      "highest_price": null,
-      "lowest_price": 0.0705,
-      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
     }
   },
-  "capital": 514.0408974832812,
-  "timestamp": "2026-02-23T19:59:19.124801"
+  "capital": 2032.9567907097048,
+  "timestamp": "2026-02-23T20:29:53.438830"
 }

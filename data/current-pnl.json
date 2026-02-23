@@ -1,23 +1,23 @@
 {
-  "timestamp": "2026-02-23T17:30:19.165019",
-  "cash": 556.5742203311916,
-  "total_position_value": 8303.919515074818,
-  "total_entry_value": 9013.423420448606,
-  "total_unrealized_pnl": -709.5039053737871,
-  "total_capital": 8860.49373540601,
-  "confirmed_pnl": -434.27290272473584,
+  "timestamp": "2026-02-23T20:18:21.902838",
+  "cash": 514.0408974832812,
+  "total_position_value": 8279.183046181668,
+  "total_entry_value": 8992.156759024652,
+  "total_unrealized_pnl": -712.9737128429826,
+  "total_capital": 8793.223943664949,
+  "confirmed_pnl": -328.64848431909184,
   "initial_capital": 10000.0,
-  "total_pnl": -1139.5062645939906,
+  "total_pnl": -1206.7760563350512,
   "positions": [
     {
       "symbol": "OGUSDT",
       "entry_price": 3.348,
-      "current_price": 3.023,
+      "current_price": 3.079,
       "quantity": 572.9246483193727,
       "entry_value": 1918.1517225732598,
-      "current_value": 1731.9512118694638,
-      "unrealized_pnl": -186.200510703796,
-      "unrealized_pnl_pct": -9.707287933094378,
+      "current_value": 1764.0349921753489,
+      "unrealized_pnl": -154.11673039791094,
+      "unrealized_pnl_pct": -8.034647550776567,
       "entry_time": "2026-02-20T02:54:38.860263"
     },
     {
@@ -34,24 +34,24 @@
     {
       "symbol": "INJUSDT",
       "entry_price": 3.74,
-      "current_price": 3.354,
+      "current_price": 3.352,
       "quantity": 524.551755052083,
       "entry_value": 1961.8235638947904,
-      "current_value": 1759.3465864446864,
-      "unrealized_pnl": -202.47697745010396,
-      "unrealized_pnl_pct": -10.320855614973258,
+      "current_value": 1758.2974829345821,
+      "unrealized_pnl": -203.52608096020822,
+      "unrealized_pnl_pct": -10.37433155080214,
       "entry_time": "2026-02-22T00:02:09.221494"
     },
     {
-      "symbol": "AVAXUSDT",
-      "entry_price": 8.59,
-      "current_price": 8.42,
-      "quantity": 371.3619573449669,
-      "entry_value": 3189.9992135932657,
-      "current_value": 3126.8676808446216,
-      "unrealized_pnl": -63.13153274864408,
-      "unrealized_pnl_pct": -1.9790454016297927,
-      "entry_time": "2026-02-23T16:34:39.037932"
+      "symbol": "FLOCKUSDT",
+      "entry_price": 0.0714,
+      "current_price": 0.0692,
+      "quantity": 44380.00773346374,
+      "entry_value": 3168.732552169311,
+      "current_value": 3071.0965351556906,
+      "unrealized_pnl": -97.6360170136204,
+      "unrealized_pnl_pct": -3.081232492997205,
+      "entry_time": "2026-02-23T17:46:56.220417"
     }
   ]
 }

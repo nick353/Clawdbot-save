@@ -11,7 +11,7 @@
 bash /root/clawd/scripts/conversation-continuity-enforcer-lite.sh &
 
 # Obsidian自動保存（background）
-bash /root/clawd/scripts/obsidian-auto-save.sh context "【HEARTBEAT】会話文脈保護実行" &
+bash /root/clawd/scripts/obsidian-auto-save.sh note "【HEARTBEAT】会話文脈保護実行" &
 
 # Git自動commit（background）
 bash /root/clawd/scripts/git-auto-commit.sh auto &
