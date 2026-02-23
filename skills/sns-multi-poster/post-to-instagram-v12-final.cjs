@@ -67,7 +67,7 @@ async function main() {
     // Navigate to /create
     console.log('🌐 Loading Instagram /create...');
     await page.goto('https://www.instagram.com/', {
-      waitUntil: 'networkidle',
+      waitUntil: 'domcontentloaded', timeout: 15000,
       timeout: 120000,
     });
     await page.goto('https://www.instagram.com/create/', {

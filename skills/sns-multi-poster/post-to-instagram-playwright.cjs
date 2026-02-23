@@ -105,7 +105,7 @@ async function main() {
     // Instagram にアクセス
     console.log('');
     console.log('🌐 Instagram にアクセスしています...');
-    await page.goto('https://www.instagram.com/', { waitUntil: 'networkidle' });
+    await page.goto('https://www.instagram.com/', { waitUntil: 'domcontentloaded', timeout: 15000 });
 
     // 作成ボタンを探す
     console.log('🔍 作成ボタンを探しています...');

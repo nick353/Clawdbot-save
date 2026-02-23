@@ -86,7 +86,7 @@ async function main() {
 
     await randomDelay(2000, 5000);
 
-    await page.goto('https://www.threads.net/', { waitUntil: 'domcontentloaded', timeout: 180000 });
+    await page.goto('https://www.threads.net/', { waitUntil: 'domcontentloaded', timeout: 15000 });
     console.log('✅ Threads読み込み完了');
 
     await randomDelay(5000, 8000);

@@ -69,7 +69,7 @@ async function main() {
 
     await randomDelay(2000, 5000);
 
-    await page.goto('https://x.com/compose/post', { waitUntil: 'networkidle2', timeout: 120000 });
+    await page.goto('https://x.com/compose/post', { waitUntil: 'domcontentloaded', timeout: 15000 });
     console.log('✅ X読み込み完了');
 
     await randomDelay(3000, 6000);

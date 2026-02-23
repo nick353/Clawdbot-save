@@ -101,7 +101,7 @@ async function main() {
     // Threads にアクセス
     console.log('');
     console.log('🌐 Threads にアクセスしています...');
-    await page.goto('https://www.threads.net/', { waitUntil: 'networkidle' });
+    await page.goto('https://www.threads.net/', { waitUntil: 'domcontentloaded', timeout: 15000 });
 
     // 新規投稿ボタンを探す
     console.log('🔍 投稿ボタンを探しています...');

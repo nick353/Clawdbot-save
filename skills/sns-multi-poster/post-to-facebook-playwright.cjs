@@ -101,7 +101,7 @@ async function main() {
     // Facebook にアクセス
     console.log('');
     console.log('🌐 Facebook にアクセスしています...');
-    await page.goto('https://www.facebook.com/feed', { waitUntil: 'networkidle' });
+    await page.goto('https://www.facebook.com/feed', { waitUntil: 'domcontentloaded', timeout: 15000 });
 
     // 投稿作成ボタンを探す
     console.log('🔍 投稿作成ボタンを探しています...');

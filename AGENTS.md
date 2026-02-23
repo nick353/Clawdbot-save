@@ -180,6 +180,50 @@ grep "ANTHROPIC_PREFIXES\|claude-sonnet\|claude-haiku\|claude-opus" /usr/lib/nod
 
 ---
 
+## 🧪 自律的な問題解決フレームワーク（2026-02-23実装）
+
+**基本方針**: 「全部試してみて、考えて試行できるように」
+
+### 問題解決の4ステップ
+1. **問題発見**: エラーログ確認 → 症状特定
+2. **リサーチ**: web_search（王道）+ bird（最新）で複数アプローチ調査
+3. **複数解決策を試行**: 最低3つ試して比較 → 最適解を選択
+4. **ドキュメント化**: 結果を記録してTOOLS.md/AGENTS.mdに追記
+
+### 実例: Threads投稿ハング問題（2026-02-23）
+**症状**: `networkidle2` でページ読み込みがハング → SIGKILL
+**解決策テスト**:
+- ✅ 解決策1: `waitUntil: 'domcontentloaded'` に変更（3.7秒・最速）
+- ✅ 解決策2: Playwright版（3.2秒・プロファイル管理優秀）
+- ✅ 解決策3: タイムアウト短縮 + リトライ（6.5秒・やや遅い）
+**採用**: 解決策1（最小変更で最速）
+
+### ブラウザ自動化の定石
+```javascript
+// ❌ ハングしやすい
+await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+
+// ✅ 推奨
+await page.goto(url, { 
+  waitUntil: 'domcontentloaded',  // 基本構造読み込み完了で即進む
+  timeout: 15000                   // タイムアウト短縮
+});
+```
+
+### DRY RUNモードの必須実装
+全てのスクリプトに以下を追加:
+```javascript
+if (process.env.DRY_RUN === 'true') {
+  console.log('🔄 DRY RUN: スキップ');
+  return;
+}
+```
+
+### 詳細ドキュメント
+→ `/root/clawd/docs/autonomous-troubleshooting-framework.md`
+
+---
+
 ## 🔍 セマンティック検索品質ガイド（2026-02-22実装）
 
 ### 概要

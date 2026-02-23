@@ -112,6 +112,20 @@ bash /root/clawd/scripts/obsidian-auto-save.sh note "〇〇について話し合
 - 接続制限時: 30分待機して再試行
 - Graph API セットアップ (2026-02-22): トークン登録済み・API スクリプト実装済み・DRY RUN 確認済み
 
+#### Threads ハング問題修正 (2026-02-23)
+- **症状**: `networkidle2` でページ読み込みがハング → SIGKILL
+- **原因**: Threadsのバックグラウンド通信でネットワークアイドルにならない
+- **解決**: `waitUntil: 'domcontentloaded'` + タイムアウト15秒に変更
+- **修正済みスクリプト**:
+  - `post-to-threads-v2-anti-ban.cjs` (180秒 → 15秒)
+  - `post-to-threads-playwright.cjs` (networkidle → domcontentloaded)
+  - `post-to-instagram-v12-final.cjs` (networkidle → domcontentloaded)
+  - `post-to-instagram-playwright.cjs` (networkidle → domcontentloaded)
+  - `post-to-facebook-playwright.cjs` (networkidle → domcontentloaded)
+  - `post-to-x-v2-anti-ban.cjs` (networkidle2/120秒 → domcontentloaded/15秒)
+- **テスト結果**: 解決策1（3.7秒）、解決策2（3.2秒）、解決策3（6.5秒）全て成功
+- **ブラウザプロファイル初期化**: `/root/clawd/scripts/threads-browser-profile-init.cjs`
+
 ---
 
 ## VPS環境
