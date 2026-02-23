@@ -222,7 +222,11 @@ async function main() {
     console.log('\n➕ Step 5: 新規投稿ボタン...');
     const createBtn = await waitFor(page, [
       'svg[aria-label="New post"]',
+      'svg[aria-label="新しい投稿"]',
+      '[aria-label="新しい投稿"]',
       'svg[aria-label="新規投稿"]',
+      'svg[aria-label="新しい投稿"]',
+      '[aria-label="新しい投稿"]',
       '[aria-label="New post"]',
       '[aria-label="新規投稿"]',
       'svg[aria-label="Create"]',
@@ -326,19 +330,31 @@ async function main() {
     await randomDelay(4000, 7000);
     await shot(page, '06-uploaded');
 
-    // ─── Step 7: 次へ × 2 ───
-    for (let i = 1; i <= 2; i++) {
-      console.log(`⏭️  次へ (${i}/2)...`);
+    // ─── Step 7: 次へ（最大3回、キャプション画面まで） ───
+    for (let i = 1; i <= 3; i++) {
+      console.log(`⏭️  次へ (${i}/3)...`);
+      
+      // キャプション入力欄が既にあれば終了
+      const captionCheck = await page.$('div[contenteditable]').catch(() => null);
+      if (captionCheck) {
+        console.log('✅ キャプション画面に到達');
+        break;
+      }
       
       // BAN対策: ランダム遅延（クリック前）
-      await randomDelay(1000, 2000);
+      await randomDelay(1500, 2500);
       
-      if (!await clickText(page, ['Next', '次へ', 'Weiter'])) {
+      const clicked = await clickText(page, ['Next', '次へ', 'Weiter']);
+      if (!clicked) {
+        if (i >= 2) {
+          console.log(`⚠️ 次へ ${i} なし（スキップ）`);
+          break;
+        }
         throw new Error(`次へ ${i} なし`);
       }
       
       // BAN対策: ランダム遅延（クリック後）
-      await randomDelay(2000, 4000);
+      await randomDelay(2500, 4000);
     }
     await shot(page, '07-caption');
 
