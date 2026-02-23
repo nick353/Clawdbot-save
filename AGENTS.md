@@ -432,3 +432,195 @@ if [ -f ~/.clawdbot/subagent_reports.log ]; then
   rm ~/.clawdbot/subagent_reports.log
 fi
 ```
+
+---
+
+## 🔄 自己改善ループ（Boris Cherny流・失敗駆動学習）
+
+**基本方針**: "Claudeが間違えたら、AGENTS.mdとlessons.mdに追記して二度と同じ失敗をしない"
+
+### 失敗→学習→ルール追加の3ステップ
+
+#### 1️⃣ 失敗を記録（tasks/lessons.md）
+```bash
+# エラー発生時、即座に記録
+echo "## $(date +%Y-%m-%d) - <失敗内容の簡潔な説明>" >> /root/clawd/tasks/lessons.md
+echo "**症状**: <何が起きたか>" >> /root/clawd/tasks/lessons.md
+echo "**原因**: <なぜ起きたか>" >> /root/clawd/tasks/lessons.md
+echo "**解決策**: <どう修正したか>" >> /root/clawd/tasks/lessons.md
+echo "**今後のルール**: <AGENTS.mdに追加すべきルール>" >> /root/clawd/tasks/lessons.md
+echo "" >> /root/clawd/tasks/lessons.md
+```
+
+#### 2️⃣ ルール化（AGENTS.md）
+失敗パターンをルールに変換して、このファイルの適切なセクションに追加:
+- **技術的な失敗** → 「Coding Style」「Build & Dev」セクション
+- **運用上の失敗** → 「Agent Notes」「andoさん専用ルール」セクション
+- **アーキテクチャの失敗** → 「Project Structure」セクション
+
+#### 3️⃣ 検証（必須）
+ルール追加後、必ず以下を実行:
+```bash
+# 1. 同じ失敗が起きないか再現テスト
+# 2. lessons.mdに「検証完了」マーク追加
+echo "**検証**: ✅ $(date +%Y-%m-%d) 再現しないことを確認" >> /root/clawd/tasks/lessons.md
+```
+
+### Self-Check必須項目（Boris流・厳格版）
+
+**コード変更前の自問:**
+1. ✅ この変更で「何が」「なぜ」改善されるか説明できるか？
+2. ✅ シニアエンジニアがこのPRを承認するか？
+3. ✅ 「たぶん動く」「おそらく大丈夫」と思っていないか？ ← **絶対禁止**
+4. ✅ 過去の失敗パターン（lessons.md）に該当しないか？
+
+**コード変更後の検証（必須）:**
+1. ✅ 動作確認を実施したか？（DRY RUNまたは本番相当環境）
+2. ✅ エッジケースを考慮したか？（空文字列、null、巨大ファイル等）
+3. ✅ 既存機能を壊していないか？（関連するスクリプト・設定を確認）
+4. ✅ ログ出力は適切か？（成功時は最小限、エラー時は詳細）
+
+**失敗時の対応（Boris流）:**
+> "After every correction, end with: 'Update your AGENTS.md so you don't make that mistake again.'"
+
+失敗を見つけたら：
+1. lessons.mdに記録
+2. AGENTS.mdにルール追加
+3. 関連するスクリプト/コードを修正
+4. 検証して再発防止を確認
+
+### Challenge Mode（Boris推奨）
+
+**実装前:**
+- 「この実装の欠点を3つ挙げて」と自問
+- 「もっとエレガントな方法はないか？」と検討
+- 複数アプローチを比較してから実装
+
+**実装後:**
+- 「このコードは保守しやすいか？」と自問
+- 「6ヶ月後の自分が理解できるか？」と確認
+- 「他のエンジニアがこのコードをレビューしたら何を指摘するか？」を想像
+
+### 実践例
+
+**悪い例（Boris NG）:**
+```bash
+# ❌ 「たぶん動く」で実装
+echo "処理中..." > /tmp/status.txt
+# → ファイルパスのtypo・権限エラー・ディスク容量不足を考慮していない
+```
+
+**良い例（Boris OK）:**
+```bash
+# ✅ エラーハンドリング・検証・ログ完備
+STATUS_FILE="/tmp/status.txt"
+if ! touch "$STATUS_FILE" 2>/dev/null; then
+  echo "ERROR: Cannot write to $STATUS_FILE" >&2
+  exit 1
+fi
+echo "処理中..." > "$STATUS_FILE"
+[ -f "$STATUS_FILE" ] && echo "✅ Status file created successfully" || echo "❌ Status file creation failed" >&2
+```
+
+### lessons.md活用方法
+
+**定期レビュー（週次推奨）:**
+```bash
+# 過去の失敗パターンを確認
+cat /root/clawd/tasks/lessons.md | grep "$(date +%Y-%m)" -A 5
+```
+
+**新規タスク開始前:**
+```bash
+# 関連する失敗事例を検索
+grep -i "<キーワード>" /root/clawd/tasks/lessons.md
+```
+
+**参考**: [Boris Chernyのワークフロー](https://paddo.dev/blog/how-boris-uses-claude-code/)
+
+---
+
+## 📋 プランモード（Plan Mode）必須ルール
+
+**基本方針**: Boris Cherny流「3ステップ以上または設計判断が必要な場合は必ずプラン作成→承認→実行」
+
+### プランモード発動条件（いずれか該当で必須）
+1. ✅ **3ステップ以上**の実装が必要
+2. ✅ **設計判断**が必要（アーキテクチャ・データ構造・API設計等）
+3. ✅ **複数ファイル**の変更が必要
+4. ✅ **既存機能の大幅変更**（破壊的変更のリスク）
+5. ✅ **外部サービス統合**（新規API・認証情報追加等）
+
+### プランモードの3ステップ
+
+**Step 1: プラン作成**
+```markdown
+## 実装プラン
+
+### 概要
+<何を実装するか・なぜ必要か>
+
+### アプローチ
+<どのように実装するか・代替案との比較>
+
+### ステップ
+1. <ステップ1の詳細>
+2. <ステップ2の詳細>
+3. <ステップ3の詳細>
+...
+
+### リスク・注意点
+- <リスク1>
+- <リスク2>
+
+### 検証方法
+<動作確認の具体的な方法>
+```
+
+**Step 2: 承認待ち**
+- プラン提示 → ユーザー承認 → 実装開始
+- 承認前に実装開始しない（Boris厳守ルール）
+
+**Step 3: 実装 + 検証**
+- プラン通りに実装
+- 各ステップ完了後に中間報告（長時間タスクの場合）
+- 最終検証 → lessons.md記録
+
+### プランモード実例
+
+**❌ NG例（プランなし・いきなり実装）:**
+```
+ユーザー: 「SNS自動投稿機能を作って」
+Claude: 「わかりました、実装します」← プラン提示なし
+→ 後で仕様変更・手戻り発生
+```
+
+**✅ OK例（プラン作成→承認→実行）:**
+```
+ユーザー: 「SNS自動投稿機能を作って」
+Claude: 「以下のプランで実装します：
+1. Instagram Graph API統合
+2. Threads API統合
+3. 認証情報をgateway configに追加
+4. DRY_RUNモード実装
+5. Cronジョブ設定
+
+このプランでよろしいですか？」
+ユーザー: 「OK」
+Claude: 「実装を開始します」
+→ 手戻りなし・効率的
+```
+
+### サブエージェント起動時のプランモード
+
+サブエージェント起動前に、以下を必ず提示:
+1. **何をするか**（タスクの目的・ゴール）
+2. **どうやるか**（実装アプローチ・ステップ）
+3. **所要時間見込み**（短時間/中時間/長時間）
+4. **リスク**（既存機能への影響等）
+
+承認後、サブエージェント起動（`process list` で進捗確認可能）
+
+**参考**: [Boris Chernyのプランモード解説](https://paddo.dev/blog/how-boris-uses-claude-code/)
+
+---
