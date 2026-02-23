@@ -46,13 +46,13 @@
       "position_type": "short",
       "stop_loss": 0.072828,
       "take_profit": 0.06783,
-      "trailing_stop": null,
-      "trailing_stop_used": false,
+      "trailing_stop": 0.07155749999999998,
+      "trailing_stop_used": true,
       "highest_price": null,
-      "lowest_price": 0.0707,
+      "lowest_price": 0.0705,
       "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
     }
   },
   "capital": 514.0408974832812,
-  "timestamp": "2026-02-23T18:56:00.514663"
+  "timestamp": "2026-02-23T19:59:19.124801"
 }
