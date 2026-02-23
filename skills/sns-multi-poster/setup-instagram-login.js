@@ -41,10 +41,10 @@ function question(query) {
   }
   
   console.log('❌ ログインが必要です');
-  console.log('\n📝 Instagramの認証情報を入力してください:');
+  console.log('\n📝 Instagramの認証情報を使用...');
   
-  const username = await question('Username (またはメールアドレス): ');
-  const password = await question('Password: ');
+  const username = process.env.IG_USERNAME || 'nisen_prints';
+  const password = process.env.IG_PASSWORD;
   
   console.log('\n🔐 ログイン処理を開始...');
   
