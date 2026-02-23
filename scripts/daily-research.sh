@@ -304,8 +304,6 @@ done
 echo "" >> "$REPORT_FILE"
 echo "📄 **詳細レポート:** \`$REPORT_FILE\`" >> "$REPORT_FILE"
 
-# Discord即時通知（notify.sh使用）
-REPORT_PREVIEW=$(head -c 1500 "$REPORT_FILE" 2>/dev/null || echo "レポート読み込みエラー")
-bash /root/clawd/scripts/notify.sh "📊 毎朝リサーチ完了 ($TODAY)" "$REPORT_PREVIEW" "1470296869870506156" "success"
-echo "✅ リサーチ完了: $REPORT_FILE"
+# Discord通知なし（レポートは /root/clawd/research/ に保存）
+# エラー時のみ通知する
 rm -rf "$TEMP_DIR"

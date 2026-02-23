@@ -5,7 +5,7 @@ LOGFILE="/root/clawd/.session-optimizer.log"
 LAST_WEEKLY_RESET="/root/clawd/.last_weekly_reset"
 
 log() {
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOGFILE"
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1" >> "$LOGFILE"
 }
 
 # セッションキーからチャンネルIDを推定

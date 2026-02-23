@@ -70,7 +70,7 @@ case "$CATEGORY" in
         ;;
 esac
 
-echo "✅ Saved to Obsidian: $CATEGORY - $MESSAGE"
+# 成功時は通知なし（エラー時のみ標準エラー出力）
 
 # Git自動commit （重要な情報は自動で履歴に）
 if [ -f "/root/clawd/scripts/git-auto-commit.sh" ]; then

@@ -5,7 +5,7 @@ LOGFILE="/root/clawd/.memory-saver.log"
 MEMORY_DIR="/root/clawd/memory"
 
 log() {
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOGFILE"
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1" >> "$LOGFILE"
 }
 
 # セッション履歴から重要な会話を抽出してmemoryに保存
