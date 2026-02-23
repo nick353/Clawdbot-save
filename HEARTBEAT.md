@@ -4,7 +4,19 @@
 
 ---
 
-## 0. 実行中タスクチェック（最優先）
+## 0️⃣ コンテキスト復元 & Git自動commit（最優先）
+```bash
+# ① compaction飛び込み対策：会話要点をキャッシュ
+bash /root/clawd/scripts/context-recovery.sh generate
+
+# ② 重要ファイルの自動commit
+bash /root/clawd/scripts/git-auto-commit.sh auto
+```
+**効果**: compaction後も「git log見て続きやって」で復活可能
+
+---
+
+## 1️⃣ 実行中タスクチェック（最優先）
 ```bash
 # process listで確認 → 完了タスクがあれば即座にDiscordに報告
 ```
