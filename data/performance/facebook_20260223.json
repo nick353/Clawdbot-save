@@ -1,0 +1,11 @@
+{
+  "collectedAt": "2026-02-23T09:07:42.652843+00:00",
+  "platform": "facebook",
+  "account": "Nisenprints",
+  "stats": {},
+  "totalPosts": 0,
+  "posts": [],
+  "loggedIn": false,
+  "note": "Facebook collection skipped - Graph API required. Browser automation causes memory SIGKILL.",
+  "status": "skipped"
+}
