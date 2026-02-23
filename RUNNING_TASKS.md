@@ -2,15 +2,23 @@
 
 ## 実行中
 
-- **リサーチツール統合・整備タスク (research-tools-integration)** - 2026-02-23 08:54 UTC
-  - **開始**: 2026-02-23 08:54 UTC (andoさん指示)
-  - **内容**: bird/summarize/duckduckgo-search/web-search skill の全ツール動作確認・修正・エンドツーエンドテスト
-  - **目標**: 全ツール正常動作確認、エラーハンドリング確認
-  - **ステータス**: サブエージェント実行中
-  - **⏱️  実行時間**: 約9分（2026-02-23 09:03 UTC現在）
-  - **📌 注**: 完了したら Discord #一般 に報告してください
+(特にありません)
 
 ## 実施完了（本日）
+
+- **Playwright + ブラウザプロファイルセットアップ** - 2026-02-23 09:39 UTC ✅ 完了
+  - **開始**: 2026-02-23 09:06 UTC
+  - **チャンネル**: #sns-投稿
+  - **内容**: Playwright セットアップ + Instagram/Threads/Facebook ブラウザプロファイル作成・統合
+  - **完成物**:
+    - ✅ PlaywrightBrowserAuth コアライブラリ
+    - ✅ Instagram/Threads/Facebook 初期化スクリプト
+    - ✅ 投稿スクリプト（自動フォールバック対応）
+    - ✅ テストスクリプト＆統合管理スクリプト
+    - ✅ 詳細ドキュメント
+  - **配置**: `/root/clawd/scripts/`, `/root/clawd/skills/sns-multi-poster/`, `/root/clawd/docs/`
+  - **報告**: Discord #sns-投稿 に実装完了報告済み
+  - **次のステップ**: Instagram/Threads/Facebook のログイン初期化スクリプト実行可能
 
 - **会話スムーズ化対策** - 2026-02-23 09:03 UTC
   - **対応**: スクリプトハング防止、軽量版実装、非同期実行化
