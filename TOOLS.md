@@ -40,6 +40,7 @@
 | 12 | x-search | `/root/clawd/skills/x-search/` | "Xで〜" | x-search skill |
 | 13 | duckduckgo-search | `/root/clawd/scripts/duckduckgo-search.sh` | Braveレート制限時のフォールバック | `bash duckduckgo-search.sh "クエリ"` |
 | 14 | obsidian-auto-save | `/root/clawd/scripts/obsidian-auto-save.sh` | 重要な情報を自動的にObsidianに保存 | `obsidian-auto-save.sh <category> <message>` |
+| 15 | fxembed-converter | `/root/clawd/skills/fxembed-converter/` | "Twitterリンク変換"/"X投稿表示" | `bash convert-twitter-links.sh "テキスト"` |
 
 ---
 
