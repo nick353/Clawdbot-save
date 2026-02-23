@@ -4,15 +4,22 @@
 
 ---
 
-## 0️⃣ コンテキスト復元 & Git自動commit（最優先）
+## 0️⃣ 会話文脈保護（最優先・軽量版）
 ```bash
-# ① compaction飛び込み対策：会話要点をキャッシュ
-bash /root/clawd/scripts/context-recovery.sh generate
+# 軽量版：非同期処理 + Clawdbotコマンド呼び出しなし
+# これで「スクリプト自体がハング」するのを防ぐ
+bash /root/clawd/scripts/conversation-continuity-enforcer-lite.sh &
 
-# ② 重要ファイルの自動commit
-bash /root/clawd/scripts/git-auto-commit.sh auto
+# Obsidian自動保存（background）
+bash /root/clawd/scripts/obsidian-auto-save.sh context "【HEARTBEAT】会話文脈保護実行" &
+
+# Git自動commit（background）
+bash /root/clawd/scripts/git-auto-commit.sh auto &
 ```
-**効果**: compaction後も「git log見て続きやって」で復活可能
+**効果**: 
+- Memory plugin + Obsidian + Git の3層で文脈を保護
+- ハング中タスクの自動検出
+- **スクリプト自体のハングを防止**（全て非同期実行）
 
 ---
 
