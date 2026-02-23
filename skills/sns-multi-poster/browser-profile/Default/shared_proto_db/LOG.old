@@ -1,5 +1,3 @@
-2026/02/23-12:47:51.208 b5b7f Recovering log #10
-2026/02/23-12:47:51.215 b5b7f Level-0 table #12: started
-2026/02/23-12:47:51.221 b5b7f Level-0 table #12: 1849 bytes OK
-2026/02/23-12:47:51.228 b5b7f Delete type=0 #10
-2026/02/23-12:47:51.229 b5b7f Delete type=3 #8
+2026/02/23-12:52:45.947 b5fbd Recovering log #19
+2026/02/23-12:52:45.972 b5fbd Delete type=3 #18
+2026/02/23-12:52:45.972 b5fbd Delete type=0 #19
