@@ -35,8 +35,22 @@
       "trailing_stop_used": false,
       "highest_price": 0.04919,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
+    },
+    "RAVEUSDT": {
+      "entry_time": "2026-02-24T21:37:02.461803",
+      "entry_price": 0.24808,
+      "quantity": 13393.870214250735,
+      "position_size": 3322.7513227513223,
+      "position_type": "short",
+      "stop_loss": 0.2530416,
+      "take_profit": 0.235676,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": null,
+      "lowest_price": 0.24654,
+      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
     }
   },
-  "capital": 5088.253968253968,
-  "timestamp": "2026-02-24T21:27:07.630178"
+  "capital": 1765.502645502646,
+  "timestamp": "2026-02-24T21:56:17.214289"
 }
