@@ -91,10 +91,8 @@ async function main() {
       context = await browser.newContext({
         storageState: STATE_PATH,
         userAgent:
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
-        deviceScaleFactor: 3,
-        isMobile: true,
-        hasTouch: true,
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        viewport: { width: 1920, height: 1080 },
       });
 
       // クッキーも追加（フォールバック）
@@ -116,12 +114,50 @@ async function main() {
     console.log('');
     console.log('🌐 Instagram にアクセスしています...');
     await page.goto('https://www.instagram.com/', { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForTimeout(3000);
+
+    // 「ログイン情報を保存」モーダルを閉じる
+    console.log('🔍 モーダルダイアログを確認中...');
+    await page.waitForTimeout(2000); // モーダル表示を待機
+    
+    try {
+      // 複数の方法でモーダル閉じボタンを探す
+      const closeSelectors = [
+        'button:has-text("Not now")',
+        'button:has-text("後で")',
+        'button[aria-label="Close"]',
+        'svg[aria-label="Close"]',
+        'div[role="button"]:has-text("Not now")',
+      ];
+      
+      let closed = false;
+      for (const selector of closeSelectors) {
+        try {
+          const button = await page.waitForSelector(selector, { timeout: 3000 });
+          if (button) {
+            await button.click();
+            console.log(`✅ モーダルを閉じました (${selector})`);
+            await page.waitForTimeout(2000);
+            closed = true;
+            break;
+          }
+        } catch (e) {
+          // 次のセレクタを試す
+        }
+      }
+      
+      if (!closed) {
+        console.log('ℹ️  モーダルは表示されませんでした');
+      }
+    } catch (e) {
+      console.log('ℹ️  モーダル処理でエラー:', e.message);
+    }
 
     // 作成ボタンを探す（aria-label="New post"のSVGアイコン）
     console.log('🔍 作成ボタンを探しています...');
     const createButton = await waitFor(
       page,
-      ['div[aria-label="New post"]', 'div[role="img"][aria-label="New post"]', 'a[href="#"]', 'svg[aria-label="New post"]'],
+      ['svg[aria-label="New post"]', 'a:has-text("Create")'],
       'create button'
     );
 
