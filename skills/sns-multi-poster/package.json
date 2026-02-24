@@ -6,10 +6,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@hyperbrowser/agent": "^1.1.2",
     "playwright": "^1.58.2",
     "puppeteer": "^21.0.0",
     "puppeteer-extra": "^3.3.6",
-    "undetected-browser": "^2.0.6"
+    "undetected-browser": "^2.0.6",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "playwright-extra": "^4.3.6",
