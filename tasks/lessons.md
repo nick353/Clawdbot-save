@@ -69,6 +69,66 @@
 
 ---
 
+## 2026-02-24 - X (Twitter) 投稿失敗（ページ読み込み不完全）
+**症状**: ツイート入力欄が見つからない（全セレクタで失敗）
+**原因**: `domcontentloaded` だけではローディング画面のまま完了してしまう
+**解決策**: 
+1. `waitUntil: 'networkidle2'` に変更（ネットワークアクティビティが落ち着くまで待機）
+2. タイムアウト 15秒 → 60秒に延長
+3. 追加待機時間 3-6秒 → 8-12秒に延長
+4. Cookie sameSite属性の正規化（`no_restriction` → `None`, `null` → `Lax`）
+**今後のルール**: 
+- X投稿では必ず `networkidle2` 使用
+- ページ読み込み後は最低8秒待機
+- Cookie読み込み時は必ずsameSite正規化
+**検証**: ✅ 2026-02-24 投稿成功を確認
+
+---
+
+## 2026-02-24 - Pinterest 投稿失敗（ファイル入力欄が見つからない）
+**症状**: 画像アップロード用の `<input type="file">` が見つからない
+**原因**: Pinterestが複数の異なるセレクタを使用（ページ状態により変化）
+**解決策**:
+1. 10個のセレクタを順番に試すフォールバック方式
+2. 各セレクタで2秒待機してから次を試す
+3. 全て失敗した場合、JavaScript `document.querySelector` で最終確認
+**今後のルール**: 
+- ファイル入力は最低5つのセレクタを用意
+- `waitForSelector` だけでなく、ポーリング方式も併用
+**検証**: ✅ 2026-02-24 投稿成功を確認
+
+---
+
+## 2026-02-24 - Threads 投稿失敗（Playwright構文エラー）
+**症状**: `Error: Unknown engine "has-text"` エラー
+**原因**: Playwrightの `:has-text()` 構文がPuppeteerでは使えない
+**解決策**: XPathに置き換え
+```javascript
+// ❌ Playwright構文
+await page.waitForSelector('button:has-text("Post")');
+
+// ✅ Puppeteer XPath
+await page.waitForXPath('//button[contains(text(), "Post")]');
+```
+**今後のルール**: 
+- Playwright → Puppeteer移植時は構文互換性を確認
+- `:has-text()` は必ずXPathに変換
+**検証**: ✅ 2026-02-24 投稿成功を確認
+
+---
+
+## 2026-02-24 - Cookie更新の手動作業（全SNS共通）
+**症状**: Cookie期限切れ時に手動で各SNSのCookieファイルを更新する必要がある
+**原因**: Cookie管理の自動化システムが未実装
+**解決策**: Cookie自動更新スクリプト作成（次のステップで実装）
+**今後のルール**: 
+- Cookie期限をCronで毎日チェック
+- 期限切れが近い場合、Discord通知
+- ブラウザから書き出したCookieを自動反映
+**検証**: ⏳ 未検証（これから実装）
+
+---
+
 ## 失敗カテゴリ別統計
 
 | カテゴリ | 件数 | 主な原因 |

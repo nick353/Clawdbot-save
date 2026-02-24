@@ -105,12 +105,39 @@ bash /root/clawd/scripts/obsidian-auto-save.sh note "〇〇について話し合
 - 自動化: `/root/clawd/scripts/auto-video-processor.sh` (5分ごと inbound監視)
 
 ### sns-multi-poster
-- Instagram: Cookie認証 `cookies/instagram.json`（期限切れ時ブラウザから再取得）
-- Facebook: 2つの認証方式を併用
-  - **Cookie 認証** (従来): `cookies/facebook.json` + post-to-facebook.cjs
-  - **Graph API** (新): FACEBOOK_API_TOKEN + post-to-facebook-api.cjs
-- 接続制限時: 30分待機して再試行
-- Graph API セットアップ (2026-02-22): トークン登録済み・API スクリプト実装済み・DRY RUN 確認済み
+
+#### 認証方式
+- **Instagram**: Cookie認証 `cookies/instagram.json`（期限切れ時ブラウザから再取得）
+- **Facebook**: 2つの認証方式を併用
+  - Cookie認証: `cookies/facebook.json` + post-to-facebook.cjs
+  - Graph API: FACEBOOK_API_TOKEN + post-to-facebook-api.cjs
+- **Threads**: Cookie認証 `cookies/threads.json`
+- **Pinterest**: Cookie認証 `cookies/pinterest.json`
+- **X (Twitter)**: Cookie認証 `cookies/x.json`
+
+#### トラブルシューティング（2026-02-24学習）
+
+| SNS | 問題 | 解決策 | スクリプト |
+|-----|------|-------|-----------|
+| **X** | ページ読み込み不完全 | `networkidle2` + 60秒タイムアウト + 8-12秒追加待機 | `post-to-x-v2-anti-ban.cjs` |
+| **Pinterest** | ファイル入力が見つからない | 10個のセレクタを順番に試す + 最終手段でJS evaluate | `post-to-pinterest-v3-multi-selector.cjs` |
+| **Threads** | Playwright構文エラー | `:has-text()` → XPath変換 | `post-to-threads-v2-anti-ban.cjs` |
+| **Instagram** | "Next"ボタン2回クリック | 1回目: 編集→キャプション、2回目: キャプション→投稿確認 | `post-to-instagram-v12-final.cjs` |
+| **全SNS** | Cookie sameSite エラー | `no_restriction` → `None`, `null` → `Lax` に正規化 | 全スクリプトで実装済み |
+
+#### ページ読み込み戦略（プラットフォーム別）
+- **X**: `waitUntil: 'networkidle2'` + タイムアウト60秒
+- **Instagram/Threads/Facebook/Pinterest**: `waitUntil: 'domcontentloaded'` + タイムアウト15秒
+
+#### デバッグ手法
+1. **スクリーンショット**: エラー時に `/tmp/<platform>-debug-*.png` 保存
+2. **段階的ログ出力**: 「✅ 〇〇完了」「❌ 〇〇失敗」で進捗確認
+3. **セレクタ検証**: 各セレクタで「⚠️ 〇〇なし」ログ出力
+
+#### 接続制限対策
+- BAN対策チェック: 過去24時間の投稿回数を確認
+- ランダム遅延: 各アクション間に2-5秒のランダム待機
+- 30分待機: 接続制限検出時は自動的に30分待機して再試行
 
 #### Instagram "Next" ボタン2回クリック対応 (2026-02-24)
 - **症状**: "Share" ボタンが表示されない、ページ遷移が発生しない

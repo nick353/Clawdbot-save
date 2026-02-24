@@ -199,16 +199,86 @@ grep "ANTHROPIC_PREFIXES\|claude-sonnet\|claude-haiku\|claude-opus" /usr/lib/nod
 **採用**: 解決策1（最小変更で最速）
 
 ### ブラウザ自動化の定石
-```javascript
-// ❌ ハングしやすい
-await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
 
-// ✅ 推奨
+#### ページ読み込み戦略（プラットフォーム別）
+
+**一般的なサイト（推奨）:**
+```javascript
+// ✅ 軽量サイト・静的コンテンツ
 await page.goto(url, { 
   waitUntil: 'domcontentloaded',  // 基本構造読み込み完了で即進む
   timeout: 15000                   // タイムアウト短縮
 });
 ```
+
+**X (Twitter)・重いSPA（特殊ケース）:**
+```javascript
+// ✅ バックグラウンド通信が多いサイト
+await page.goto(url, { 
+  waitUntil: 'networkidle2',      // ネットワークアクティビティが落ち着くまで待機
+  timeout: 60000                   // タイムアウト延長
+});
+await randomDelay(8000, 12000);   // 追加待機（ローディング画面対策）
+```
+
+**判断基準:**
+- ❌ `domcontentloaded` でローディング画面のまま → `networkidle2` に変更
+- ❌ `networkidle2` でハング（Threads等） → `domcontentloaded` に変更
+- ✅ エラー時はスクリーンショット撮影で状態確認
+
+#### Cookie管理（sameSite正規化）
+
+```javascript
+// ✅ Cookie読み込み時は必ず正規化
+const cookies = JSON.parse(fs.readFileSync(COOKIES_PATH, 'utf8')).map(c => ({
+  name: c.name,
+  value: decodeURIComponent(c.value),
+  domain: c.domain || '.example.com',
+  path: c.path || '/',
+  secure: c.secure !== false,
+  httpOnly: c.httpOnly === true,
+  sameSite: c.sameSite === 'no_restriction' ? 'None' : (c.sameSite || 'Lax'),
+  expires: c.expirationDate ? Math.floor(c.expirationDate) : undefined,
+}));
+await page.setCookie(...cookies);
+```
+
+#### セレクタ戦略（複数フォールバック）
+
+```javascript
+// ✅ 複数セレクタを順番に試す
+const selectors = [
+  'input[type="file"]#main-upload',
+  'input[type="file"][data-testid="file-input"]',
+  'input[type="file"]',
+  'input[accept*="image"]',
+];
+
+let fileInput = null;
+for (const selector of selectors) {
+  fileInput = await page.$(selector);
+  if (fileInput) {
+    console.log(`✅ ファイル入力を発見: ${selector}`);
+    break;
+  }
+  await page.waitForTimeout(2000); // 2秒待機してから次を試す
+}
+
+if (!fileInput) {
+  // 最終手段: JavaScript evaluate
+  fileInput = await page.evaluateHandle(() => document.querySelector('input[type="file"]'));
+}
+```
+
+#### Playwright → Puppeteer 構文変換
+
+| Playwright | Puppeteer (XPath) |
+|-----------|------------------|
+| `button:has-text("Post")` | `//button[contains(text(), "Post")]` |
+| `div >> text=Hello` | `//div[contains(text(), "Hello")]` |
+| `div:has(> button)` | `//div[button]` |
+
+**ルール**: Playwright構文は必ずXPathに変換してからPuppeteerで使用
 
 ### DRY RUNモードの必須実装
 全てのスクリプトに以下を追加:
