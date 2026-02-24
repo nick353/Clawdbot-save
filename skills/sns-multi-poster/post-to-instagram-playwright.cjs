@@ -107,11 +107,11 @@ async function main() {
     console.log('🌐 Instagram にアクセスしています...');
     await page.goto('https://www.instagram.com/', { waitUntil: 'domcontentloaded', timeout: 15000 });
 
-    // 作成ボタンを探す
+    // 作成ボタンを探す（aria-label="New post"のSVGアイコン）
     console.log('🔍 作成ボタンを探しています...');
     const createButton = await waitFor(
       page,
-      ['a[href="#"]', 'button[aria-label*="作成"]', 'svg[aria-label="作成"]'],
+      ['div[aria-label="New post"]', 'div[role="img"][aria-label="New post"]', 'a[href="#"]', 'svg[aria-label="New post"]'],
       'create button'
     );
 

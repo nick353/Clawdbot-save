@@ -103,11 +103,11 @@ async function main() {
     console.log('🌐 Threads にアクセスしています...');
     await page.goto('https://www.threads.net/', { waitUntil: 'domcontentloaded', timeout: 15000 });
 
-    // 新規投稿ボタンを探す
+    // 新規投稿ボタンを探す（aria-label="Empty text field. Type to compose a new post."）
     console.log('🔍 投稿ボタンを探しています...');
     const newPostButton = await waitFor(
       page,
-      ['button[aria-label*="新規投稿"]', 'button[aria-label*="作成"]', 'a[href*="/compose"]'],
+      ['div[aria-label*="compose"]', 'div[aria-label*="new post"]', 'div:has-text("What\'s new?")', 'button[aria-label*="新規投稿"]', 'a[href*="/compose"]'],
       'new post button'
     );
 

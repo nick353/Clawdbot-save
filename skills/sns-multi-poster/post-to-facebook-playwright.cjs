@@ -103,11 +103,11 @@ async function main() {
     console.log('🌐 Facebook にアクセスしています...');
     await page.goto('https://www.facebook.com/feed', { waitUntil: 'domcontentloaded', timeout: 15000 });
 
-    // 投稿作成ボタンを探す
+    // 投稿作成ボタンを探す（"What's on your mind"）
     console.log('🔍 投稿作成ボタンを探しています...');
     const createPostButton = await waitFor(
       page,
-      ['div[role="button"]:has-text("何か思いついた")', 'button[aria-label*="投稿"]'],
+      ['div:has-text("What\'s on your mind")', 'div:has-text("何か思いついた")', 'button[aria-label*="投稿"]', 'div[role="button"]:has-text("投稿")'],
       'create post button'
     );
 

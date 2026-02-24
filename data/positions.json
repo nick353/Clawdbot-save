@@ -38,21 +38,21 @@
       "lowest_price": 3.74,
       "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
     },
-    "ETHUSDT": {
-      "entry_time": "2026-02-24T01:12:36.853177",
-      "entry_price": 1853.28,
-      "quantity": 1.7435402258614379,
-      "position_size": 3231.2682297844854,
+    "HUSDT": {
+      "entry_time": "2026-02-24T01:17:48.121440",
+      "entry_price": 0.1340802,
+      "quantity": 24135.162094929623,
+      "position_size": 3236.047360720583,
       "position_type": "short",
-      "stop_loss": 1890.3456,
-      "take_profit": 1760.616,
+      "stop_loss": 0.13676180400000001,
+      "take_profit": 0.12737619,
       "trailing_stop": null,
       "trailing_stop_used": false,
       "highest_price": null,
-      "lowest_price": 1853.28,
+      "lowest_price": 0.1331137,
       "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
     }
   },
-  "capital": 639.1122527136299,
-  "timestamp": "2026-02-24T01:12:36.853388"
+  "capital": 648.670514585825,
+  "timestamp": "2026-02-24T01:28:08.962280"
 }
