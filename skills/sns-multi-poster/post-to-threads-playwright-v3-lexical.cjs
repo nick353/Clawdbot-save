@@ -115,18 +115,37 @@ async function main() {
     });
     console.log('✅ モーダル発見');
 
-    await page.waitForTimeout(2000); // モーダル表示待機: 1秒 → 2秒
+    await page.waitForTimeout(3000); // モーダル表示待機: 2秒 → 3秒
 
-    // Lexicalエディタを取得
+    // Lexicalエディタを取得（複数セレクタを試行）
     console.log('\n✍️  Lexicalエディタに入力中...');
     
-    const lexicalEditor = await page.$('div[data-lexical-editor="true"]');
+    const editorSelectors = [
+      'div[data-lexical-editor="true"]',
+      'div[contenteditable="true"][role="textbox"]',
+      'div[contenteditable="true"]',
+      'div[aria-label*="write" i]',
+      'div[aria-label*="text" i]'
+    ];
+    
+    let lexicalEditor = null;
+    for (const selector of editorSelectors) {
+      try {
+        lexicalEditor = await page.$(selector);
+        if (lexicalEditor) {
+          console.log(`✅ Lexicalエディタ発見: ${selector}`);
+          break;
+        }
+      } catch (e) {
+        // セレクタエラーは無視
+      }
+    }
+    
     if (!lexicalEditor) {
-      console.error('❌ Lexicalエディタが見つかりません');
+      console.error('❌ Lexicalエディタが見つかりません（全セレクタ失敗）');
       await browser.close();
       process.exit(1);
     }
-    console.log('✅ Lexicalエディタ発見');
 
     // Lexicalエディタにフォーカスして、page.keyboard.type() で入力
     await lexicalEditor.click();
@@ -158,38 +177,16 @@ async function main() {
       await page.waitForTimeout(3000);
     }
 
-    // Postボタンをクリック
-    console.log('\n⏳ Postボタンを検索中...');
+    // 投稿（Ctrl+Enter ショートカットを使用）
+    console.log('\n🚀 投稿中（Ctrl+Enter）...');
     
-    // 複数のセレクタを試行
-    const postButtonSelectors = [
-      'div[role="button"]:has-text("Post")',
-      'button:has-text("Post")',
-      'div:has-text("Post") >> div[role="button"]'
-    ];
-
-    let postButton = null;
-    for (const selector of postButtonSelectors) {
-      try {
-        postButton = await page.$(selector);
-        if (postButton) {
-          console.log(`✅ Postボタン発見: ${selector}`);
-          break;
-        }
-      } catch (e) {
-        // セレクタエラーは無視
-      }
-    }
-
-    if (!postButton) {
-      console.error('❌ Postボタンが見つかりません');
-      await browser.close();
-      process.exit(1);
-    }
-
-    console.log('🚀 投稿中...');
-    await postButton.click({ force: true }); // 強制クリック
-    console.log('✅ 投稿ボタンをクリック完了');
+    // Lexicalエディタにフォーカスを確保
+    await lexicalEditor.click();
+    await page.waitForTimeout(500);
+    
+    // Ctrl+Enter で投稿
+    await page.keyboard.press('Control+Enter');
+    console.log('✅ 投稿ショートカット実行完了');
 
     // 投稿完了を待機（短縮: 3秒 → 1秒）
     await page.waitForTimeout(1000);
