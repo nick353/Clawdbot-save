@@ -439,5 +439,20 @@
         "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
       }
     ]
+  },
+  {
+    "timestamp": "2026-02-24T16:00:27.019429",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260224_160027.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "increase_timeout",
+        "auto_apply": false,
+        "description": "\u30bf\u30a4\u30e0\u30a2\u30a6\u30c8\u5ef6\u9577",
+        "details": "subprocess \u30bf\u30a4\u30e0\u30a2\u30a6\u30c8\u309230\u79d2\u306b\u5ef6\u9577",
+        "status": "failed",
+        "message": "\u9069\u7528\u5931\u6557"
+      }
+    ]
   }
 ]

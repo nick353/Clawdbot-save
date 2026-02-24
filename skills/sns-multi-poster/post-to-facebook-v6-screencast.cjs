@@ -15,6 +15,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 // Cookie sameSite正規化（Chromium互換）
 function normalizeCookie(cookie) {
@@ -365,9 +366,35 @@ async function postToFacebook(videoPath, caption) {
       await client.send('Page.stopScreencast');
       console.log('🎬 画面録画停止');
       
-      // 録画ファイル保存（PNG frames → WebM変換は省略、代わりにスクリーンショット集を保存）
+      // 録画フレームを保存
+      if (frames.length > 0) {
+        const framesDir = `/tmp/facebook-screencast-frames-${timestamp}`;
+        fs.mkdirSync(framesDir, { recursive: true });
+        
+        console.log(`📹 ${frames.length} フレームを保存中...`);
+        for (let i = 0; i < frames.length; i++) {
+          const framePath = path.join(framesDir, `frame-${String(i).padStart(5, '0')}.png`);
+          fs.writeFileSync(framePath, frames[i], 'base64');
+        }
+        
+        // ffmpegで動画に変換
+        const videoPath = `/tmp/facebook-screencast-${timestamp}.webm`;
+        console.log('🎬 ffmpegで動画に変換中...');
+        const ffmpegCmd = `ffmpeg -framerate 2 -i ${framesDir}/frame-%05d.png -c:v libvpx-vp9 -pix_fmt yuva420p ${videoPath} -y`;
+        
+        try {
+          execSync(ffmpegCmd, { stdio: 'ignore' });
+          console.log(`✅ 動画保存完了: ${videoPath}`);
+          
+          // フレーム画像削除
+          execSync(`rm -rf ${framesDir}`, { stdio: 'ignore' });
+        } catch (err) {
+          console.log(`⚠️ ffmpeg変換エラー: ${err.message}`);
+          console.log(`📁 フレーム画像: ${framesDir}/frame-*.png`);
+        }
+      }
+      
       console.log(`✅ スクリーンショット保存完了: /tmp/facebook-screencast-*.png`);
-      console.log(`📹 録画ファイル: ${frames.length} フレーム取得`);
       
       return;
     }
@@ -432,19 +459,83 @@ async function postToFacebook(videoPath, caption) {
     await client.send('Page.stopScreencast');
     console.log('🎬 画面録画停止');
     
+    // 録画フレームを保存
+    if (frames.length > 0) {
+      const framesDir = `/tmp/facebook-screencast-frames-${timestamp}`;
+      fs.mkdirSync(framesDir, { recursive: true });
+      
+      console.log(`📹 ${frames.length} フレームを保存中...`);
+      for (let i = 0; i < frames.length; i++) {
+        const framePath = path.join(framesDir, `frame-${String(i).padStart(5, '0')}.png`);
+        fs.writeFileSync(framePath, frames[i], 'base64');
+      }
+      
+      // ffmpegで動画に変換
+      const videoPath = `/tmp/facebook-screencast-${timestamp}.webm`;
+      console.log('🎬 ffmpegで動画に変換中...');
+      const ffmpegCmd = `ffmpeg -framerate 2 -i ${framesDir}/frame-%05d.png -c:v libvpx-vp9 -pix_fmt yuva420p ${videoPath} -y`;
+      
+      try {
+        execSync(ffmpegCmd, { stdio: 'ignore' });
+        console.log(`✅ 動画保存完了: ${videoPath}`);
+        
+        // フレーム画像削除
+        execSync(`rm -rf ${framesDir}`, { stdio: 'ignore' });
+      } catch (err) {
+        console.log(`⚠️ ffmpeg変換エラー: ${err.message}`);
+        console.log(`📁 フレーム画像: ${framesDir}/frame-*.png`);
+      }
+    }
+    
     console.log('✅ Facebook への投稿が完了しました！');
-    console.log(`📹 録画ファイル: ${frames.length} フレーム取得`);
     console.log(`📸 スクリーンショット: /tmp/facebook-screencast-*.png`);
     
   } catch (error) {
     console.error('❌ 投稿失敗:', error.message);
     
-    // エラー時もスクリーンショット保存
+    // エラー時もスクリーンショット + 録画保存
     if (browser) {
       const page = (await browser.pages())[0];
       if (page) {
         await page.screenshot({ path: `/tmp/facebook-screencast-error-${timestamp}.png`, fullPage: true });
         console.log('📸 エラー時のスクリーンショット保存');
+        
+        // エラー時も録画停止 + 保存
+        try {
+          const client = await page.target().createCDPSession();
+          await client.send('Page.stopScreencast');
+          console.log('🎬 画面録画停止（エラー時）');
+          
+          // 録画フレームを保存
+          if (frames.length > 0) {
+            const framesDir = `/tmp/facebook-screencast-frames-${timestamp}`;
+            fs.mkdirSync(framesDir, { recursive: true });
+            
+            console.log(`📹 ${frames.length} フレームを保存中（エラー時）...`);
+            for (let i = 0; i < frames.length; i++) {
+              const framePath = path.join(framesDir, `frame-${String(i).padStart(5, '0')}.png`);
+              fs.writeFileSync(framePath, frames[i], 'base64');
+            }
+            
+            // ffmpegで動画に変換
+            const videoPath = `/tmp/facebook-screencast-error-${timestamp}.webm`;
+            console.log('🎬 ffmpegで動画に変換中（エラー時）...');
+            const ffmpegCmd = `ffmpeg -framerate 2 -i ${framesDir}/frame-%05d.png -c:v libvpx-vp9 -pix_fmt yuva420p ${videoPath} -y`;
+            
+            try {
+              execSync(ffmpegCmd, { stdio: 'ignore' });
+              console.log(`✅ エラー時の動画保存完了: ${videoPath}`);
+              
+              // フレーム画像削除
+              execSync(`rm -rf ${framesDir}`, { stdio: 'ignore' });
+            } catch (err) {
+              console.log(`⚠️ ffmpeg変換エラー: ${err.message}`);
+              console.log(`📁 フレーム画像: ${framesDir}/frame-*.png`);
+            }
+          }
+        } catch (recordErr) {
+          console.log(`⚠️ 録画保存エラー: ${recordErr.message}`);
+        }
       }
     }
     
