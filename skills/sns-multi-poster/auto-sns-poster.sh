@@ -96,7 +96,7 @@ echo "📤 5つのSNSに並列投稿中..."
         && echo "✅ Instagram: 投稿成功" >> "$RESULTS_FILE" \
         || echo "❌ Instagram: 投稿失敗" >> "$RESULTS_FILE"
     else
-      node "$SCRIPT_DIR/post-to-instagram-v13-with-screenshots.cjs" "$MEDIA_PATH" "${CAPTIONS[instagram]}" >> "$RESULTS_FILE" 2>&1 \
+      node "$SCRIPT_DIR/post-to-instagram-v13-screenshot.cjs" "$MEDIA_PATH" "${CAPTIONS[instagram]}" >> "$RESULTS_FILE" 2>&1 \
         && echo "✅ Instagram: 投稿成功" >> "$RESULTS_FILE" \
         || echo "❌ Instagram: 投稿失敗" >> "$RESULTS_FILE"
     fi
