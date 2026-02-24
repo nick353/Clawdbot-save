@@ -33,7 +33,7 @@
 | 5 | gifgrep | `~/go/bin/gifgrep` | "GIF探して" | `gifgrep <query>` |
 | 6 | obsidian-vps | `/root/clawd/scripts/obsidian-helper.sh` | "メモして"/"記録して" | `obs daily` + 追記 |
 | 7 | youtube-analyzer | `/tmp/analyze_yt_gemini.py` | "動画分析して" | `python3 analyze_yt_gemini.py <URL>` |
-| 8 | sns-multi-poster | `/root/clawd/skills/sns-multi-poster/` | "SNS投稿"/"マルチ投稿" | `node post-to-instagram-v5.cjs <画像> "キャプション"` |
+| 8 | sns-multi-poster | `/root/clawd/skills/sns-multi-poster/` | "SNS投稿"/"マルチ投稿" / #sns-投稿チャンネル投稿（自動） | Discord自動投稿: `systemctl status discord-sns-watcher.service` |
 | 9 | ffmpeg-video-processor | `/root/clawd/skills/ffmpeg-video-processor/` | #ai動画処理チャンネル動画投稿 | `process-with-deepfilternet.sh <動画>` |
 | 10 | web+X research | web_search + bird | "リサーチして"/"調べて" | web_search + bird 統合 |
 | 11 | web-search | `/root/clawd/skills/web-search/` | "検索して" | `web-search.sh "<query>"` |

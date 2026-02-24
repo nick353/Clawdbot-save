@@ -3,9 +3,33 @@ name: sns-multi-poster
 description: 5つのSNS（Instagram, Threads, Facebook, Pinterest, X）に画像・動画を自動投稿。AIキャプション生成・パフォーマンス収集・PDCA分析まで完全自動化。「SNS投稿」「マルチ投稿」でトリガー。
 ---
 
-# SNS Multi Poster - 完全自動化システム (v4.0 - 動画対応版)
+# SNS Multi Poster - 完全自動化システム (v5.0 - Discord自動投稿)
 
-**最終更新:** 2026-02-21
+**最終更新:** 2026-02-24
+
+## 🤖 Discord自動投稿 (v5.0 - NEW!)
+
+**機能:**
+- Discord #sns-投稿チャンネルに画像・動画を投稿 → 自動的に5つのSNSに投稿
+- Gemini APIで各SNS最適化キャプションを自動生成（AI感を排除した自然な文体）
+- 並列投稿で高速処理
+- DRY_RUNモード対応（テスト用）
+
+**使い方:**
+1. Discord #sns-投稿チャンネルに画像・動画を投稿
+2. 自動的にメディアをダウンロード → Gemini分析 → 5SNSに投稿
+3. 結果をDiscordに投稿
+
+**詳細:** [AUTO_POSTER_SETUP.md](./AUTO_POSTER_SETUP.md)
+
+**systemdサービス:** `discord-sns-watcher.service`
+
+**ログ確認:**
+```bash
+sudo journalctl -u discord-sns-watcher.service -f
+```
+
+---
 
 ## 🎥 動画投稿対応 (v4.0)
 
