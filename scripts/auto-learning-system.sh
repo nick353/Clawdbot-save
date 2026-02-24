@@ -199,36 +199,36 @@ monthly_statistics() {
     
     if [ ! -f "$LESSONS_FILE" ]; then
         log_error "lessons.mdが見つかりません"
-        return 1
+        echo ""
+        echo "==================================="
+        echo "今月の失敗統計 ($current_month)"
+        echo "==================================="
+        echo "lessons.mdファイルが見つかりません"
+        echo "==================================="
+        echo ""
+        return 0
     fi
     
-    # エラー回避のため、変数を整数として初期化
-    local total_failures=0
-    local verified_count=0
-    local unverified_count=0
+    # 総失敗数をカウント（シンプル版）
+    local total_failures
+    total_failures=$(grep "^## $current_month" "$LESSONS_FILE" 2>/dev/null | wc -l | tr -d ' \n' || echo "0")
+    [ -z "$total_failures" ] && total_failures=0
     
-    # 総失敗数をカウント
-    if grep -q "^## $current_month" "$LESSONS_FILE" 2>/dev/null; then
-        total_failures=$(grep -c "^## $current_month" "$LESSONS_FILE" 2>/dev/null)
-    fi
+    # 検証済みをカウント（シンプル版）
+    local verified_count
+    verified_count=$(grep "^## $current_month" "$LESSONS_FILE" -A 6 2>/dev/null | grep "✅" | wc -l | tr -d ' \n' || echo "0")
+    [ -z "$verified_count" ] && verified_count=0
     
-    # 検証済みをカウント
-    if [ "$total_failures" -gt 0 ]; then
-        verified_count=$(grep "^## $current_month" "$LESSONS_FILE" -A 6 2>/dev/null | grep -c "✅" 2>/dev/null)
-        # grepが結果を返さない場合は0にする
-        if [ -z "$verified_count" ] || ! [[ "$verified_count" =~ ^[0-9]+$ ]]; then
-            verified_count=0
-        fi
-        unverified_count=$((total_failures - verified_count))
-    fi
+    # 未検証数を計算
+    local unverified_count=$((total_failures - verified_count))
     
     echo ""
     echo "==================================="
     echo "今月の失敗統計 ($current_month)"
     echo "==================================="
-    echo "総失敗数: $total_failures"
-    echo "検証済み: $verified_count"
-    echo "未検証: $unverified_count"
+    echo "総失敗数: ${total_failures:-0}"
+    echo "検証済み: ${verified_count:-0}"
+    echo "未検証: ${unverified_count:-0}"
     echo "==================================="
     echo ""
 }
