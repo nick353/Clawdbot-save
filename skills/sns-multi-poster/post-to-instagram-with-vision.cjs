@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Instagram 投稿 - 修正版
- * サイドバーのCreateボタンをクリックしてモーダルを開く
+ * Instagram 投稿 - Vision確認版
+ * 各ステップでスクリーンショットを取得して確認してから次に進む
  */
 
 const { chromium } = require('playwright');
@@ -13,7 +13,7 @@ const imagePathArg = args[0];
 const captionArg = args[1] || '';
 
 if (!imagePathArg || !fs.existsSync(imagePathArg)) {
-  console.error('❌ Usage: post-to-instagram-fixed.cjs <image-path> [caption]');
+  console.error('❌ Usage: post-to-instagram-with-vision.cjs <image-path> [caption]');
   process.exit(1);
 }
 
@@ -42,14 +42,19 @@ async function loadCookies() {
 }
 
 async function takeScreenshot(page, name) {
-  const screenshotPath = path.join(__dirname, `fixed-step-${name}.png`);
-  await page.screenshot({ path: screenshotPath, fullPage: true });
-  console.log(`📸 Screenshot: fixed-step-${name}.png`);
+  const screenshotPath = path.join(__dirname, `vision-step-${name}.png`);
+  // fullPage: false にして軽量化
+  await page.screenshot({ 
+    path: screenshotPath, 
+    fullPage: false,
+    timeout: 30000  // タイムアウト延長
+  });
+  console.log(`📸 Screenshot saved: vision-step-${name}.png`);
   return screenshotPath;
 }
 
 async function main() {
-  console.log('🚀 Instagram Post - Fixed version');
+  console.log('🚀 Instagram Post - Vision-guided version');
 
   let browser;
   let context;
@@ -81,16 +86,16 @@ async function main() {
     // Step 1: トップページにアクセス
     console.log('🌐 Step 1: Loading Instagram...');
     await page.goto('https://www.instagram.com/', {
-      waitUntil: 'commit',
+      waitUntil: 'domcontentloaded',  // 軽量化
       timeout: 30000,
     });
     await page.waitForTimeout(3000);
     await takeScreenshot(page, '01-top');
+    console.log('⏸️ PAUSE - Please confirm screenshot shows Instagram top page');
 
     // Step 2: Createボタンをクリック
     console.log('🖱️ Step 2: Clicking Create button...');
     
-    // 複数のセレクタを試す
     const createSelectors = [
       'a[href="#"]:has(svg[aria-label="New post"])',
       'a[href="#"]:has(svg[aria-label="Create"])',
@@ -116,6 +121,7 @@ async function main() {
     if (!createBtn) {
       console.error('❌ Create button not found');
       await takeScreenshot(page, '02-create-btn-not-found');
+      console.log('⏸️ PAUSE - Please check screenshot');
       throw new Error('Create button not found');
     }
 
@@ -123,15 +129,47 @@ async function main() {
     console.log('✅ Create button clicked');
     await page.waitForTimeout(2000);
     await takeScreenshot(page, '03-after-create-click');
+    console.log('⏸️ PAUSE - Please confirm menu is expanded with "Post" option');
 
     // Step 2.5: Postオプションをクリック
     console.log('🖱️ Step 2.5: Clicking Post option...');
-    const postOption = page.locator('span:has-text("Post")').first();
-    await postOption.waitFor({ state: 'visible', timeout: 5000 });
-    await postOption.click();
+    
+    // 複数のセレクタを試す
+    const postSelectors = [
+      'a[role="link"]:has-text("Post")',
+      'a:has-text("Post")',
+      'div[role="button"]:has-text("Post")',
+    ];
+    
+    let postOption = null;
+    for (const selector of postSelectors) {
+      try {
+        postOption = page.locator(selector).first();
+        const visible = await postOption.isVisible({ timeout: 2000 }).catch(() => false);
+        if (visible) {
+          console.log(`✅ Found Post option with selector: ${selector}`);
+          break;
+        }
+      } catch (e) {
+        // Try next selector
+      }
+    }
+    
+    if (!postOption) {
+      console.error('❌ Post option not found');
+      await takeScreenshot(page, '04-post-option-not-found');
+      throw new Error('Post option not found');
+    }
+    
+    // JavaScript クリックも試す
+    await postOption.evaluate(el => el.click()).catch(async () => {
+      // 通常のクリックにフォールバック
+      await postOption.click();
+    });
     console.log('✅ Post option clicked');
-    await page.waitForTimeout(2000);
-    await takeScreenshot(page, '03b-after-post-click');
+    await page.waitForTimeout(3000);
+    await takeScreenshot(page, '04-after-post-click');
+    console.log('⏸️ PAUSE - Please confirm modal is open for file selection');
 
     // Step 3: ファイル選択ダイアログが開くのを待つ
     console.log('⏳ Step 3: Waiting for file input...');
@@ -143,29 +181,45 @@ async function main() {
     console.log('📁 Step 4: Uploading file...');
     await fileInput.setInputFiles(imagePathArg);
     console.log('✅ File uploaded');
-    await page.waitForTimeout(3000);
-    await takeScreenshot(page, '04-after-upload');
+    await page.waitForTimeout(4000);
+    await takeScreenshot(page, '05-after-upload');
+    console.log('⏸️ PAUSE - Please confirm image is displayed');
 
     // Step 5: Nextボタンを待つ
     console.log('⏳ Step 5: Waiting for Next button...');
     const nextBtn = page.locator('button:has-text("Next")').first();
     await nextBtn.waitFor({ state: 'visible', timeout: 15000 });
     console.log('✅ Next button visible');
-    await takeScreenshot(page, '05-before-next');
+    await takeScreenshot(page, '06-before-next');
+    console.log('⏸️ PAUSE - Please confirm Next button is clickable');
 
     // Step 6: Nextボタンをクリック
     console.log('🖱️ Step 6: Clicking Next button...');
     await nextBtn.click();
     console.log('✅ Next button clicked');
     await page.waitForTimeout(3000);
-    await takeScreenshot(page, '06-after-next');
+    await takeScreenshot(page, '07-after-next');
+    console.log('⏸️ PAUSE - Please confirm moved to next screen');
 
     // エラーチェック
     const errorMessage = await page.locator('text="Something went wrong"').first().isVisible().catch(() => false);
     if (errorMessage) {
       console.error('❌ "Something went wrong" error detected');
-      await takeScreenshot(page, '07-error');
+      await takeScreenshot(page, '08-error');
+      console.log('⏸️ PAUSE - Error detected, check screenshot');
       throw new Error('"Something went wrong" error appeared');
+    }
+
+    // 2回目のNextボタンがあるかチェック
+    const nextBtn2Visible = await page.locator('button:has-text("Next")').first().isVisible().catch(() => false);
+    if (nextBtn2Visible) {
+      console.log('🖱️ Step 6.5: Clicking 2nd Next button...');
+      const nextBtn2 = page.locator('button:has-text("Next")').first();
+      await nextBtn2.click();
+      console.log('✅ 2nd Next button clicked');
+      await page.waitForTimeout(3000);
+      await takeScreenshot(page, '07b-after-2nd-next');
+      console.log('⏸️ PAUSE - Please confirm moved to caption screen');
     }
 
     // Step 7: キャプションフィールドを待つ
@@ -175,25 +229,31 @@ async function main() {
     ).first();
     await captionField.waitFor({ state: 'visible', timeout: 15000 });
     console.log('✅ Caption field found');
+    await takeScreenshot(page, '08-caption-field');
+    console.log('⏸️ PAUSE - Please confirm caption field is visible');
 
     // Step 8: キャプション入力
     if (captionArg) {
       console.log('⌨️ Step 8: Typing caption...');
       await captionField.fill(captionArg);
       console.log('✅ Caption entered');
+      await page.waitForTimeout(1000);
+      await takeScreenshot(page, '09-caption-entered');
+      console.log('⏸️ PAUSE - Please confirm caption is entered');
     }
-    await takeScreenshot(page, '08-caption-entered');
 
     // Step 9: Shareボタンを待つ
     console.log('⏳ Step 9: Waiting for Share button...');
     const shareBtn = page.locator('button:has-text("Share")').first();
     await shareBtn.waitFor({ state: 'visible', timeout: 15000 });
     console.log('✅ Share button visible');
+    await takeScreenshot(page, '10-before-share');
+    console.log('⏸️ PAUSE - Please confirm Share button is clickable');
 
     // DRY RUN チェック
     if (process.env.DRY_RUN === 'true') {
       console.log('🔄 DRY RUN: Not clicking Share button');
-      await takeScreenshot(page, '10-dry-run-final');
+      await takeScreenshot(page, '11-dry-run-final');
       console.log('✅ DRY RUN completed successfully');
       return;
     }
@@ -203,14 +263,15 @@ async function main() {
     await shareBtn.click();
     console.log('✅ Share button clicked');
     await page.waitForTimeout(5000);
-    await takeScreenshot(page, '11-after-share');
+    await takeScreenshot(page, '12-after-share');
+    console.log('⏸️ PAUSE - Please confirm post is shared');
 
     // 成功確認
     const postSharedMessage = await page.locator('text=/Post shared|Your post has been shared/i').first().isVisible().catch(() => false);
     if (postSharedMessage) {
       console.log('✅ Post shared successfully');
     } else {
-      console.log('⚠️ Could not confirm post success - please check Instagram');
+      console.log('⚠️ Could not confirm post success - please check screenshot');
     }
 
     console.log('✅ Instagram post completed');
@@ -221,6 +282,7 @@ async function main() {
       const page = context.pages()[0];
       if (page) {
         await takeScreenshot(page, '99-error');
+        console.log('⏸️ PAUSE - Error occurred, check screenshot');
       }
     }
     process.exit(1);
