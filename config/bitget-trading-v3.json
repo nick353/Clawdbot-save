@@ -17,7 +17,17 @@
     "SANTOSUSDT",
     "IRUSDT",
     "DEXEUSDT",
-    "SNXUSDT"
+    "SNXUSDT",
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT",
+    "ARBUSDT",
+    "OPUSDT",
+    "AVAXUSDT",
+    "LINKUSDT",
+    "MATICUSDT",
+    "DOTUSDT",
+    "UNIUSDT"
   ],
   "strategy": {
     "sma_period": 200,
@@ -68,7 +78,7 @@
   ],
   "check_interval": 10,
   "auto_update_symbols": true,
-  "max_monitored_symbols": 15,
+  "max_monitored_symbols": 25,
   "comment": "V3設定ファイル - ハイブリッド戦法（ロング/ショート両対応）実装版（2026-02-20）",
   "_変更点": {
     "long_pattern_1": "ロング: ゴールデンクロス(EMA>SMA) + 価格>EMA200 + MACD上抜け + 出来高増",
@@ -85,5 +95,5 @@
     "max_positions": "5個固定（ロング/ショート合計）",
     "fixed_position_size": "$2,000/ポジション（総資金÷5で動的計算）"
   },
-  "last_symbol_update": "2026-02-20T15:07:25.197202Z"
+  "last_symbol_update": "2026-02-24T01:02:00.000000Z"
 }

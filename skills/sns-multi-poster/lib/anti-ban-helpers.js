@@ -22,14 +22,16 @@ const getRandomUserAgent = () => {
   return agents[Math.floor(Math.random() * agents.length)];
 };
 
-// 投稿時間チェック（深夜投稿を避ける）
+// 投稿時間チェック（深夜投稿を避ける） - JST（UTC+9）で判定
 const isAllowedPostingTime = () => {
   const now = new Date();
-  const hour = now.getHours();
+  const jstOffset = 9 * 60; // JST = UTC+9
+  const jstTime = new Date(now.getTime() + jstOffset * 60 * 1000);
+  const hour = jstTime.getUTCHours(); // JSTの時刻を取得
   const { start, end } = config.allowedPostingHours;
   
   if (hour < start || hour >= end) {
-    console.warn(`⚠️ 現在の時間（${hour}時）は投稿禁止時間帯です（${start}時〜${end}時のみ許可）`);
+    console.warn(`⚠️ 現在の時間（JST ${hour}時）は投稿禁止時間帯です（${start}時〜${end}時のみ許可）`);
     return false;
   }
   return true;
