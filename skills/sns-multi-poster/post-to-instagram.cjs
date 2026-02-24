@@ -1,1 +1,1 @@
-post-to-instagram-v13-with-screenshots.cjs
+post-to-instagram-v13-screenshot.cjs
