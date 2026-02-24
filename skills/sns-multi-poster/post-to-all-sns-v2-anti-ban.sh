@@ -142,34 +142,21 @@ else
   echo "$TH_OUTPUT" | tail -5
 fi
 
-# ━━━━━ X (Twitter) - v2-anti-ban or bird CLI ━━━━━
+# ━━━━━ X (Twitter)（Playwright Cookie版） ━━━━━
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🐦 [3/5] X (Twitter) 投稿中（BAN対策版 v2）..."
+echo "🐦 [3/5] X (Twitter) 投稿中（Playwright Cookie認証）..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 cd "$SCRIPT_DIR"
 X_FAIL=false
-
-# bird CLI優先（Cookie認証で安全）
-if command -v bird >/dev/null 2>&1 && [ -n "${AUTH_TOKEN:-}" ]; then
-  if [ "$DRY_RUN" = "true" ]; then
-    echo "🔄 DRY RUN: X投稿スキップ (bird CLI)"
-    X_STATUS="dry_run"
-    X_OUTPUT="DRY RUN skip"
-  else
-    echo "🐦 X投稿 (bird CLI - Cookie認証)"
-    X_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" bird tweet "$CAPTION" --media "$MEDIA_FILE" 2>&1) || X_FAIL=true
-  fi
-else
-  X_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" node post-to-x-v2-anti-ban.cjs "$MEDIA_FILE" "$CAPTION" 2>&1) || X_FAIL=true
-fi
+X_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" node post-to-x-playwright.cjs "$MEDIA_FILE" "$CAPTION" 2>&1) || X_FAIL=true
 
 if [ "$X_FAIL" = "true" ]; then
   echo "❌ X投稿失敗"
   X_STATUS="failed"
   echo "$X_OUTPUT" | tail -10
-elif [ "$X_STATUS" != "dry_run" ]; then
+else
   X_STATUS="success"
   [ "$DRY_RUN" = "true" ] && X_STATUS="dry_run"
   echo "✅ X投稿成功"
@@ -197,15 +184,15 @@ else
   echo "$FB_OUTPUT" | tail -5
 fi
 
-# ━━━━━ Pinterest（v2-anti-ban） ━━━━━
+# ━━━━━ Pinterest（Playwright Cookie版） ━━━━━
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "📌 [5/5] Pinterest 投稿中（BAN対策版 v2）..."
+echo "📌 [5/5] Pinterest 投稿中（Playwright Cookie認証）..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 cd "$SCRIPT_DIR"
 PIN_FAIL=false
-PIN_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" node post-to-pinterest-v2-anti-ban.cjs "$MEDIA_FILE" "$CAPTION" "$BOARD" 2>&1) || PIN_FAIL=true
+PIN_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" node post-to-pinterest-playwright.cjs "$MEDIA_FILE" "$CAPTION" 2>&1) || PIN_FAIL=true
 
 if [ "$PIN_FAIL" = "true" ]; then
   echo "❌ Pinterest投稿失敗"
