@@ -1,66 +1,1153 @@
 {
-  "timestamp": "2026-02-24T00:00:14.435719Z",
-  "method": "Price Change Ranking (\u7d76\u5bfe\u5024\u3067\u964d\u9806)",
+  "timestamp": "2026-02-24T00:08:34.995212Z",
+  "version": "v3-full",
+  "method": "All symbols dynamic screening + Price Change Ranking",
+  "total_checked": 536,
   "filter": "Price change: \u00b15% \u4ee5\u4e0a",
-  "total_screened": 4,
+  "total_passed": 148,
   "top_15": [
     {
-      "symbol": "SOLUSDT",
-      "price_change": -5.7704,
-      "volatility": 0.012737,
-      "volume_24h": 557365189.65,
-      "score": 7099216.72
+      "symbol": "RAVEUSDT",
+      "price_change": -55.9955,
+      "volatility": 0.415192,
+      "volume_24h": 25019207.69,
+      "score": 10387769.75
     },
     {
-      "symbol": "AVAXUSDT",
-      "price_change": -5.6927,
-      "volatility": 0.014862,
-      "volume_24h": 10050676.74,
-      "score": 149371.64
+      "symbol": "ESPUSDT",
+      "price_change": 40.7377,
+      "volatility": 0.119984,
+      "volume_24h": 43684258.09,
+      "score": 5241415.35
     },
     {
-      "symbol": "INJUSDT",
-      "price_change": -5.2256,
-      "volatility": 0.014428,
-      "volume_24h": 4812464.1,
-      "score": 69434.83
+      "symbol": "MYXUSDT",
+      "price_change": -29.2322,
+      "volatility": 0.085853,
+      "volume_24h": 28441159.74,
+      "score": 2441772.22
     },
     {
-      "symbol": "ETHUSDT",
-      "price_change": -5.1311,
-      "volatility": 0.012557,
-      "volume_24h": 2799341891.11,
-      "score": 35151041.37
+      "symbol": "AGLDUSDT",
+      "price_change": -18.5871,
+      "volatility": 0.093811,
+      "volume_24h": 66359895.16,
+      "score": 6225302.83
+    },
+    {
+      "symbol": "HUSDT",
+      "price_change": -18.5569,
+      "volatility": 0.072063,
+      "volume_24h": 6092906.52,
+      "score": 439074.63
+    },
+    {
+      "symbol": "TRIAUSDT",
+      "price_change": 17.825,
+      "volatility": 0.053526,
+      "volume_24h": 3170818.67,
+      "score": 169721.88
+    },
+    {
+      "symbol": "PIPPINUSDT",
+      "price_change": 17.8188,
+      "volatility": 0.048098,
+      "volume_24h": 41113918.51,
+      "score": 1977480.25
+    },
+    {
+      "symbol": "FARTCOINUSDT",
+      "price_change": -17.2,
+      "volatility": 0.033748,
+      "volume_24h": 14240420.53,
+      "score": 480579.31
+    },
+    {
+      "symbol": "FUNUSDT",
+      "price_change": 15.9784,
+      "volatility": 0.034877,
+      "volume_24h": 5324963.48,
+      "score": 185717.0
+    },
+    {
+      "symbol": "NAORISUSDT",
+      "price_change": -15.864,
+      "volatility": 0.070555,
+      "volume_24h": 3034277.96,
+      "score": 214082.21
+    },
+    {
+      "symbol": "AINUSDT",
+      "price_change": 15.0451,
+      "volatility": 0.044785,
+      "volume_24h": 416791.54,
+      "score": 18665.93
+    },
+    {
+      "symbol": "SANTOSUSDT",
+      "price_change": -14.734,
+      "volatility": 0.030725,
+      "volume_24h": 351712.81,
+      "score": 10806.51
+    },
+    {
+      "symbol": "IRUSDT",
+      "price_change": -14.2391,
+      "volatility": 0.050591,
+      "volume_24h": 693440.33,
+      "score": 35081.83
+    },
+    {
+      "symbol": "DEXEUSDT",
+      "price_change": 13.8294,
+      "volatility": 0.044577,
+      "volume_24h": 1530800.72,
+      "score": 68238.79
+    },
+    {
+      "symbol": "SNXUSDT",
+      "price_change": -13.5911,
+      "volatility": 0.033779,
+      "volume_24h": 3821079.64,
+      "score": 129074.02
     }
   ],
   "results": [
     {
-      "symbol": "SOLUSDT",
-      "price_change": -5.7704,
-      "volatility": 0.012737,
-      "volume_24h": 557365189.65,
-      "score": 7099216.72
+      "symbol": "RAVEUSDT",
+      "price_change": -55.9955,
+      "volatility": 0.415192,
+      "volume_24h": 25019207.69,
+      "score": 10387769.75
     },
     {
-      "symbol": "AVAXUSDT",
-      "price_change": -5.6927,
-      "volatility": 0.014862,
-      "volume_24h": 10050676.74,
-      "score": 149371.64
+      "symbol": "ESPUSDT",
+      "price_change": 40.7377,
+      "volatility": 0.119984,
+      "volume_24h": 43684258.09,
+      "score": 5241415.35
+    },
+    {
+      "symbol": "MYXUSDT",
+      "price_change": -29.2322,
+      "volatility": 0.085853,
+      "volume_24h": 28441159.74,
+      "score": 2441772.22
+    },
+    {
+      "symbol": "AGLDUSDT",
+      "price_change": -18.5871,
+      "volatility": 0.093811,
+      "volume_24h": 66359895.16,
+      "score": 6225302.83
+    },
+    {
+      "symbol": "HUSDT",
+      "price_change": -18.5569,
+      "volatility": 0.072063,
+      "volume_24h": 6092906.52,
+      "score": 439074.63
+    },
+    {
+      "symbol": "TRIAUSDT",
+      "price_change": 17.825,
+      "volatility": 0.053526,
+      "volume_24h": 3170818.67,
+      "score": 169721.88
+    },
+    {
+      "symbol": "PIPPINUSDT",
+      "price_change": 17.8188,
+      "volatility": 0.048098,
+      "volume_24h": 41113918.51,
+      "score": 1977480.25
+    },
+    {
+      "symbol": "FARTCOINUSDT",
+      "price_change": -17.2,
+      "volatility": 0.033748,
+      "volume_24h": 14240420.53,
+      "score": 480579.31
+    },
+    {
+      "symbol": "FUNUSDT",
+      "price_change": 15.9784,
+      "volatility": 0.034877,
+      "volume_24h": 5324963.48,
+      "score": 185717.0
+    },
+    {
+      "symbol": "NAORISUSDT",
+      "price_change": -15.864,
+      "volatility": 0.070555,
+      "volume_24h": 3034277.96,
+      "score": 214082.21
+    },
+    {
+      "symbol": "AINUSDT",
+      "price_change": 15.0451,
+      "volatility": 0.044785,
+      "volume_24h": 416791.54,
+      "score": 18665.93
+    },
+    {
+      "symbol": "SANTOSUSDT",
+      "price_change": -14.734,
+      "volatility": 0.030725,
+      "volume_24h": 351712.81,
+      "score": 10806.51
+    },
+    {
+      "symbol": "IRUSDT",
+      "price_change": -14.2391,
+      "volatility": 0.050591,
+      "volume_24h": 693440.33,
+      "score": 35081.83
+    },
+    {
+      "symbol": "DEXEUSDT",
+      "price_change": 13.8294,
+      "volatility": 0.044577,
+      "volume_24h": 1530800.72,
+      "score": 68238.79
+    },
+    {
+      "symbol": "SNXUSDT",
+      "price_change": -13.5911,
+      "volatility": 0.033779,
+      "volume_24h": 3821079.64,
+      "score": 129074.02
+    },
+    {
+      "symbol": "OPNUSDT",
+      "price_change": -13.0142,
+      "volatility": 0.034945,
+      "volume_24h": 11534834.82,
+      "score": 403083.94
+    },
+    {
+      "symbol": "BCHUSDT",
+      "price_change": -12.9491,
+      "volatility": 0.033005,
+      "volume_24h": 41180570.09,
+      "score": 1359144.72
+    },
+    {
+      "symbol": "SENTUSDT",
+      "price_change": 12.4071,
+      "volatility": 0.06132,
+      "volume_24h": 4129321.99,
+      "score": 253209.63
+    },
+    {
+      "symbol": "MAGMAUSDT",
+      "price_change": -12.0255,
+      "volatility": 0.042028,
+      "volume_24h": 473856.17,
+      "score": 19915.15
+    },
+    {
+      "symbol": "ARPAUSDT",
+      "price_change": -11.9816,
+      "volatility": 0.034373,
+      "volume_24h": 577892.13,
+      "score": 19863.79
+    },
+    {
+      "symbol": "IBMUSDT",
+      "price_change": -11.9118,
+      "volatility": 0.050511,
+      "volume_24h": 2953370.12,
+      "score": 149177.02
+    },
+    {
+      "symbol": "RIVERUSDT",
+      "price_change": 11.8851,
+      "volatility": 0.03628,
+      "volume_24h": 14754081.37,
+      "score": 535282.88
+    },
+    {
+      "symbol": "AZTECUSDT",
+      "price_change": -11.8326,
+      "volatility": 0.019757,
+      "volume_24h": 13217358.89,
+      "score": 261129.81
+    },
+    {
+      "symbol": "APRUSDT",
+      "price_change": -11.8111,
+      "volatility": 0.044198,
+      "volume_24h": 945809.96,
+      "score": 41802.92
+    },
+    {
+      "symbol": "GIGAUSDT",
+      "price_change": -11.3412,
+      "volatility": 0.038521,
+      "volume_24h": 233912.33,
+      "score": 9010.62
+    },
+    {
+      "symbol": "BELUSDT",
+      "price_change": -10.7651,
+      "volatility": 0.031082,
+      "volume_24h": 988210.67,
+      "score": 30715.99
+    },
+    {
+      "symbol": "PUMPUSDT",
+      "price_change": -10.7532,
+      "volatility": 0.023371,
+      "volume_24h": 7007500.57,
+      "score": 163772.3
+    },
+    {
+      "symbol": "SPXUSDT",
+      "price_change": -10.4242,
+      "volatility": 0.029048,
+      "volume_24h": 1268553.62,
+      "score": 36848.66
+    },
+    {
+      "symbol": "DOLOUSDT",
+      "price_change": -10.3268,
+      "volatility": 0.032895,
+      "volume_24h": 619640.06,
+      "score": 20382.97
+    },
+    {
+      "symbol": "OLUSDT",
+      "price_change": -10.3093,
+      "volatility": 0.022069,
+      "volume_24h": 129052.19,
+      "score": 2848.08
+    },
+    {
+      "symbol": "YGGUSDT",
+      "price_change": -10.2994,
+      "volatility": 0.043463,
+      "volume_24h": 5496761.18,
+      "score": 238903.66
+    },
+    {
+      "symbol": "SOMIUSDT",
+      "price_change": -10.2183,
+      "volatility": 0.018126,
+      "volume_24h": 3660153.24,
+      "score": 66343.87
+    },
+    {
+      "symbol": "BSUUSDT",
+      "price_change": -10.0813,
+      "volatility": 0.033365,
+      "volume_24h": 41773.0,
+      "score": 1393.74
+    },
+    {
+      "symbol": "SPACEUSDT",
+      "price_change": -9.8852,
+      "volatility": 0.029639,
+      "volume_24h": 5076103.24,
+      "score": 150452.0
+    },
+    {
+      "symbol": "KMNOUSDT",
+      "price_change": -9.8793,
+      "volatility": 0.028859,
+      "volume_24h": 104392.11,
+      "score": 3012.69
+    },
+    {
+      "symbol": "GOATUSDT",
+      "price_change": -9.3794,
+      "volatility": 0.021046,
+      "volume_24h": 1110674.19,
+      "score": 23375.78
+    },
+    {
+      "symbol": "AIOUSDT",
+      "price_change": -9.1413,
+      "volatility": 0.036294,
+      "volume_24h": 464446.98,
+      "score": 16856.63
+    },
+    {
+      "symbol": "HYPEUSDT",
+      "price_change": -9.1379,
+      "volatility": 0.023263,
+      "volume_24h": 84580003.33,
+      "score": 1967583.35
+    },
+    {
+      "symbol": "CHRUSDT",
+      "price_change": -9.1124,
+      "volatility": 0.026995,
+      "volume_24h": 482544.02,
+      "score": 13026.49
+    },
+    {
+      "symbol": "ALLOUSDT",
+      "price_change": -9.1075,
+      "volatility": 0.027414,
+      "volume_24h": 1110472.08,
+      "score": 30442.61
+    },
+    {
+      "symbol": "APPUSDT",
+      "price_change": -9.0361,
+      "volatility": 0.036392,
+      "volume_24h": 3218012.67,
+      "score": 117110.06
+    },
+    {
+      "symbol": "BEAMUSDT",
+      "price_change": -8.9118,
+      "volatility": 0.024411,
+      "volume_24h": 268584.1,
+      "score": 6556.28
+    },
+    {
+      "symbol": "JTOUSDT",
+      "price_change": -8.8984,
+      "volatility": 0.019962,
+      "volume_24h": 1409199.59,
+      "score": 28131.02
+    },
+    {
+      "symbol": "RPLUSDT",
+      "price_change": -8.8579,
+      "volatility": 0.027319,
+      "volume_24h": 805138.69,
+      "score": 21995.55
+    },
+    {
+      "symbol": "BIRBUSDT",
+      "price_change": -8.7357,
+      "volatility": 0.014984,
+      "volume_24h": 1256311.39,
+      "score": 18824.32
+    },
+    {
+      "symbol": "GRIFFAINUSDT",
+      "price_change": -8.5847,
+      "volatility": 0.024328,
+      "volume_24h": 288198.14,
+      "score": 7011.15
+    },
+    {
+      "symbol": "INXUSDT",
+      "price_change": -8.4589,
+      "volatility": 0.021629,
+      "volume_24h": 798179.54,
+      "score": 17263.74
+    },
+    {
+      "symbol": "1MCHEEMSUSDT",
+      "price_change": -8.3717,
+      "volatility": 0.016381,
+      "volume_24h": 41590.01,
+      "score": 681.28
+    },
+    {
+      "symbol": "GIGGLEUSDT",
+      "price_change": -8.37,
+      "volatility": 0.020007,
+      "volume_24h": 1164719.55,
+      "score": 23302.51
+    },
+    {
+      "symbol": "CTKUSDT",
+      "price_change": -8.2695,
+      "volatility": 0.041495,
+      "volume_24h": 254888.3,
+      "score": 10576.57
+    },
+    {
+      "symbol": "TUTUSDT",
+      "price_change": -8.2153,
+      "volatility": 0.02349,
+      "volume_24h": 118129.13,
+      "score": 2774.9
+    },
+    {
+      "symbol": "SIRENUSDT",
+      "price_change": 8.2078,
+      "volatility": 0.024018,
+      "volume_24h": 13415281.01,
+      "score": 322206.19
+    },
+    {
+      "symbol": "CARVUSDT",
+      "price_change": -8.125,
+      "volatility": 0.016699,
+      "volume_24h": 203617.29,
+      "score": 3400.21
+    },
+    {
+      "symbol": "SXTUSDT",
+      "price_change": 8.04,
+      "volatility": 0.037681,
+      "volume_24h": 866174.04,
+      "score": 32638.63
+    },
+    {
+      "symbol": "FOLKSUSDT",
+      "price_change": -7.9896,
+      "volatility": 0.012986,
+      "volume_24h": 425576.86,
+      "score": 5526.39
+    },
+    {
+      "symbol": "METUSDT",
+      "price_change": -7.9357,
+      "volatility": 0.027655,
+      "volume_24h": 231719.77,
+      "score": 6408.17
+    },
+    {
+      "symbol": "BEATUSDT",
+      "price_change": -7.8921,
+      "volatility": 0.033394,
+      "volume_24h": 2630406.16,
+      "score": 87839.21
+    },
+    {
+      "symbol": "INUSDT",
+      "price_change": 7.8107,
+      "volatility": 0.042919,
+      "volume_24h": 1051773.97,
+      "score": 45141.19
+    },
+    {
+      "symbol": "KERNELUSDT",
+      "price_change": 7.8028,
+      "volatility": 0.035488,
+      "volume_24h": 814399.77,
+      "score": 28901.3
+    },
+    {
+      "symbol": "VINEUSDT",
+      "price_change": -7.6793,
+      "volatility": 0.020759,
+      "volume_24h": 214662.55,
+      "score": 4456.17
+    },
+    {
+      "symbol": "SONICUSDT",
+      "price_change": -7.5834,
+      "volatility": 0.012625,
+      "volume_24h": 368350.06,
+      "score": 4650.6
+    },
+    {
+      "symbol": "KAVAUSDT",
+      "price_change": -7.4825,
+      "volatility": 0.016384,
+      "volume_24h": 258477.23,
+      "score": 4234.99
+    },
+    {
+      "symbol": "USUALUSDT",
+      "price_change": -7.4746,
+      "volatility": 0.019147,
+      "volume_24h": 417464.08,
+      "score": 7993.11
+    },
+    {
+      "symbol": "FOGOUSDT",
+      "price_change": 7.4697,
+      "volatility": 0.049183,
+      "volume_24h": 2001484.31,
+      "score": 98438.08
+    },
+    {
+      "symbol": "RAYUSDT",
+      "price_change": -7.3016,
+      "volatility": 0.021606,
+      "volume_24h": 556278.19,
+      "score": 12018.77
+    },
+    {
+      "symbol": "BBUSDT",
+      "price_change": -7.2778,
+      "volatility": 0.017843,
+      "volume_24h": 350097.32,
+      "score": 6246.68
+    },
+    {
+      "symbol": "UMAUSDT",
+      "price_change": 7.2612,
+      "volatility": 0.045253,
+      "volume_24h": 1695799.07,
+      "score": 76740.76
+    },
+    {
+      "symbol": "ETHWUSDT",
+      "price_change": -7.2366,
+      "volatility": 0.021902,
+      "volume_24h": 114169.61,
+      "score": 2500.59
+    },
+    {
+      "symbol": "FORMUSDT",
+      "price_change": -7.2155,
+      "volatility": 0.018302,
+      "volume_24h": 562404.92,
+      "score": 10293.18
+    },
+    {
+      "symbol": "MERLUSDT",
+      "price_change": -7.1817,
+      "volatility": 0.020119,
+      "volume_24h": 488190.77,
+      "score": 9822.13
+    },
+    {
+      "symbol": "PORTALUSDT",
+      "price_change": -7.1649,
+      "volatility": 0.020745,
+      "volume_24h": 261378.21,
+      "score": 5422.28
+    },
+    {
+      "symbol": "BASUSDT",
+      "price_change": 7.1142,
+      "volatility": 0.043455,
+      "volume_24h": 988505.55,
+      "score": 42955.34
+    },
+    {
+      "symbol": "TUSDT",
+      "price_change": -7.0901,
+      "volatility": 0.019031,
+      "volume_24h": 136525.01,
+      "score": 2598.21
+    },
+    {
+      "symbol": "ATUSDT",
+      "price_change": -7.0447,
+      "volatility": 0.010554,
+      "volume_24h": 638988.01,
+      "score": 6743.85
+    },
+    {
+      "symbol": "ZROUSDT",
+      "price_change": -7.0338,
+      "volatility": 0.025806,
+      "volume_24h": 5402904.14,
+      "score": 139425.07
+    },
+    {
+      "symbol": "UBUSDT",
+      "price_change": 6.9973,
+      "volatility": 0.033053,
+      "volume_24h": 1119268.61,
+      "score": 36994.82
+    },
+    {
+      "symbol": "DENTUSDT",
+      "price_change": -6.9178,
+      "volatility": 0.019985,
+      "volume_24h": 104116.33,
+      "score": 2080.77
+    },
+    {
+      "symbol": "TRUUSDT",
+      "price_change": -6.8841,
+      "volatility": 0.016358,
+      "volume_24h": 50602.58,
+      "score": 827.74
+    },
+    {
+      "symbol": "B2USDT",
+      "price_change": 6.8559,
+      "volatility": 0.028275,
+      "volume_24h": 1650008.95,
+      "score": 46653.45
+    },
+    {
+      "symbol": "METISUSDT",
+      "price_change": -6.8418,
+      "volatility": 0.015507,
+      "volume_24h": 206580.16,
+      "score": 3203.38
+    },
+    {
+      "symbol": "MLNUSDT",
+      "price_change": -6.8325,
+      "volatility": 0.016094,
+      "volume_24h": 103464.22,
+      "score": 1665.2
+    },
+    {
+      "symbol": "MOVRUSDT",
+      "price_change": -6.8063,
+      "volatility": 0.019325,
+      "volume_24h": 116239.44,
+      "score": 2246.37
+    },
+    {
+      "symbol": "LINEAUSDT",
+      "price_change": -6.7691,
+      "volatility": 0.017636,
+      "volume_24h": 715470.71,
+      "score": 12617.82
+    },
+    {
+      "symbol": "STGUSDT",
+      "price_change": -6.7432,
+      "volatility": 0.024488,
+      "volume_24h": 593662.43,
+      "score": 14537.45
+    },
+    {
+      "symbol": "HEIUSDT",
+      "price_change": -6.7308,
+      "volatility": 0.011655,
+      "volume_24h": 98631.6,
+      "score": 1149.53
+    },
+    {
+      "symbol": "WOOUSDT",
+      "price_change": -6.716,
+      "volatility": 0.011823,
+      "volume_24h": 306970.43,
+      "score": 3629.39
+    },
+    {
+      "symbol": "VTHOUSDT",
+      "price_change": 6.6779,
+      "volatility": 0.026018,
+      "volume_24h": 484111.35,
+      "score": 12595.81
+    },
+    {
+      "symbol": "STRKUSDT",
+      "price_change": -6.599,
+      "volatility": 0.017755,
+      "volume_24h": 899473.33,
+      "score": 15969.93
+    },
+    {
+      "symbol": "ORDIUSDT",
+      "price_change": -6.5731,
+      "volatility": 0.021388,
+      "volume_24h": 1495653.36,
+      "score": 31989.78
+    },
+    {
+      "symbol": "SYRUPUSDT",
+      "price_change": -6.5395,
+      "volatility": 0.01388,
+      "volume_24h": 421199.14,
+      "score": 5846.31
+    },
+    {
+      "symbol": "DYDXUSDT",
+      "price_change": -6.3224,
+      "volatility": 0.020332,
+      "volume_24h": 1749399.01,
+      "score": 35569.42
+    },
+    {
+      "symbol": "HAEDALUSDT",
+      "price_change": -6.2804,
+      "volatility": 0.015937,
+      "volume_24h": 237912.14,
+      "score": 3791.49
+    },
+    {
+      "symbol": "ACNUSDT",
+      "price_change": -6.2135,
+      "volatility": 0.02685,
+      "volume_24h": 1462332.31,
+      "score": 39264.3
+    },
+    {
+      "symbol": "DRIFTUSDT",
+      "price_change": -6.1556,
+      "volatility": 0.01804,
+      "volume_24h": 159236.91,
+      "score": 2872.63
+    },
+    {
+      "symbol": "CVXUSDT",
+      "price_change": -6.1473,
+      "volatility": 0.013422,
+      "volume_24h": 429849.16,
+      "score": 5769.41
+    },
+    {
+      "symbol": "SYNUSDT",
+      "price_change": -6.1254,
+      "volatility": 0.013016,
+      "volume_24h": 215726.23,
+      "score": 2807.96
+    },
+    {
+      "symbol": "HFTUSDT",
+      "price_change": -6.092,
+      "volatility": 0.018991,
+      "volume_24h": 133205.68,
+      "score": 2529.66
+    },
+    {
+      "symbol": "XMRUSDT",
+      "price_change": -6.0622,
+      "volatility": 0.016568,
+      "volume_24h": 7667907.69,
+      "score": 127044.87
+    },
+    {
+      "symbol": "TOWNSUSDT",
+      "price_change": -6.0303,
+      "volatility": 0.017621,
+      "volume_24h": 156887.68,
+      "score": 2764.54
+    },
+    {
+      "symbol": "IDUSDT",
+      "price_change": -6.0113,
+      "volatility": 0.010373,
+      "volume_24h": 412614.82,
+      "score": 4279.92
+    },
+    {
+      "symbol": "MUBARAKUSDT",
+      "price_change": -6.0027,
+      "volatility": 0.010962,
+      "volume_24h": 485163.06,
+      "score": 5318.16
+    },
+    {
+      "symbol": "CATIUSDT",
+      "price_change": -6.0,
+      "volatility": 0.026668,
+      "volume_24h": 561249.29,
+      "score": 14967.4
+    },
+    {
+      "symbol": "CETUSUSDT",
+      "price_change": -5.9829,
+      "volatility": 0.014701,
+      "volume_24h": 131192.04,
+      "score": 1928.62
+    },
+    {
+      "symbol": "QUSDT",
+      "price_change": -5.9738,
+      "volatility": 0.034694,
+      "volume_24h": 808694.37,
+      "score": 28057.15
+    },
+    {
+      "symbol": "COINUSDT",
+      "price_change": -5.9117,
+      "volatility": 0.020139,
+      "volume_24h": 3598948.19,
+      "score": 72477.78
+    },
+    {
+      "symbol": "SLPUSDT",
+      "price_change": -5.9003,
+      "volatility": 0.013384,
+      "volume_24h": 76931.71,
+      "score": 1029.64
+    },
+    {
+      "symbol": "PARTIUSDT",
+      "price_change": -5.8866,
+      "volatility": 0.020729,
+      "volume_24h": 977878.02,
+      "score": 20270.51
     },
     {
       "symbol": "INJUSDT",
-      "price_change": -5.2256,
-      "volatility": 0.014428,
-      "volume_24h": 4812464.1,
-      "score": 69434.83
+      "price_change": -5.874,
+      "volatility": 0.014468,
+      "volume_24h": 4792038.33,
+      "score": 69330.48
+    },
+    {
+      "symbol": "JOEUSDT",
+      "price_change": -5.8333,
+      "volatility": 0.01049,
+      "volume_24h": 12771.82,
+      "score": 133.98
+    },
+    {
+      "symbol": "DEEPUSDT",
+      "price_change": -5.814,
+      "volatility": 0.0172,
+      "volume_24h": 442845.74,
+      "score": 7617.13
+    },
+    {
+      "symbol": "ATAUSDT",
+      "price_change": -5.7789,
+      "volatility": 0.008248,
+      "volume_24h": 140385.99,
+      "score": 1157.93
+    },
+    {
+      "symbol": "AEROUSDT",
+      "price_change": -5.7479,
+      "volatility": 0.017131,
+      "volume_24h": 1423057.2,
+      "score": 24378.7
+    },
+    {
+      "symbol": "STBLUSDT",
+      "price_change": -5.7373,
+      "volatility": 0.00965,
+      "volume_24h": 307879.77,
+      "score": 2970.91
+    },
+    {
+      "symbol": "STOUSDT",
+      "price_change": -5.7133,
+      "volatility": 0.027694,
+      "volume_24h": 285226.9,
+      "score": 7899.2
+    },
+    {
+      "symbol": "BROCCOLIUSDT",
+      "price_change": -5.6972,
+      "volatility": 0.016537,
+      "volume_24h": 425361.16,
+      "score": 7034.12
+    },
+    {
+      "symbol": "AVAXUSDT",
+      "price_change": -5.6869,
+      "volatility": 0.014828,
+      "volume_24h": 10049983.57,
+      "score": 149024.88
+    },
+    {
+      "symbol": "ATOMUSDT",
+      "price_change": -5.6858,
+      "volatility": 0.019079,
+      "volume_24h": 3020873.63,
+      "score": 57634.79
+    },
+    {
+      "symbol": "SOLUSDT",
+      "price_change": -5.6628,
+      "volatility": 0.012697,
+      "volume_24h": 557326725.1,
+      "score": 7076499.03
+    },
+    {
+      "symbol": "ATHUSDT",
+      "price_change": -5.6604,
+      "volatility": 0.014109,
+      "volume_24h": 98881.82,
+      "score": 1395.1
+    },
+    {
+      "symbol": "BIGTIMEUSDT",
+      "price_change": -5.6516,
+      "volatility": 0.017307,
+      "volume_24h": 331402.23,
+      "score": 5735.56
+    },
+    {
+      "symbol": "ARUSDT",
+      "price_change": -5.5809,
+      "volatility": 0.015937,
+      "volume_24h": 697027.74,
+      "score": 11108.7
+    },
+    {
+      "symbol": "C98USDT",
+      "price_change": -5.5535,
+      "volatility": 0.017038,
+      "volume_24h": 984937.26,
+      "score": 16781.36
+    },
+    {
+      "symbol": "VIRTUALUSDT",
+      "price_change": -5.5047,
+      "volatility": 0.021434,
+      "volume_24h": 5598681.23,
+      "score": 119999.56
+    },
+    {
+      "symbol": "MAUSDT",
+      "price_change": -5.4852,
+      "volatility": 0.02396,
+      "volume_24h": 1069551.58,
+      "score": 25626.75
+    },
+    {
+      "symbol": "MINAUSDT",
+      "price_change": -5.4545,
+      "volatility": 0.014853,
+      "volume_24h": 196641.36,
+      "score": 2920.76
+    },
+    {
+      "symbol": "JSTUSDT",
+      "price_change": 5.4495,
+      "volatility": 0.022678,
+      "volume_24h": 520654.66,
+      "score": 11807.21
+    },
+    {
+      "symbol": "BABYUSDT",
+      "price_change": -5.4097,
+      "volatility": 0.016633,
+      "volume_24h": 71840.25,
+      "score": 1194.91
+    },
+    {
+      "symbol": "FLUIDUSDT",
+      "price_change": -5.4002,
+      "volatility": 0.015377,
+      "volume_24h": 98035.29,
+      "score": 1507.45
+    },
+    {
+      "symbol": "RDNTUSDT",
+      "price_change": -5.3706,
+      "volatility": 0.018622,
+      "volume_24h": 57788.93,
+      "score": 1076.12
+    },
+    {
+      "symbol": "STORJUSDT",
+      "price_change": -5.2745,
+      "volatility": 0.010915,
+      "volume_24h": 153704.29,
+      "score": 1677.75
+    },
+    {
+      "symbol": "ZENUSDT",
+      "price_change": -5.2742,
+      "volatility": 0.013364,
+      "volume_24h": 1372660.89,
+      "score": 18344.26
+    },
+    {
+      "symbol": "CAKEUSDT",
+      "price_change": -5.2329,
+      "volatility": 0.016848,
+      "volume_24h": 736864.7,
+      "score": 12414.84
+    },
+    {
+      "symbol": "GMTUSDT",
+      "price_change": -5.1903,
+      "volatility": 0.011663,
+      "volume_24h": 340707.32,
+      "score": 3973.79
+    },
+    {
+      "symbol": "REDUSDT",
+      "price_change": -5.1798,
+      "volatility": 0.012694,
+      "volume_24h": 165637.35,
+      "score": 2102.62
+    },
+    {
+      "symbol": "SYSUSDT",
+      "price_change": -5.1724,
+      "volatility": 0.01981,
+      "volume_24h": 46472.8,
+      "score": 920.61
+    },
+    {
+      "symbol": "HOODUSDT",
+      "price_change": -5.1661,
+      "volatility": 0.017829,
+      "volume_24h": 2232420.34,
+      "score": 39801.04
+    },
+    {
+      "symbol": "ONDOUSDT",
+      "price_change": -5.1507,
+      "volatility": 0.013003,
+      "volume_24h": 3953839.77,
+      "score": 51411.76
+    },
+    {
+      "symbol": "VANAUSDT",
+      "price_change": -5.1402,
+      "volatility": 0.010073,
+      "volume_24h": 592430.73,
+      "score": 5967.81
+    },
+    {
+      "symbol": "BANDUSDT",
+      "price_change": -5.1223,
+      "volatility": 0.025277,
+      "volume_24h": 33341.15,
+      "score": 842.77
+    },
+    {
+      "symbol": "GLMUSDT",
+      "price_change": -5.1203,
+      "volatility": 0.017373,
+      "volume_24h": 235090.28,
+      "score": 4084.18
+    },
+    {
+      "symbol": "4USDT",
+      "price_change": -5.0743,
+      "volatility": 0.017317,
+      "volume_24h": 243115.35,
+      "score": 4210.13
+    },
+    {
+      "symbol": "ORDERUSDT",
+      "price_change": -5.0704,
+      "volatility": 0.01431,
+      "volume_24h": 213100.12,
+      "score": 3049.51
+    },
+    {
+      "symbol": "CROSSUSDT",
+      "price_change": -5.0536,
+      "volatility": 0.00966,
+      "volume_24h": 446554.84,
+      "score": 4313.68
+    },
+    {
+      "symbol": "LPTUSDT",
+      "price_change": 5.051,
+      "volatility": 0.019134,
+      "volume_24h": 1826546.96,
+      "score": 34948.27
+    },
+    {
+      "symbol": "NILUSDT",
+      "price_change": -5.0344,
+      "volatility": 0.014124,
+      "volume_24h": 313826.51,
+      "score": 4432.43
+    },
+    {
+      "symbol": "CYSUSDT",
+      "price_change": -5.0207,
+      "volatility": 0.027419,
+      "volume_24h": 813672.7,
+      "score": 22310.09
     },
     {
       "symbol": "ETHUSDT",
-      "price_change": -5.1311,
-      "volatility": 0.012557,
-      "volume_24h": 2799341891.11,
-      "score": 35151041.37
+      "price_change": -5.0062,
+      "volatility": 0.012574,
+      "volume_24h": 2795761043.22,
+      "score": 35154571.01
+    },
+    {
+      "symbol": "MOVEUSDT",
+      "price_change": -5.0022,
+      "volatility": 0.015101,
+      "volume_24h": 332844.5,
+      "score": 5026.15
     }
   ]
 }
