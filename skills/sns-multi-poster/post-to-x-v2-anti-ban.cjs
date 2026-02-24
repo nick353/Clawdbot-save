@@ -67,15 +67,29 @@ async function main() {
     await bypassChromeDetection(page);
     await page.emulateTimezone('Asia/Tokyo');
 
-    const cookies = JSON.parse(fs.readFileSync(COOKIES_PATH, 'utf8'));
+    const cookies = JSON.parse(fs.readFileSync(COOKIES_PATH, 'utf8')).map(c => ({
+      name: c.name,
+      value: decodeURIComponent(c.value),
+      domain: c.domain || '.x.com',
+      path: c.path || '/',
+      secure: c.secure !== false,
+      httpOnly: c.httpOnly === true,
+      sameSite: c.sameSite === 'no_restriction' ? 'None' : (c.sameSite || 'Lax'),
+      expires: c.expirationDate ? Math.floor(c.expirationDate) : undefined,
+    }));
     await page.setCookie(...cookies);
 
     await randomDelay(2000, 5000);
 
-    await page.goto('https://x.com/compose/post', { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.goto('https://x.com/compose/post', { waitUntil: 'networkidle2', timeout: 60000 });
     console.log('✅ X読み込み完了');
 
-    await randomDelay(3000, 6000);
+    // 追加待機（ページが完全に表示されるまで）
+    await randomDelay(8000, 12000);
+
+    // スクリーンショット（デバッグ用）
+    await page.screenshot({ path: '/tmp/x-debug-before-search.png' });
+    console.log('📸 スクリーンショット保存: /tmp/x-debug-before-search.png');
 
     // ツイート入力（複数セレクタを試す）
     const tweetBoxSelectors = [
@@ -93,9 +107,14 @@ async function main() {
         console.log(`✅ ツイート入力欄を発見: ${selector}`);
         break;
       }
+      console.log(`⚠️  ツイート入力欄なし: ${selector}`);
     }
 
-    if (!tweetBox) throw new Error('ツイート入力欄が見つかりません');
+    if (!tweetBox) {
+      await page.screenshot({ path: '/tmp/x-debug-no-input.png' });
+      console.log('📸 エラースクリーンショット: /tmp/x-debug-no-input.png');
+      throw new Error('ツイート入力欄が見つかりません');
+    }
 
     await tweetBox.click();
     await randomDelay(500, 1000);
