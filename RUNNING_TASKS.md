@@ -12,3 +12,9 @@
   5. 結果をDiscord #sns-投稿に報告
 - **所要時間**: 5-10分程度
 - **完了予定**: 2026-02-24 14:40 UTC
+
+## $(date +%Y-%m-%d\ %H:%M) - SNS本番投稿（Google Drive動画）
+- **タスク**: ProcessedVideos/0217 (1).mp4 を5つのSNSに本番投稿
+- **セッション**: swift-nudibranch
+- **開始**: $(date)
+- **状態**: 実行中 🚀
