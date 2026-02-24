@@ -19,7 +19,16 @@ async function analyzeThreadsModal() {
     console.error(`❌ Cookie not found: ${COOKIE_PATH}`);
     process.exit(1);
   }
-  const cookies = JSON.parse(fs.readFileSync(COOKIE_PATH, 'utf-8'));
+  const rawCookies = JSON.parse(fs.readFileSync(COOKIE_PATH, 'utf-8'));
+  
+  // sameSite を正規化（Playwright は Strict|Lax|None のみ受け付ける）
+  const cookies = rawCookies.map(cookie => {
+    const normalized = { ...cookie };
+    if (!['Strict', 'Lax', 'None'].includes(normalized.sameSite)) {
+      normalized.sameSite = 'Lax'; // デフォルト値
+    }
+    return normalized;
+  });
 
   const browser = await playwright.chromium.launch({
     headless: true,
