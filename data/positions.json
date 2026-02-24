@@ -38,21 +38,21 @@
       "lowest_price": null,
       "entry_reason": "\u30ed\u30f3\u30b0: SMA/EMA\u53cd\u767a + \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9"
     },
-    "AVAXUSDT": {
-      "entry_time": "2026-02-24T00:01:17.938801",
-      "entry_price": 8.39,
-      "quantity": 398.4467622105989,
-      "position_size": 3342.9683349469246,
+    "INJUSDT": {
+      "entry_time": "2026-02-22T00:02:09.221494",
+      "entry_price": 3.74,
+      "quantity": 524.551755052083,
+      "position_size": 1961.8235638947904,
       "position_type": "short",
-      "stop_loss": 8.5578,
-      "take_profit": 7.9705,
+      "stop_loss": 3.9270000000000005,
+      "take_profit": 3.366,
       "trailing_stop": null,
       "trailing_stop_used": false,
       "highest_price": null,
-      "lowest_price": 8.37,
-      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
+      "lowest_price": 3.74,
+      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
     }
   },
-  "capital": 871.5992050243935,
-  "timestamp": "2026-02-24T00:06:04.085943"
+  "capital": 2032.9567907097048,
+  "timestamp": "2026-02-24T00:26:09.036172"
 }
