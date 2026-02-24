@@ -128,13 +128,17 @@ async function main() {
     await createButton.click();
     console.log('✅ 作成ボタンをクリック');
 
+    // モーダルが開くまで待機
+    await page.waitForTimeout(3000);
+
     // ファイルアップロード
     console.log('');
     console.log('📸 画像をアップロードしています...');
     const fileInput = await waitFor(
       page,
-      ['input[type="file"]'],
-      'file input'
+      ['input[type="file"][accept*="image"]', 'input[type="file"]'],
+      'file input',
+      60000 // タイムアウト60秒に延長
     );
 
     await fileInput.setInputFiles(path.resolve(imagePath));

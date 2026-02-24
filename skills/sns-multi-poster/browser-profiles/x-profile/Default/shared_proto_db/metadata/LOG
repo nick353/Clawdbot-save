@@ -1,5 +1,5 @@
-2026/02/24-04:06:45.249 1821a Recovering log #3
-2026/02/24-04:06:45.288 1821a Level-0 table #5: started
-2026/02/24-04:06:45.292 1821a Level-0 table #5: 154 bytes OK
-2026/02/24-04:06:45.300 1821a Delete type=0 #3
-2026/02/24-04:06:45.300 1821a Delete type=3 #2
+2026/02/24-04:57:54.246 193db Recovering log #6
+2026/02/24-04:57:54.265 193db Level-0 table #8: started
+2026/02/24-04:57:54.269 193db Level-0 table #8: 124 bytes OK
+2026/02/24-04:57:54.277 193db Delete type=0 #6
+2026/02/24-04:57:54.277 193db Delete type=3 #4

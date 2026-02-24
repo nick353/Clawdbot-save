@@ -1,0 +1,16 @@
+{
+  "post_id": "2026-02-24_007",
+  "timestamp": "2026-02-24T04:55:31Z",
+  "media_path": "/root/clawd/assets/test-image.jpg",
+  "media_type": "image",
+  "anti_ban_version": "playwright-cookie",
+  "dry_run": false,
+  "caption": "\u3010\u518d\u4fee\u6b63\u5f8c\u30c6\u30b9\u30c8\u3011Cookie\u30fb\u30bb\u30ec\u30af\u30bf\u5b8c\u5168\u4fee\u6b63\u7248 \ud83c\udf89 #\u30c6\u30b9\u30c8\u6295\u7a3f",
+  "platforms": {
+    "instagram": {"status": "failed"},
+    "threads": {"status": "failed"},
+    "x": {"status": "failed"},
+    "facebook": {"status": "success"},
+    "pinterest": {"status": "failed", "board": "Animal"}
+  }
+}

@@ -1,2 +1,5 @@
-2026/02/24-04:01:15.020 17d74 Creating DB /root/clawd/skills/sns-multi-poster/browser-profiles/pinterest-profile/Default/shared_proto_db/metadata since it was missing.
-2026/02/24-04:01:15.087 17d74 Delete type=3 #1
+2026/02/24-04:07:50.958 1830c Recovering log #3
+2026/02/24-04:07:51.036 1830c Level-0 table #5: started
+2026/02/24-04:07:51.047 1830c Level-0 table #5: 154 bytes OK
+2026/02/24-04:07:51.056 1830c Delete type=0 #3
+2026/02/24-04:07:51.056 1830c Delete type=3 #2

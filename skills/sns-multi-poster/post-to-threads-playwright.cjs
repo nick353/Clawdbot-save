@@ -123,7 +123,7 @@ async function main() {
       'new post button'
     );
 
-    await newPostButton.click();
+    await newPostButton.click({ force: true });
     console.log('✅ 新規投稿ボタンをクリック');
 
     // テキストを入力
@@ -143,7 +143,7 @@ async function main() {
       'text input'
     );
 
-    await textInput.click();
+    await textInput.click({ force: true });
     await textInput.fill(text);
     console.log(`✅ テキスト入力完了: ${text.substring(0, 50)}...`);
 
@@ -171,7 +171,7 @@ async function main() {
       10000
     );
 
-    await postButton.click();
+    await postButton.click({ force: true });
     console.log('✅ 投稿ボタンをクリック');
 
     // 投稿完了を待機
