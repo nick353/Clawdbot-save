@@ -100,24 +100,36 @@ async function main() {
     console.log('⏳ Waiting for page update after upload (15s)...');
     
     // Next ボタンを待つ（最大15秒）
-    let nextVisible = false;
+    let nextBtn = null;
     for (let i = 0; i < 15; i++) {
-      const nextBtn = page.locator('button:has-text("Next")').first();
       try {
-        if (await nextBtn.isVisible({ timeout: 1000 })) {
-          nextVisible = true;
-          console.log(`✅ Next button appeared after ${i + 1} seconds`);
-          break;
+        const buttons = await page.locator('button').all();
+        
+        // "Next" を含むボタンを探す（大文字小文字区別なし、部分一致）
+        for (const btn of buttons) {
+          const text = (await btn.textContent() || '').trim();
+          if (/next/i.test(text)) {
+            const isVisible = await btn.isVisible();
+            if (isVisible) {
+              nextBtn = btn;
+              console.log(`✅ Next button found after ${i + 1} seconds: "${text}"`);
+              break;
+            }
+          }
         }
-      } catch {
-        // Still waiting
+        
+        if (nextBtn) break;
+        
         if (i % 3 === 0) {
           console.log(`  Still waiting (${i}s)...`);
         }
+        await page.waitForTimeout(1000);
+      } catch (e) {
+        // Continue waiting
       }
     }
 
-    if (!nextVisible) {
+    if (!nextBtn) {
       // デバッグスクリーンショット
       await page.screenshot({ path: '/tmp/instagram-v12-waiting.png', fullPage: true });
       
@@ -134,12 +146,38 @@ async function main() {
 
     // Click Next
     console.log('🖱️ Clicking Next...');
-    const nextBtn = page.locator('button:has-text("Next")').first();
     await nextBtn.click();
     console.log('✅ Next clicked');
 
     // Wait for next page
     await page.waitForTimeout(3000);
+    
+    // Check if we need to click Next again
+    const buttonsAfterFirst = await page.locator('button').all();
+    const buttonTexts = [];
+    for (const btn of buttonsAfterFirst) {
+      const text = (await btn.textContent() || '').trim();
+      buttonTexts.push(text);
+    }
+    console.log('📊 Buttons after first Next click:', buttonTexts);
+    
+    // If we still see "Next" button (not Share), click it again
+    if (buttonTexts.some(t => /next/i.test(t)) && !buttonTexts.some(t => /share/i.test(t))) {
+      console.log('🔄 Need to click Next again...');
+      const nextBtn2 = await page.locator('button').all();
+      for (const btn of nextBtn2) {
+        const text = (await btn.textContent() || '').trim();
+        if (/next/i.test(text)) {
+          const isVisible = await btn.isVisible();
+          if (isVisible) {
+            await btn.click();
+            console.log('✅ Next clicked (2nd time)');
+            await page.waitForTimeout(3000);
+            break;
+          }
+        }
+      }
+    }
 
     // Caption (optional)
     if (captionArg.trim()) {
@@ -153,7 +191,36 @@ async function main() {
 
     // Share
     console.log('📤 Clicking Share...');
-    const shareBtn = page.locator('button:has-text("Share")').first();
+    
+    // "Share" ボタンを探す（柔軟な検索）
+    let shareBtn = null;
+    for (let i = 0; i < 10; i++) {
+      const buttons = await page.locator('button').all();
+      console.log(`  Iteration ${i}: Found ${buttons.length} buttons`);
+      
+      for (const btn of buttons) {
+        const text = (await btn.textContent() || '').trim();
+        const isVisible = await btn.isVisible();
+        console.log(`    Button: "${text}" (visible: ${isVisible})`);
+        
+        if (/share/i.test(text) && isVisible) {
+          shareBtn = btn;
+          console.log(`✅ Share button found: "${text}"`);
+          break;
+        }
+      }
+      
+      if (shareBtn) break;
+      await page.waitForTimeout(1000);
+    }
+    
+    if (!shareBtn) {
+      // デバッグスクリーンショット
+      await page.screenshot({ path: '/tmp/instagram-v12-share-not-found.png', fullPage: true });
+      console.log('📸 Screenshot saved: /tmp/instagram-v12-share-not-found.png');
+      throw new Error('Share button not found');
+    }
+    
     await shareBtn.click();
     console.log('✅ Share clicked');
 

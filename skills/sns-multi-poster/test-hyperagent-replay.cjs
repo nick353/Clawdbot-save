@@ -60,7 +60,10 @@ const DRY_RUN = process.env.DRY_RUN === "true";
   const agent = new HyperAgent({
     llm: llmConfig,
     debug: true,
-    headless: true
+    launchOptions: {
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    }
   });
 
   try {

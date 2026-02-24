@@ -66,7 +66,10 @@ const DRY_RUN = process.env.DRY_RUN === "true";
   const agent = new HyperAgent({
     llm: llmConfig,
     debug: true,
-    headless: true // VPS環境でヘッドレスモード
+    launchOptions: {
+      headless: true, // VPS環境でヘッドレスモード
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    }
   });
 
   try {
