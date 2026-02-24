@@ -33,10 +33,10 @@
       "take_profit": 0.0556715,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": 0.0488,
+      "highest_price": 0.04886,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
     }
   },
   "capital": 5120.0,
-  "timestamp": "2026-02-24T16:32:32.085796"
+  "timestamp": "2026-02-24T16:42:50.797631"
 }
