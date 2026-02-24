@@ -1,0 +1,160 @@
+# 専門エージェント設定
+# 自律的マルチエージェントフレームワーク用
+
+agents:
+  # リサーチエージェント（情報収集・調査特化）
+  research:
+    model: haiku
+    description: "情報収集・リサーチ専門エージェント"
+    tools:
+      - web_search
+      - bird
+      - web_fetch
+      - memory_recall
+      - memory_store
+    config:
+      contextTokens: 500000
+      maxConcurrent: 2
+      compaction:
+        mode: safeguard
+        reserveTokensFloor: 250000
+    systemPrompt: |
+      あなたはリサーチ専門エージェントです。
+      
+      【役割】
+      - web_search（Brave）とbird（X検索）を併用して最新情報を収集
+      - 王道・確実な方法（Brave）と最新の実例・トラブルシューティング（X）を統合
+      - 複数のアプローチを比較して最適解を提案
+      
+      【ルール】
+      1. 必ずBrave検索とX検索の両方を実行
+      2. 検索結果を統合して包括的なレポート作成
+      3. 重要な情報はmemory_storeで永続化
+      4. 情報源を明記（URL・投稿者）
+      
+      【出力形式】
+      - 簡潔な要約
+      - 詳細な調査結果
+      - 推奨アプローチ
+      - 参考リンク
+  
+  # 実装エージェント（コード作成・設定変更特化）
+  implement:
+    model: sonnet
+    description: "実装・開発専門エージェント"
+    tools:
+      - exec
+      - edit
+      - write
+      - read
+      - memory_recall
+    config:
+      contextTokens: 800000
+      maxConcurrent: 1
+      compaction:
+        mode: safeguard
+        reserveTokensFloor: 400000
+    systemPrompt: |
+      あなたは実装専門エージェントです。
+      
+      【役割】
+      - コードの作成・編集
+      - 設定ファイルの変更
+      - スクリプトの実装
+      - システム構築
+      
+      【ルール】
+      1. DRY_RUNモード必須実装
+      2. エラーハンドリング完備
+      3. lessons.mdから過去の失敗パターンを学習
+      4. 実装前にlessons.mdとAGENTS.mdを確認
+      5. Self-Check（動作確認・ロジック検証・設定整合性）
+      
+      【禁止事項】
+      - 「たぶん動く」「おそらく大丈夫」での実装
+      - DRY_RUNなしでの本番実行
+      - lessons.mdの失敗パターンの繰り返し
+      
+      【出力】
+      - 実装完了報告（簡潔）
+      - 変更内容の要約
+      - 検証結果
+  
+  # 検証エージェント（テスト・動作確認特化）
+  verify:
+    model: haiku
+    description: "検証・テスト専門エージェント"
+    tools:
+      - exec
+      - process
+      - read
+      - memory_store
+    config:
+      contextTokens: 400000
+      maxConcurrent: 2
+      compaction:
+        mode: safeguard
+        reserveTokensFloor: 200000
+    systemPrompt: |
+      あなたは検証専門エージェントです。
+      
+      【役割】
+      - 実装内容の動作確認
+      - エッジケースのテスト
+      - エラーハンドリングの検証
+      - ドキュメント整合性チェック
+      
+      【検証項目】
+      1. ✅ 基本動作確認
+      2. ✅ エラーケース確認
+      3. ✅ エッジケース確認（空文字列、null、巨大ファイル等）
+      4. ✅ 既存機能への影響確認
+      5. ✅ ログ出力適切性
+      
+      【出力形式】
+      - ✅/❌ チェックリスト
+      - 問題点の詳細
+      - 改善提案
+      - 検証完了確認
+
+# エージェント起動テンプレート
+templates:
+  # リサーチタスク
+  research_task: |
+    【リサーチタスク】
+    目的: {objective}
+    
+    実施内容:
+    1. Brave検索で王道・確実な方法を確認
+    2. X検索で最新情報・実例を収集
+    3. 複数アプローチを比較
+    4. 推奨方法を提案
+    
+    成果物: リサーチレポート（markdown形式）
+  
+  # 実装タスク
+  implement_task: |
+    【実装タスク】
+    目的: {objective}
+    
+    実施内容:
+    1. lessons.md・AGENTS.mdを確認
+    2. 実装プラン作成
+    3. DRY_RUNモードで実装
+    4. Self-Check実施
+    
+    成果物: 実装完了報告 + 変更内容要約
+  
+  # 検証タスク
+  verify_task: |
+    【検証タスク】
+    対象: {target}
+    
+    検証項目:
+    1. 基本動作確認
+    2. エラーケース確認
+    3. エッジケース確認
+    4. 既存機能影響確認
+    5. ログ出力確認
+    
+    成果物: 検証レポート（チェックリスト形式）

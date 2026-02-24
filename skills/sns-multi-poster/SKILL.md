@@ -31,6 +31,39 @@ sudo journalctl -u discord-sns-watcher.service -f
 
 ---
 
+## 📁 Google Drive自動投稿 (v5.0 - NEW!)
+
+**機能:**
+- Google Drive「投稿用の動画」フォルダを監視（5分ごと）
+- 新規動画を自動検出 → ダウンロード → Gemini分析 → 5SNSに投稿
+- 大容量動画に対応（Discordのファイルサイズ制限を回避）
+- 処理済みログで重複投稿を防止
+
+**使い方:**
+1. Google Drive「投稿用の動画」フォルダに動画をアップロード
+2. 5分以内にcronジョブが自動検出
+3. 自動的にダウンロード → Gemini分析 → SNS投稿
+4. 結果をDiscord #sns-投稿チャンネルに投稿
+
+**セットアップ:**
+```bash
+cd /root/clawd/skills/sns-multi-poster
+
+# DRY_RUNテスト
+DRY_RUN=true bash gdrive-sns-watcher.sh
+
+# cronジョブ設定（5分ごと監視）
+bash setup-gdrive-watcher-cron.sh
+```
+
+**詳細:** [GDRIVE_WATCHER_SETUP.md](./GDRIVE_WATCHER_SETUP.md)
+
+**使い分け:**
+- **Discord投稿**: 軽量ファイル（〜8MB）、画像・短い動画
+- **Google Drive**: 大容量動画、長い動画・高画質動画
+
+---
+
 ## 🎥 動画投稿対応 (v4.0)
 
 **対応形式:** .mp4, .mov, .avi, .mkv, .webm, .m4v
