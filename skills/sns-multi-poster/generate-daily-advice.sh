@@ -171,28 +171,11 @@ ${UKIYOE_HASHTAGS.join(' ')}`;
 
 console.log(message);
 
-// Discordに送信
-try {
-  const escaped = message.replace(/"/g, '\\"').replace(/\n/g, '\\n');
-  execSync(`clawdbot message send --channel discord --target "${DISCORD_CHANNEL_ID}" --message "${escaped}"`, {
-    timeout: 30000,
-    stdio: 'inherit'
-  });
-} catch(e) {
-  // フォールバック: ファイル経由
-  const tmpFile = `/tmp/advice_msg_${Date.now()}.txt`;
-  fs.writeFileSync(tmpFile, message);
-  try {
-    execSync(`clawdbot message send --channel discord --target "${DISCORD_CHANNEL_ID}" --message "$(cat ${tmpFile})"`, {
-      timeout: 30000,
-      shell: '/bin/bash',
-      stdio: 'inherit'
-    });
-  } catch(e2) {
-    console.error('Discord送信失敗:', e2.message);
-  }
-  fs.unlinkSync(tmpFile);
-}
+// Discord送信は外部から行う（ハング防止のため）
+// メッセージをファイルに保存して、外部スクリプトから読み取る
+const msgFile = `/tmp/daily_advice_${today}.txt`;
+fs.writeFileSync(msgFile, message);
+console.log(`\n📝 メッセージ保存: ${msgFile}`);
 
 // アドバイスをファイルにも保存
 const adviceFile = `/root/clawd/data/buzz/advice_${today}.json`;
