@@ -123,24 +123,32 @@ async function postToFacebook(videoPath, caption) {
       'input[data-testid="media-upload-input"]',
     ];
     
-    let fileInput = null;
+    let fileInputSelector = null;
     for (const selector of fileInputSelectors) {
-      fileInput = await page.$(selector);
-      if (fileInput) {
+      const element = await page.$(selector);
+      if (element) {
         console.log(`✅ ファイル入力を発見: ${selector}`);
+        fileInputSelector = selector;
         break;
       }
       await randomDelay(1000, 2000);
     }
     
-    if (!fileInput) {
-      fileInput = await page.evaluateHandle(() => document.querySelector('input[type="file"]'));
+    if (!fileInputSelector) {
+      // 最終手段: すべてのinput[type="file"]を探す
+      const allFileInputs = await page.$$('input[type="file"]');
+      if (allFileInputs.length > 0) {
+        console.log(`✅ input[type="file"] を発見 (${allFileInputs.length}件)`);
+        fileInputSelector = 'input[type="file"]';
+      }
     }
     
-    if (!fileInput) {
+    if (!fileInputSelector) {
       throw new Error('❌ ファイル入力が見つかりません');
     }
     
+    // Puppeteerの正しい方法: waitForSelectorで取得してからuploadFile
+    const fileInput = await page.waitForSelector(fileInputSelector, { timeout: 10000 });
     await fileInput.uploadFile(videoPath);
     console.log('✅ ファイルアップロード完了');
     await randomDelay(5000, 8000);
