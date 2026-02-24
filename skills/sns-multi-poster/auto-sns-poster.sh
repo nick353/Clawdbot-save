@@ -96,7 +96,7 @@ echo "📤 5つのSNSに並列投稿中..."
         && echo "✅ Instagram: 投稿成功" >> "$RESULTS_FILE" \
         || echo "❌ Instagram: 投稿失敗" >> "$RESULTS_FILE"
     else
-      node "$SCRIPT_DIR/post-to-instagram-v12-final.cjs" "$MEDIA_PATH" "${CAPTIONS[instagram]}" >> "$RESULTS_FILE" 2>&1 \
+      node "$SCRIPT_DIR/post-to-instagram-v13-with-screenshots.cjs" "$MEDIA_PATH" "${CAPTIONS[instagram]}" >> "$RESULTS_FILE" 2>&1 \
         && echo "✅ Instagram: 投稿成功" >> "$RESULTS_FILE" \
         || echo "❌ Instagram: 投稿失敗" >> "$RESULTS_FILE"
     fi
@@ -134,7 +134,7 @@ echo "📤 5つのSNSに並列投稿中..."
       echo "📝 キャプション: ${CAPTIONS[threads]}" >> "$RESULTS_FILE"
       echo "✅ Threads: DRY_RUN完了" >> "$RESULTS_FILE"
     else
-      node "$SCRIPT_DIR/post-to-threads-v2-anti-ban.cjs" "$MEDIA_PATH" "${CAPTIONS[threads]}" >> "$RESULTS_FILE" 2>&1 \
+      node "$SCRIPT_DIR/post-to-threads-v3-with-screenshots.cjs" "$MEDIA_PATH" "${CAPTIONS[threads]}" >> "$RESULTS_FILE" 2>&1 \
         && echo "✅ Threads: 投稿成功" >> "$RESULTS_FILE" \
         || echo "❌ Threads: 投稿失敗" >> "$RESULTS_FILE"
     fi
@@ -151,7 +151,7 @@ echo "📤 5つのSNSに並列投稿中..."
       echo "📝 キャプション: ${CAPTIONS[x]}" >> "$RESULTS_FILE"
       echo "✅ X: DRY_RUN完了" >> "$RESULTS_FILE"
     else
-      node "$SCRIPT_DIR/post-to-x-v2-anti-ban.cjs" "$MEDIA_PATH" "${CAPTIONS[x]}" >> "$RESULTS_FILE" 2>&1 \
+      node "$SCRIPT_DIR/post-to-x-v3-with-screenshots.cjs" "$MEDIA_PATH" "${CAPTIONS[x]}" >> "$RESULTS_FILE" 2>&1 \
         && echo "✅ X: 投稿成功" >> "$RESULTS_FILE" \
         || echo "❌ X: 投稿失敗" >> "$RESULTS_FILE"
     fi
