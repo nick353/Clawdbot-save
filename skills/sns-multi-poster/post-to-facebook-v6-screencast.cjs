@@ -102,17 +102,62 @@ async function postToFacebook(videoPath, caption) {
     });
     await randomDelay(2000, 3000);
     
-    // Reels作成ページに移動
-    console.log('📹 Reels作成ページに移動...');
-    await page.goto('https://www.facebook.com/reel/create', {
-      waitUntil: 'domcontentloaded',
-      timeout: 15000
-    });
-    await randomDelay(3000, 5000);
-    
     // スクリーンショット（初期状態）
     await page.screenshot({ path: `/tmp/facebook-screencast-initial-${timestamp}.png`, fullPage: true });
     console.log('📸 初期画面のスクリーンショット保存');
+    
+    // 「What's on your mind」をクリックして投稿フォームを開く
+    console.log('📝 投稿フォームを開く...');
+    await randomDelay(2000, 3000);
+    
+    // ページのHTMLを確認
+    const pageHTML = await page.content();
+    const hasReelsButton = pageHTML.includes('Create reel') || pageHTML.includes('Reel');
+    console.log(`📊 ページ内容: Reelsボタン=${hasReelsButton}`);
+    
+    // 投稿ボタンを探す（複数のパターン）
+    const createPostButtonSelectors = [
+      'div[role="button"][aria-label*="Create"]',
+      'div[role="button"]:has-text("Create")',
+      'span:has-text("What\'s on your mind")',
+      'div[aria-label="Create a post"]',
+    ];
+    
+    let clicked = false;
+    for (const selector of createPostButtonSelectors) {
+      try {
+        const elements = await page.$$(selector);
+        console.log(`🔍 ${selector}: ${elements.length}件`);
+        if (elements.length > 0) {
+          await elements[0].click();
+          console.log(`✅ 投稿フォームを開きました: ${selector}`);
+          clicked = true;
+          break;
+        }
+      } catch (e) {
+        console.log(`⚠️ ${selector} でクリック失敗: ${e.message}`);
+      }
+    }
+    
+    if (!clicked) {
+      // 最終手段: XPath
+      try {
+        const xpathButton = await page.$x('//span[contains(text(), "What")]');
+        if (xpathButton.length > 0) {
+          await xpathButton[0].click();
+          console.log('✅ XPathで投稿フォームを開きました');
+          clicked = true;
+        }
+      } catch (e) {
+        console.log(`⚠️ XPath でクリック失敗: ${e.message}`);
+      }
+    }
+    
+    if (!clicked) {
+      throw new Error('❌ 投稿フォームを開けませんでした');
+    }
+    
+    await randomDelay(3000, 5000);
     
     // ファイルアップロード
     console.log('📁 ファイルアップロード開始...');
@@ -121,6 +166,7 @@ async function postToFacebook(videoPath, caption) {
       'input[type="file"]',
       'input[accept*="video"]',
       'input[data-testid="media-upload-input"]',
+      'input[aria-label*="Add"]',
     ];
     
     let fileInputSelector = null;
@@ -137,6 +183,7 @@ async function postToFacebook(videoPath, caption) {
     if (!fileInputSelector) {
       // 最終手段: すべてのinput[type="file"]を探す
       const allFileInputs = await page.$$('input[type="file"]');
+      console.log(`🔍 全input[type="file"]: ${allFileInputs.length}件`);
       if (allFileInputs.length > 0) {
         console.log(`✅ input[type="file"] を発見 (${allFileInputs.length}件)`);
         fileInputSelector = 'input[type="file"]';
@@ -144,6 +191,10 @@ async function postToFacebook(videoPath, caption) {
     }
     
     if (!fileInputSelector) {
+      // HTMLを出力してデバッグ
+      const bodyHTML = await page.evaluate(() => document.body.innerHTML);
+      console.log('❌ ファイル入力が見つかりません。ページHTML:');
+      console.log(bodyHTML.substring(0, 2000));
       throw new Error('❌ ファイル入力が見つかりません');
     }
     
@@ -196,12 +247,14 @@ async function postToFacebook(videoPath, caption) {
     console.log('🔍 投稿ボタンを探索中...');
     
     const postButtonSelectors = [
-      'div[aria-label="公開"]',
+      'div[aria-label="Next"]',
       'div[aria-label="Post"]',
+      'div[aria-label="公開"]',
       'div[aria-label="シェア"]',
       'div[aria-label="Share"]',
-      '//div[@role="button" and contains(text(), "公開")]',
+      '//div[@role="button" and contains(text(), "Next")]',
       '//div[@role="button" and contains(text(), "Post")]',
+      '//div[@role="button" and contains(text(), "公開")]',
       '//div[@role="button" and contains(text(), "シェア")]',
       '//div[@role="button" and contains(text(), "Share")]',
     ];
@@ -276,10 +329,57 @@ async function postToFacebook(videoPath, caption) {
       return;
     }
     
-    // 投稿ボタンクリック
-    console.log('👆 投稿ボタンをクリック...');
+    // 1回目のNextボタンクリック（詳細設定画面へ）
+    console.log('👆 1回目のNextボタンをクリック...');
     await postButton.click();
     await randomDelay(3000, 5000);
+    
+    // スクリーンショット（1回目のNext後）
+    await page.screenshot({ path: `/tmp/facebook-screencast-after-first-next-${timestamp}.png`, fullPage: true });
+    console.log('📸 1回目のNext後のスクリーンショット保存');
+    
+    // 2回目のNextまたはPostボタンを探す
+    console.log('🔍 2回目のNextまたはPostボタンを探索中...');
+    const secondButtonSelectors = [
+      'div[aria-label="Next"]',
+      'div[aria-label="Post"]',
+      'div[aria-label="公開"]',
+      'div[aria-label="Share"]',
+      '//div[@role="button" and contains(text(), "Next")]',
+      '//div[@role="button" and contains(text(), "Post")]',
+    ];
+    
+    let secondButton = null;
+    for (const selector of secondButtonSelectors) {
+      try {
+        if (selector.startsWith('//')) {
+          const elements = await page.$x(selector);
+          if (elements.length > 0) {
+            secondButton = elements[0];
+            console.log(`✅ 2回目のボタン発見（XPath）: ${selector}`);
+            break;
+          }
+        } else {
+          secondButton = await page.$(selector);
+          if (secondButton) {
+            console.log(`✅ 2回目のボタン発見: ${selector}`);
+            break;
+          }
+        }
+      } catch (err) {
+        console.log(`⚠️ ${selector} でエラー: ${err.message}`);
+      }
+      await randomDelay(1000, 2000);
+    }
+    
+    if (!secondButton) {
+      console.log('⚠️ 2回目のボタンが見つかりません（1回目のNextで完了した可能性）');
+    } else {
+      // 2回目のNextまたはPostボタンクリック
+      console.log('👆 2回目のNextまたはPostボタンをクリック...');
+      await secondButton.click();
+      await randomDelay(3000, 5000);
+    }
     
     // スクリーンショット（投稿後）
     await page.screenshot({ path: `/tmp/facebook-screencast-posted-${timestamp}.png`, fullPage: true });
