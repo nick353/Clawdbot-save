@@ -25,7 +25,7 @@ if (imagePath && !fs.existsSync(imagePath)) {
 // ブラウザプロファイルディレクトリ
 const PROFILE_DIR = '/root/clawd/browser-profiles/facebook';
 const STATE_PATH = path.join(PROFILE_DIR, 'browser-state.json');
-const COOKIES_PATH = path.join(PROFILE_DIR, 'cookies.json');
+const COOKIES_PATH = '/root/clawd/skills/sns-multi-poster/cookies/facebook.json';
 
 async function shot(page, label) {
   const ts = new Date().toISOString().replace(/[:.]/g, '-');
@@ -99,23 +99,30 @@ async function main() {
     let context;
 
     // ブラウザプロファイルが存在するか確認
-    if (fs.existsSync(STATE_PATH) && fs.existsSync(COOKIES_PATH)) {
-      console.log('📂 ブラウザプロファイルを使用します');
+    if (fs.existsSync(COOKIES_PATH)) {
+      console.log('📂 Cookie認証を使用します');
 
-      context = await browser.newContext({
-        storageState: STATE_PATH,
+      // StorageStateがある場合はそれを使用、ない場合は新規作成
+      const contextOptions = {
         userAgent:
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-      });
+      };
 
-      // クッキーも追加（フォールバック）
-      const cookies = JSON.parse(fs.readFileSync(COOKIES_PATH, 'utf-8'));
+      if (fs.existsSync(STATE_PATH)) {
+        contextOptions.storageState = STATE_PATH;
+        console.log('✅ StorageStateを読み込み');
+      }
+
+      context = await browser.newContext(contextOptions);
+
+      // クッキーを追加
+      const cookieData = JSON.parse(fs.readFileSync(COOKIES_PATH, 'utf-8'));
+      const cookies = cookieData.cookies || cookieData; // storageState形式または配列形式に対応
       await context.addCookies(cookies);
       console.log(`✅ Cookie数: ${cookies.length}`);
     } else {
-      console.log('⚠️  ブラウザプロファイルが見つかりません');
-      console.log('   初期化スクリプトを実行してください:');
-      console.log('   node /root/clawd/scripts/facebook-login-setup.js');
+      console.log('⚠️  Cookieファイルが見つかりません: ' + COOKIES_PATH);
+      console.log('   Cookieを取得してください');
       process.exit(1);
     }
 
@@ -132,7 +139,7 @@ async function main() {
     console.log('🔍 投稿作成ボタンを探しています...');
     const createPostButton = await waitFor(
       page,
-      ['div:has-text("What\'s on your mind")', 'div:has-text("何か思いついた")', 'button[aria-label*="投稿"]', 'div[role="button"]:has-text("投稿")'],
+      ['div[role="button"]:has-text("What\'s on your mind")', 'div[role="button"]:has-text("何か思いついた")', 'span:has-text("What\'s on your mind")'],
       'create post button'
     );
 
@@ -164,18 +171,54 @@ async function main() {
       }
     }
 
-    // 投稿ボタンをクリック
+    // 投稿ボタンをクリック（画像がある場合は"Next"、ない場合は"Post"）
     console.log('');
     console.log('⏳ 投稿準備完了、投稿しています...');
-    const postButton = await waitFor(
-      page,
-      ['button:has-text("投稿")'],
-      'post button',
-      10000
-    );
+    
+    // Playwright getByRole を使う（より確実）
+    let postButton;
+    try {
+      postButton = await page.getByRole('button', { name: 'Next' }).first();
+      await postButton.waitFor({ state: 'visible', timeout: 5000 });
+    } catch (e) {
+      // "Next"が見つからない場合は"Post"を探す
+      try {
+        postButton = await page.getByRole('button', { name: 'Post' }).first();
+        await postButton.waitFor({ state: 'visible', timeout: 5000 });
+      } catch (e2) {
+        // 日本語の場合
+        postButton = await page.getByRole('button', { name: '投稿' }).first();
+        await postButton.waitFor({ state: 'visible', timeout: 5000 });
+      }
+    }
 
     await postButton.click();
     console.log('✅ 投稿ボタンをクリック');
+
+    // 画像投稿の場合、"Next"の後に"Post"ボタンが表示される
+    if (imagePath) {
+      console.log('');
+      console.log('⏳ 最終投稿ボタンを待機しています...');
+      await page.waitForTimeout(2000);
+
+      // "Post"ボタンを探す
+      try {
+        const finalPostButton = await page.getByRole('button', { name: 'Post' }).first();
+        await finalPostButton.waitFor({ state: 'visible', timeout: 10000 });
+        await finalPostButton.click();
+        console.log('✅ 最終投稿ボタンをクリック');
+      } catch (e) {
+        // "Post"ボタンが見つからない場合は、日本語を試す
+        try {
+          const finalPostButton = await page.getByRole('button', { name: '投稿' }).first();
+          await finalPostButton.waitFor({ state: 'visible', timeout: 5000 });
+          await finalPostButton.click();
+          console.log('✅ 最終投稿ボタンをクリック');
+        } catch (e2) {
+          console.log('⚠️  最終投稿ボタンが見つかりませんでした（すでに投稿済みの可能性）');
+        }
+      }
+    }
 
     // 投稿完了を待機
     console.log('');
