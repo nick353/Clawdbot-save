@@ -36,9 +36,9 @@ if (DRY_RUN) {
 }
 
 // ブラウザプロファイルディレクトリ
-const PROFILE_DIR = '/root/clawd/browser-profiles/instagram';
-const STATE_PATH = path.join(PROFILE_DIR, 'browser-state.json');
-const COOKIES_PATH = path.join(PROFILE_DIR, 'cookies.json');
+const PROFILE_DIR = '/root/clawd/skills/sns-multi-poster/cookies';
+const STATE_PATH = path.join(PROFILE_DIR, 'instagram-state.json');
+const COOKIES_PATH = path.join(PROFILE_DIR, 'instagram.json');
 
 // ランダムタイムアウト（Anti-Ban）
 function getRandomTimeout() {
@@ -63,24 +63,37 @@ async function main() {
     let context;
 
     // ブラウザプロファイルが存在するか確認
-    if (fs.existsSync(STATE_PATH) && fs.existsSync(COOKIES_PATH)) {
-      console.log('📂 ブラウザプロファイルを使用します');
+    if (fs.existsSync(COOKIES_PATH)) {
+      console.log('📂 Cookieファイルを使用します');
 
+      // まずコンテキストを作成
       context = await browser.newContext({
-        storageState: STATE_PATH,
         userAgent:
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
         viewport: { width: 1280, height: 720 },
       });
 
-      // クッキーも追加（フォールバック）
+      // Cookieを追加
       const cookies = JSON.parse(fs.readFileSync(COOKIES_PATH, 'utf-8'));
       await context.addCookies(cookies);
       console.log(`✅ Cookie数: ${cookies.length}`);
+
+      // ブラウザステートが存在する場合は追加で読み込み
+      if (fs.existsSync(STATE_PATH)) {
+        console.log('✅ ブラウザステートも読み込みます');
+        // 既存のコンテキストを破棄して、ステート付きで作り直し
+        await context.close();
+        context = await browser.newContext({
+          storageState: STATE_PATH,
+          userAgent:
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+          viewport: { width: 1280, height: 720 },
+        });
+      }
     } else {
-      console.log('⚠️  ブラウザプロファイルが見つかりません');
-      console.log('   初期化スクリプトを実行してください:');
-      console.log('   node /root/clawd/scripts/instagram-login-setup.js');
+      console.log('⚠️  Cookieファイルが見つかりません');
+      console.log('   Cookieを取得してください:');
+      console.log('   /root/clawd/skills/sns-multi-poster/cookies/instagram.json');
       process.exit(1);
     }
 
