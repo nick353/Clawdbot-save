@@ -1,57 +1,24 @@
 {
-  "timestamp": "2026-02-24T01:16:42.968580",
-  "cash": 639.1122527136299,
-  "total_position_value": 8389.798365294073,
-  "total_entry_value": 9054.692436639825,
-  "total_unrealized_pnl": -664.8940713457521,
-  "total_capital": 9028.910618007703,
-  "confirmed_pnl": -253.4018033095186,
+  "timestamp": "2026-02-24T15:35:41.698935",
+  "cash": 8000.0,
+  "total_position_value": 1992.0529801324506,
+  "total_entry_value": 2000.0000000000002,
+  "total_unrealized_pnl": -7.94701986754967,
+  "total_capital": 9992.05298013245,
+  "confirmed_pnl": -215.85357615563854,
   "initial_capital": 10000.0,
-  "total_pnl": -971.0893819922967,
+  "total_pnl": -7.947019867549898,
   "positions": [
     {
-      "symbol": "OGUSDT",
-      "entry_price": 3.348,
-      "current_price": 3.086,
-      "quantity": 572.9246483193727,
-      "entry_value": 1918.1517225732598,
-      "current_value": 1768.0454647135841,
-      "unrealized_pnl": -150.10625785967568,
-      "unrealized_pnl_pct": -7.825567502986859,
-      "entry_time": "2026-02-20T02:54:38.860263"
-    },
-    {
-      "symbol": "FIDAUSDT",
-      "entry_price": 0.0181,
-      "current_price": 0.0158,
-      "quantity": 107372.86852968454,
-      "entry_value": 1943.4489203872902,
-      "current_value": 1696.4913227690158,
-      "unrealized_pnl": -246.95759761827435,
-      "unrealized_pnl_pct": -12.707182320441984,
-      "entry_time": "2026-02-20T08:38:54.156406"
-    },
-    {
-      "symbol": "INJUSDT",
-      "entry_price": 3.74,
-      "current_price": 3.327,
-      "quantity": 524.551755052083,
-      "entry_value": 1961.8235638947904,
-      "current_value": 1745.18368905828,
-      "unrealized_pnl": -216.63987483651044,
-      "unrealized_pnl_pct": -11.04278074866311,
-      "entry_time": "2026-02-22T00:02:09.221494"
-    },
-    {
-      "symbol": "ETHUSDT",
-      "entry_price": 1853.28,
-      "current_price": 1823.92,
-      "quantity": 1.7435402258614379,
-      "entry_value": 3231.2682297844854,
-      "current_value": 3180.0778887531937,
-      "unrealized_pnl": -51.19034103129161,
-      "unrealized_pnl_pct": -1.5842182508849112,
-      "entry_time": "2026-02-24T01:12:36.853177"
+      "symbol": "ZROUSDT",
+      "entry_price": 1.51,
+      "current_price": 1.504,
+      "quantity": 1324.5033112582782,
+      "entry_value": 2000.0000000000002,
+      "current_value": 1992.0529801324506,
+      "unrealized_pnl": -7.94701986754967,
+      "unrealized_pnl_pct": -0.3973509933774834,
+      "entry_time": "2026-02-24T15:33:32.184222"
     }
   ]
 }

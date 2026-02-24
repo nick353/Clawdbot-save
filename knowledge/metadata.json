@@ -1,0 +1,452 @@
+[
+  {
+    "file": "/root/clawd/tasks/lessons.md",
+    "chunk_id": 0,
+    "text": "# Lessons Learned - 失敗から学ぶルール集\n**目的**: Claudeが犯した失敗を記録し、二度と同じ失敗をしないためのナレッジベース\n**使い方**:\n1. 失敗を発見 → このファイルに記録\n2. 原因分析 → AGENTS.mdにルール追加\n3. 検証 → 再発しないことを確認\n---\n## テンプレート\n```markdown\n## YYYY-MM-DD - <失敗内容"
+  },
+  {
+    "file": "/root/clawd/tasks/lessons.md",
+    "chunk_id": 1,
+    "text": "**解決策**: `waitUntil: 'domcontentloaded'` + タイムアウト15秒に変更\n**今後のルール**: ブラウザ自動化では `domcontentloaded` を優先使用（AGENTS.mdに追記済み）\n**検証**: ✅ 2026-02-23 3つのアプローチで検証完了\n---\n### 2026-02-22 - Facebook Graph API DRY RU"
+  },
+  {
+    "file": "/root/clawd/tasks/lessons.md",
+    "chunk_id": 2,
+    "text": "**原因**: `contextTokens: 600,000` + `reserveTokensFloor: 300,000` が小さすぎた\n**解決策**: `contextTokens: 1,000,000` + `reserveTokensFloor: 500,000` に増加 + Obsidian統合\n**今後のルール**: 重要な情報はObsidian自動保存で永続化（TOOLS.md"
+  },
+  {
+    "file": "/root/clawd/tasks/lessons.md",
+    "chunk_id": 3,
+    "text": "### 2026-02-20 - 廃止モデルID使用（claude-3-5-haiku-20241022）\n**症状**: \"Unknown model\" エラーでHaiku利用不可\n**原因**: Anthropic公式モデルID変更を把握していなかった\n**解決策**: `anthropic/claude-haiku-4-5-20251001` に変更\n**今後のルール**: モデルID変更前"
+  },
+  {
+    "file": "/root/clawd/tasks/lessons.md",
+    "chunk_id": 4,
+    "text": "3. 追加待機時間 3-6秒 → 8-12秒に延長\n4. Cookie sameSite属性の正規化（`no_restriction` → `None`, `null` → `Lax`）\n**今後のルール**:\n- X投稿では必ず `networkidle2` 使用\n- ページ読み込み後は最低8秒待機\n- Cookie読み込み時は必ずsameSite正規化\n**検証**: ✅ 2026-02-24"
+  },
+  {
+    "file": "/root/clawd/tasks/lessons.md",
+    "chunk_id": 5,
+    "text": "- `waitForSelector` だけでなく、ポーリング方式も併用\n**検証**: ✅ 2026-02-24 投稿成功を確認\n---\n## 2026-02-24 - Threads 投稿失敗（Playwright構文エラー）\n**症状**: `Error: Unknown engine \"has-text\"` エラー\n**原因**: Playwrightの `:has-text()` 構文が"
+  },
+  {
+    "file": "/root/clawd/tasks/lessons.md",
+    "chunk_id": 6,
+    "text": "---\n## 2026-02-24 - Cookie更新の手動作業（全SNS共通）\n**症状**: Cookie期限切れ時に手動で各SNSのCookieファイルを更新する必要がある\n**原因**: Cookie管理の自動化システムが未実装\n**解決策**: Cookie自動更新スクリプト作成（次のステップで実装）\n**今後のルール**:\n- Cookie期限をCronで毎日チェック\n- 期限切れが"
+  },
+  {
+    "file": "/root/clawd/tasks/lessons.md",
+    "chunk_id": 7,
+    "text": "**レビューコマンド**:\n```bash\n# 今月の失敗を確認\ncat /root/clawd/tasks/lessons.md | grep \"$(date +%Y-%m)\" -A 6\n# キーワード検索\ngrep -i \"browser\\|api\\|cron\" /root/clawd/tasks/lessons.md -A 6\n```\n**記録時のベストプラクティス**:\n1. 失敗を発見し"
+  },
+  {
+    "file": "/root/clawd/tasks/lessons.md",
+    "chunk_id": 8,
+    "text": "## 2026-02-24 - Phase 3実装でディスク容量不足に遭遇\n**症状**: sentence-transformersインストール時にCUDAパッケージ（PyTorch）でディスク容量不足\n**原因**: CUDA版PyTorchは大容量（2GB以上）で、ディスク残量2.2GBでは不足\n**解決策**: CPU版PyTorchに変更（--index-url https://down"
+  },
+  {
+    "file": "/root/clawd/tasks/successes.md",
+    "chunk_id": 0,
+    "text": "# successes.md - 成功パターン記録\nこのファイルは、成功した実装・調査・修正のパターンを記録します。\n失敗から学ぶだけでなく、成功パターンを再利用することで効率を向上させます。\n---\n## フォーマット\n```\n## YYYY-MM-DD - <タスク名>\n**実装内容**: <何を実装したか>\n**アプローチ**: <どのように実装したか>\n**成功要因**: <なぜ成功したか"
+  },
+  {
+    "file": "/root/clawd/tasks/successes.md",
+    "chunk_id": 1,
+    "text": "**再利用可能なパターン**:\n- セマンティック検索の基本構造\n- ナレッジベースの統合手法\n- 軽量モデルの活用\n**関連スキル**: sentence-transformers, FAISS, Python\n---"
+  },
+  {
+    "file": "/root/clawd/skills/ffmpeg-video-processor/SKILL.md",
+    "chunk_id": 0,
+    "text": "# ffmpeg-video-processor\nSora動画のウォーターマーク除去・画質改善を自動化するスキル\n## 🏆 WaveSpeedAI + DeepFilterNet3統合版（最新・推奨 - 2026-02-16）\n**完全自動・プロ品質処理：**\n1. 🧹 **WaveSpeedAI Watermark Remover** - Soraウォーターマーク自動除去\n2. 🎨 **Wave"
+  },
+  {
+    "file": "/root/clawd/skills/ffmpeg-video-processor/SKILL.md",
+    "chunk_id": 1,
+    "text": "- **合計: $0.13-0.16/本**\n### 処理時間（15秒動画）\n- 約6-9分\n- ウォーターマーク除去: 3-5分\n- 4K超解像: 2-3分\n- 音声改善（DeepFilterNet3）: 3秒（2回目以降）\n### 自動実行\nDiscord #ai動画処理チャンネルに動画投稿で自動実行（5分ごとに監視）\n### メリット\n- ✅ 最高品質の音声改善（RNNベース）\n- ✅ Ad"
+  },
+  {
+    "file": "/root/clawd/skills/ffmpeg-video-processor/SKILL.md",
+    "chunk_id": 2,
+    "text": "- **品質:** 論文ベースの高品質ノイズ除去\n- **対応:** 48kHzフルバンド\n- **処理速度:** リアルタイムの約5倍速（VPS環境）\n- **メモリ:** 442MB（初回起動時）\n- **ライセンス:** MIT/Apache 2.0\n---\n## 🔧 Adobe Podcast版（旧版・参考用）\n**完全自動・プロ品質処理：**\n1. 🧹 **WaveSpeedAI Wat"
+  },
+  {
+    "file": "/root/clawd/skills/ffmpeg-video-processor/SKILL.md",
+    "chunk_id": 3,
+    "text": "- Adobe Podcast: $0.0125\n- **合計: $0.1375/本**\n### 処理時間（15秒動画）\n- 約5-8分\n- ウォーターマーク除去: 2-3分\n- 4K超解像: 2-3分\n- 音声改善: 1-2分\n### 注意\n- Adobe Podcast APIは公式には存在しない\n- ブラウザ自動化（Playwright）が必要\n- UIの変更により動作しない場合あり\n- *"
+  },
+  {
+    "file": "/root/clawd/skills/ffmpeg-video-processor/SKILL.md",
+    "chunk_id": 4,
+    "text": "./video-processor.sh improve input.mp4 output.mp4\n```\n### カスタム設定\n```bash\n./video-processor.sh custom input.mp4 output.mp4 \\\n--denoise high \\\n--sharpen medium \\\n--bitrate 5000k\n```\n### バッチ処理\n```bash\n./"
+  },
+  {
+    "file": "/root/clawd/skills/ffmpeg-video-processor/SKILL.md",
+    "chunk_id": 5,
+    "text": "## 出力設定\n### プリセット\n- `youtube`: YouTube最適化（1080p, 5000k）\n- `instagram`: Instagram最適化（720p, 3500k）\n- `twitter`: X最適化（720p, 2500k）\n## 依存関係\n- ffmpeg 4.0+（インストール済み）\n- Adobe Podcast Enhance（音声処理用、オプション）\n## "
+  },
+  {
+    "file": "/root/clawd/skills/ffmpeg-video-processor/SKILL.md",
+    "chunk_id": 6,
+    "text": "./video-processor.sh improve input.mp4 output.mp4 --preset instagram\n```\n### X用に最適化\n```bash\n./video-processor.sh improve input.mp4 output.mp4 --preset twitter\n```\n## 自動化\nこのスキルは他のスキルと連携できます：\n1. 動画処理（この"
+  },
+  {
+    "file": "/root/clawd/skills/fxembed-converter/SKILL.md",
+    "chunk_id": 0,
+    "text": "---\nname: fxembed-converter\ndescription: Convert Twitter/X (twitter.com, x.com) URLs to fxtwitter.com for improved Discord embeds. Supports multiple links in a single text. Use when the user provides "
+  },
+  {
+    "file": "/root/clawd/skills/fxembed-converter/SKILL.md",
+    "chunk_id": 1,
+    "text": "bash /root/clawd/skills/fxembed-converter/scripts/convert-twitter-links.sh \"text with https://x.com/user/status/123 link\"\n```\nOutput:\n```\ntext with https://fxtwitter.com/user/status/123 link\n```\n## Wh"
+  },
+  {
+    "file": "/root/clawd/skills/fxembed-converter/SKILL.md",
+    "chunk_id": 2,
+    "text": "Discord doesn't natively embed Twitter/X content well. FxEmbed (fxtwitter.com) fixes this:\n- ✅ Shows images, videos, and GIFs\n- ✅ Displays thread content properly\n- ✅ Works with polls and engagement\n-"
+  },
+  {
+    "file": "/root/clawd/skills/fxembed-converter/SKILL.md",
+    "chunk_id": 3,
+    "text": "Check out https://x.com/user1/status/111 and https://twitter.com/user2/status/222\n```\n**Output:**\n```\nCheck out https://fxtwitter.com/user1/status/111 and https://fxtwitter.com/user2/status/222\n```\n##"
+  },
+  {
+    "file": "/root/clawd/skills/fxembed-converter/SKILL.md",
+    "chunk_id": 4,
+    "text": "The script will output the converted text with all twitter.com and x.com URLs replaced with fxtwitter.com equivalents."
+  },
+  {
+    "file": "/root/clawd/skills/obsidian-vps/SKILL.md",
+    "chunk_id": 0,
+    "text": "---\nname: obsidian-vps\ndescription: Obsidian-like Markdown vault management for VPS (no Homebrew required)\n---\n# obsidian-vps\nVPS環境でObsidian風のMarkdown管理を行うSkill（Homebrew不要）\n## Usage\n### Daily note（デイリ"
+  },
+  {
+    "file": "/root/clawd/skills/obsidian-vps/SKILL.md",
+    "chunk_id": 1,
+    "text": "```\n### List all notes（一覧）\n```bash\n/root/clawd/scripts/obsidian-helper.sh list\n```\n### Edit note（編集）\n```bash\n/root/clawd/scripts/obsidian-helper.sh edit \"projects/my-project\"\n```\n## Vault Location\n- D"
+  },
+  {
+    "file": "/root/clawd/skills/obsidian-vps/SKILL.md",
+    "chunk_id": 2,
+    "text": "- ✅ Daily notes with templates\n- ✅ Hierarchical organization\n- ✅ Full-text search\n- ✅ Markdown-based (portable)\n- ✅ No Homebrew required\n- ✅ VPS-friendly\n## Notes\n- Compatible with Obsidian desktop/mo"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 0,
+    "text": "# SNS API 自動投稿・削除スキル\nPython を使用して Instagram、Facebook、Threads、X、Pinterest に **自動投稿・削除**するスキルです。\n## 📋 概要\n- **対応 SNS**: Instagram、Facebook、Threads、X（Twitter）、Pinterest\n- **実装方式**: 公式 API（RPA 廃止）\n- **認可方式"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 1,
+    "text": "各 SNS の Developer Portal でアプリを作成し、トークンを取得してください。\n```bash\n# Meta API トークン登録\nbash /root/clawd/scripts/setup-sns-api-credentials.sh register-meta\n# X API トークン登録\nbash /root/clawd/scripts/setup-sns-api-cre"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 2,
+    "text": "/root/clawd/docs/sns-api-setup/meta-setup.md\n```\n- **X API（Twitter）**:\n```\n/root/clawd/docs/sns-api-setup/x-setup.md\n```\n- **Pinterest API**:\n```\n/root/clawd/docs/sns-api-setup/pinterest-setup.md\n```\n"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 3,
+    "text": "#   \"instagram\": {\"success\": True, \"data\": {...}},\n#   \"x\": {\"success\": True, \"data\": {...}}\n# }\n```\n### 2. Facebook + Pinterest に投稿\n```python\nresults = api.post(\nplatforms=[SNSPlatform.FACEBOOK, SNSP"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 4,
+    "text": "success = api.delete(SNSPlatform.PINTEREST, \"9876543210\")\n```\n### 4. スケジュール投稿\n```python\nfrom datetime import datetime, timedelta\n# 30 分後に投稿をスケジュール\nschedule_time = datetime.now() + timedelta(minutes=30"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 5,
+    "text": "#   \"delay_seconds\": 1800\n# }\n# スケジューラーを実行\n# api.run_scheduler()  # バックグラウンドで継続実行\n```\n### 5. バズツイートを検索\n```python\n# X（Twitter）でバズツイートを検索\nbuzz_tweets = api.search_buzz(\nplatform=SNSPlatform.X,\nquery=\"AI"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 6,
+    "text": "print(f\"[{tweet['engagement_score']}] @{tweet['username']}: {tweet['text']}\")\n```\n### 7. Pinterest のボード一覧取得\n```python\nboards = api.config.pinterest.get_user_boards()\nfor board in boards:\nprint(f\"ボード: "
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 7,
+    "text": "for platform, counts in stats['platform_stats'].items():\nprint(f\"  {platform}: 成功 {counts['success']}, 失敗 {counts['failed']}\")\n```\n---\n## 📚 詳細 API リファレンス\n### SNSUnifiedAPI（統合インターフェース）\n#### `post(platf"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 8,
+    "text": "- `schedule_time` (datetime, optional): スケジュール時刻\n**戻り値:**\n```python\n{\n\"platform_name\": {\n\"success\": bool,\n\"data\": {...}  # または\n\"error\": \"error message\"\n}\n}\n```\n---\n#### `delete(platform, post_id)`\n投稿を"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 9,
+    "text": "\"text\": \"post text\",\n\"username\": \"author\",\n\"likes\": 1500,\n\"retweets\": 300,\n...\n}\n]\n```\n---\n#### `get_trending(platform)`\nトレンドコンテンツを取得\n**パラメータ:**\n- `platform` (SNSPlatform): プラットフォーム\n**戻り値:**\n```python"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 10,
+    "text": "print(result[\"id\"])  # 投稿 ID\n```\n#### `delete_instagram_post(media_id)`\nInstagram の投稿を削除\n```python\nsuccess = api.config.meta.delete_instagram_post(\"18000000000000001\")\n```\n#### `create_facebook_post(m"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 11,
+    "text": "result = api.config.x.create_tweet(text=\"Hello Twitter!\")\nprint(result[\"data\"][\"id\"])  # ツイート ID\n```\n#### `delete_tweet(tweet_id)`\nツイートを削除\n```python\nsuccess = api.config.x.delete_tweet(\"1234567890\")\n`"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 12,
+    "text": "min_likes=1000,\nmin_retweets=500\n)\n```\n---\n### PinterestApi\n#### `create_pin(board_id, note, image_url, link_url)`\nピンを作成\n```python\nresult = api.config.pinterest.create_pin(\nboard_id=\"123456789\",\nnote="
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 13,
+    "text": "print(f\"{board['name']} (ID: {board['id']})\")\n```\n#### `search_pins(query, limit)`\nピンを検索\n```python\npins = api.config.pinterest.search_pins(\"sunset\", limit=50)\n```\n---\n## ⚠️ トラブルシューティング\n### 「Invalid OA"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 14,
+    "text": "- **Instagram**: 最小 2 秒間隔で投稿\n- **X**: 300 リクエスト/15 分\n- **Pinterest**: 1000 リクエスト/時間（最小 4 秒間隔）\n自動リトライロジックが適用されます：\n```python\napi = SNSUnifiedAPI(\nretry_handler=RetryHandler(\nmax_retries=3,\nstrategy=Retr"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 15,
+    "text": "| Instagram | 1080x1350px | JPG, PNG |\n| Facebook | 1200x628px | JPG, PNG |\n| X | - | JPG, PNG, GIF |\n| Pinterest | 1000x1500px | JPG, PNG |\n---\n### 「403 Forbidden」エラー\n**原因:**\n- ビジネスアカウントが未接続\n- アプリが本番"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 16,
+    "text": "platforms=[SNSPlatform.INSTAGRAM, SNSPlatform.X],\ntext=\"Good morning!\",\nimage_url=\"https://example.com/morning.jpg\"\n)\n# 毎日 09:00 に投稿\nschedule.every().day.at(\"09:00\").do(daily_post)\n# スケジューラー実行\nwhile T"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 17,
+    "text": "print(f\"Failed after retries: {e}\")\n```\n---\n## 📞 サポート\n問題が発生した場合：\n1. ログを確認\n```bash\ntail -f /root/clawd/logs/sns-api.log\n```\n2. トークンを検証\n```bash\nbash /root/clawd/scripts/setup-sns-api-credentials.sh vali"
+  },
+  {
+    "file": "/root/clawd/skills/sns-api-automation/SKILL.md",
+    "chunk_id": 18,
+    "text": "- Pinterest Community: https://community.pinterest.biz/t5/developer-corner\n---\n## 📄 ライセンス\nMIT License\n---\n**最終更新**: 2026 年 2 月 22 日\n**バージョン**: 1.0.0"
+  },
+  {
+    "file": "/root/clawd/skills/sns-curator/SKILL.md",
+    "chunk_id": 0,
+    "text": "# SNS Content Curator Skill\n## 概要\n英語インフルエンサー監視 → 日本語コンテンツ生成 → X・LinkedIn自動投稿\n## ステータス\n- ✅ X個人アカウント投稿: Cookie設定済み（15件）\n- ⏳ LinkedIn投稿: Cookie待ち（明日設定予定）\n- ✅ 毎日JST 9:00 自動実行（cronジョブ: sns-x-linkedin-curat"
+  },
+  {
+    "file": "/root/clawd/skills/sns-curator/SKILL.md",
+    "chunk_id": 1,
+    "text": "**AI/ツール系:** @levelsio, @tibo_maker, @emollick, @mattshumer_, @rowancheung_, @heykahn, @mreflow, @aiexplained_, @dotey\n**ビジネス/成功事例:** @theSamParr, @AlexHormozi, @sahilbloom, @naval, @businessbarista\n*"
+  },
+  {
+    "file": "/root/clawd/skills/sns-curator/SKILL.md",
+    "chunk_id": 2,
+    "text": "├── fetch-tier2-tier3.py    # Tier2/3収集（ニュースレター・YouTube）\n├── post-to-x-personal.cjs  # X投稿（画像/動画対応）\n├── post-to-linkedin.cjs    # LinkedIn投稿（Cookie待ち）\n├── cookies/\n│   ├── x-personal.json     ✅ 設定済み\n│"
+  },
+  {
+    "file": "/root/clawd/skills/sns-curator/SKILL.md",
+    "chunk_id": 3,
+    "text": "## LinkedInのCookie設定方法\n1. Chrome で linkedin.com にログイン\n2. Chrome拡張「Cookie-Editor」をインストール\n3. linkedin.com を開いた状態で拡張を開く\n4. 「Export」→「Export as JSON」→ コピー\n5. `/root/clawd/skills/sns-curator/cookies/linked"
+  },
+  {
+    "file": "/root/clawd/skills/sns-growth-tracker/SKILL.md",
+    "chunk_id": 0,
+    "text": "# SNS Growth Tracker Skill\n完全自立型SNS成長システム\n## 概要\nこのスキルは、andoさんが画像・動画を投稿するだけで、以下を自動実行します：\n1. Gemini分析（内容認識）\n2. 各SNS向けキャプション自動生成\n3. 5つのSNSに自動投稿（Instagram, Threads, Facebook, Pinterest, X）\n4. Google Sheet"
+  },
+  {
+    "file": "/root/clawd/skills/sns-growth-tracker/SKILL.md",
+    "chunk_id": 1,
+    "text": "# Discordの#sns-投稿チャンネルに画像/動画を投稿\n→ リッキーが自動検知（ハートビート時）\n→ ダウンロード → Gemini分析 → キャプション生成\n→ 5つのSNSに自動投稿（Instagram, Threads, Facebook, Pinterest, X）\n→ Google Sheetsに自動記録\n→ 完了通知\n```\n**完全自動化:**\n- andoさんは画像/動画を"
+  },
+  {
+    "file": "/root/clawd/skills/sns-growth-tracker/SKILL.md",
+    "chunk_id": 2,
+    "text": "- Threads: いいね、リポスト、返信、表示回数\n- Facebook: いいね、コメント、シェア、リーチ\n- Pinterest: 保存、クリック、インプレッション\n### 初回セットアップ（ログイン）\n```bash\n# 各SNSへの初回ログイン（クッキー保存）\n/root/clawd/skills/sns-growth-tracker/setup-login.sh\n```\n### ~~"
+  },
+  {
+    "file": "/root/clawd/skills/sns-growth-tracker/SKILL.md",
+    "chunk_id": 3,
+    "text": "├── README-ENGAGEMENT.md               # エンゲージメント自動取得詳細ドキュメント【NEW!】\n├── scripts/\n│   ├── watch-discord-posts.py         # Discord投稿自動検知\n│   ├── main-workflow.py               # メインワークフロー統合\n│   ├── ana"
+  },
+  {
+    "file": "/root/clawd/skills/sns-growth-tracker/SKILL.md",
+    "chunk_id": 4,
+    "text": "│   ├── schedule-engagement-tracking.py # エンゲージメント追跡スケジューラー【NEW!】\n│   ├── trend-monitor.py               # トレンド監視\n│   ├── experiment-planner.py          # 実験計画\n│   ├── learning-engine.py             #"
+  },
+  {
+    "file": "/root/clawd/skills/sns-growth-tracker/SKILL.md",
+    "chunk_id": 5,
+    "text": "├── venv/                              # Python仮想環境（Playwright用）【NEW!】\n├── templates/\n│   └── sheets-structure.json       # Google Sheets構造\n└── data/\n├── trends/                     # トレンドデータ\n├── expe"
+  },
+  {
+    "file": "/root/clawd/skills/sns-growth-tracker/SKILL.md",
+    "chunk_id": 6,
+    "text": "- google-api-python-client\n- **Playwright + Chromium**（エンゲージメント自動取得用）**【NEW!】**\n- Gemini API（GEMINI_API_KEY環境変数）\n- sns-multi-poster skill（既存）\n## 設定\n### Google Sheets認証\n```bash\n# サービスアカウントキーを配置\ncp /pat"
+  },
+  {
+    "file": "/root/clawd/skills/sns-growth-tracker/SKILL.md",
+    "chunk_id": 7,
+    "text": "X, Threads, Instagram, Facebook, Pinterestの数値を記録\n### シート7: 週次レポート\n週ごとの分析結果を自動生成\n### シート8: トレンド分析\nバズってる投稿の分析結果を記録\n### シート9: 実験ログ\nテストした戦略と結果を記録\n## 実行例\n### 投稿フロー\n```bash\n# andoさんがDiscordに画像投稿\n→ リッキーが検知\n→"
+  },
+  {
+    "file": "/root/clawd/skills/sns-growth-tracker/SKILL.md",
+    "chunk_id": 8,
+    "text": "/root/clawd/skills/sns-growth-tracker/run-engagement-check.sh\n# 手動チェック\ncd /root/clawd/skills/sns-growth-tracker\nsource venv/bin/activate\npython3 scripts/schedule-engagement-tracking.py list\n# 手動でエンゲージ"
+  },
+  {
+    "file": "/root/clawd/skills/sns-growth-tracker/SKILL.md",
+    "chunk_id": 9,
+    "text": "# sns-multi-posterスキルを確認\ncd /root/clawd/skills/sns-multi-poster\n./test.sh\n```\n## 今後の拡張\n- [x] **エンゲージメント自動取得** **【完了！2026-02-15】**\n- [ ] A/Bテスト機能\n- [ ] 投稿タイミング最適化\n- [ ] 競合分析機能\n- [ ] 自動ハッシュタグ生成\n- [ ] エン"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 0,
+    "text": "---\nname: sns-multi-poster\ndescription: 5つのSNS（Instagram, Threads, Facebook, Pinterest, X）に画像・動画を自動投稿。AIキャプション生成・パフォーマンス収集・PDCA分析まで完全自動化。「SNS投稿」「マルチ投稿」でトリガー。\n---\n# SNS Multi Poster - 完全自動化システム (v5.0 -"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 1,
+    "text": "**詳細:** [AUTO_POSTER_SETUP.md](./AUTO_POSTER_SETUP.md)\n**systemdサービス:** `discord-sns-watcher.service`\n**ログ確認:**\n```bash\nsudo journalctl -u discord-sns-watcher.service -f\n```\n---\n## 📁 Google Drive自動投稿 "
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 2,
+    "text": "cd /root/clawd/skills/sns-multi-poster\n# DRY_RUNテスト\nDRY_RUN=true bash gdrive-sns-watcher.sh\n# cronジョブ設定（5分ごと監視）\nbash setup-gdrive-watcher-cron.sh\n```\n**詳細:** [GDRIVE_WATCHER_SETUP.md](./GDRIVE_WATCHER"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 3,
+    "text": "- 🎥 **動画** (.mp4, .mov, .avi, .mkv, .webm, .m4v) → Instagram Reels, Threads, X, Facebook **(4SNS - Pinterest除外)**\n**制限:**\n- Instagram Reels: 最大90秒\n- X (Twitter): 最大2分20秒（鳥無料プラン）\n- Threads: 最大5分\n- Face"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 4,
+    "text": "DRY_RUN=true bash post-to-all-sns.sh /tmp/test.mp4 \"テスト動画 #test\" Animal\n```\n---\n## 📋 スクリプト一覧（v4.0）\n| スクリプト | 対応メディア | 認証方式 | DRY_RUN |\n|-----------|------------|---------|---------|\n| `post-to-instagr"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 5,
+    "text": "| `post-to-facebook-video.cjs` | 🎥 動画 | Cookie JSON | ✅ 対応 |\n| `post-to-facebook-api.cjs` | 📷 画像 | **Graph API Token** ✨新 | ✅ 対応 |\n| `post-to-pinterest.cjs` | 📷 画像 | Cookie JSON | ✅ 対応 |\n| `post-to-x."
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 6,
+    "text": "ls /root/clawd/skills/sns-multi-poster/cookies/\n# instagram.json  threads.json  facebook.json  pinterest.json  x.json\n```\n#### Cookie更新方法\n1. 対象SNSにブラウザでログイン\n2. Chrome拡張「Cookie-Editor」などでJSON形式でコピー\n3. "
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 7,
+    "text": "# PAGE_ID オプション（デフォルト: \"me\"）\nexport PAGE_ID=\"your_page_id\"\n```\n#### 直接実行\n```bash\n# 基本使用法\nnode post-to-facebook-api.cjs /path/to/image.jpg \"投稿キャプション\"\n# テストモード\nDRY_RUN=true node post-to-facebook-api.cjs"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 8,
+    "text": "1. [Facebook Developers Console](https://developers.facebook.com/)\n2. Settings → User Token\n3. Permissions: `pages_manage_posts`, `pages_read_engagement`\n4. トークンをコピー → `FACEBOOK_API_TOKEN` に設定\n---\n## "
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 9,
+    "text": "- 週次レポート: `/root/clawd/data/reports/`\n---\n## トリガーワード\n- `SNS投稿`\n- `マルチ投稿`\n- `5つのSNSに投稿`\n- `/sns-multi-poster`\n---\n## 🛡️ **BAN対策システム (v6 - 新機能)**\n**作成日:** 2026-02-21\n**目的:** VPS運用でもBANリスクを80%削減\n### 📊 **"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 10,
+    "text": "2. **投稿時間制限**\n- 7時〜23時のみ許可（深夜投稿禁止）\n3. **ランダム遅延**\n- 操作前: 2〜5秒\n- クリック間: 0.5〜1.5秒\n- タイピング: 50〜150ms/文字\n4. **高度検出回避**\n- puppeteer-extra + stealth plugin\n- navigator.webdriver削除\n- Chrome Detection対策\n- User"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 11,
+    "text": "cat /root/clawd/data/sns-posts/rate-limit-log.json\n```\n### 📋 **ドキュメント**\n- **詳細ガイド:** `/root/clawd/skills/sns-multi-poster/ANTI_BAN_GUIDE.md`\n- **クイックスタート:** `/root/clawd/skills/sns-multi-poster/README"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 12,
+    "text": "| `delete-threads-post.cjs` | Threads | Puppeteerで自動削除 |\n| `delete-facebook-post.cjs` | Facebook | Puppeteerで自動削除 |\n| `delete-pinterest-pin.cjs` | Pinterest | Puppeteerで自動削除 |\n| `delete-x-post.sh` | X"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 13,
+    "text": "# Facebook投稿削除\nnode delete-facebook-post.cjs \"https://www.facebook.com/username/posts/123456\"\n# Pinterestピン削除\nnode delete-pinterest-pin.cjs \"https://www.pinterest.com/pin/123456789/\"\n# X投稿削除（手動案内）\nbas"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 14,
+    "text": "4. URLがない場合はスキップ\n**注意：**\n- X (Twitter) は bird CLI に削除機能がないため手動削除URLを表示\n- Cookie期限切れの場合は削除失敗（`cookies/<platform>.json` 更新が必要）\n---\n## 🔧 トラブルシューティング\n| 症状 | 対処法 |\n|------|--------|\n| Cookie期限切れ | `cookies"
+  },
+  {
+    "file": "/root/clawd/skills/sns-multi-poster/SKILL.md",
+    "chunk_id": 15,
+    "text": "- 2026-02-21 v4.0: 動画投稿対応（Instagram Reels, Threads, Facebook動画スクリプト追加）\n- 2026-02-17 v3.0: 全スクリプトにDRY_RUN早期終了追加、post-to-all-sns.sh修正（5SNS対応、タイムアウト管理）\n- 2026-02-17 v2.0: post-to-instagram-v5.cjs完成（Cooki"
+  },
+  {
+    "file": "/root/clawd/skills/web-search/SKILL.md",
+    "chunk_id": 0,
+    "text": "# web-search\n統合Web検索スキル - Brave Search API（Google代替） + X (Twitter) 検索\n## 🎯 特徴\n- ✅ **自動判定** - 会話から自動的にBrave/X検索を選択\n- ✅ **Brave Search API** - Googleと同等の検索品質（月2000回無料）\n- ✅ **X (Twitter) 検索** - 最新のツイートを取"
+  },
+  {
+    "file": "/root/clawd/skills/web-search/SKILL.md",
+    "chunk_id": 1,
+    "text": "bash /root/clawd/skills/web-search/unified-search.sh --x \"AI video tools\"\n```\n## 自動トリガー（リッキー用）\n### Web検索トリガー\n- \"〜を検索して\"\n- \"〜について調べて\"\n- \"〜の情報を探して\"\n- \"〜のツールを見つけて\"\n### X検索トリガー\n- \"Xで〜を調べて\"\n- \"Twitterで〜を検索"
+  },
+  {
+    "file": "/root/clawd/skills/web-search/SKILL.md",
+    "chunk_id": 2,
+    "text": "--- 検索結果 1 ---\n📌 Free Sora Watermark Remover – One-Click, No Watermark Videos\n🔗 https://ezremove.ai/sora-watermark-remover/\n📝 Remove Sora watermarks instantly with AI precision...\n```\n### 例2: X検索で評判調査"
+  },
+  {
+    "file": "/root/clawd/skills/web-search/SKILL.md",
+    "chunk_id": 3,
+    "text": "📌 ProPainter: Video Inpainting with Diffusion Models\n🔗 https://github.com/sczhou/ProPainter\n📝 A powerful tool for video inpainting, object removal...\n--- 検索結果 2 ---\n📌 How to Remove Watermarks from Sor"
+  },
+  {
+    "file": "/root/clawd/skills/web-search/SKILL.md",
+    "chunk_id": 4,
+    "text": "🔗 https://twitter.com/ai_enthusiast/status/123456789\n```\n## 技術仕様\n### 依存関係\n- **Brave Search API**: 月2000回無料、環境変数 `BRAVE_API_KEY`\n- **Puppeteer**: X検索用（Node.js 14+）\n### 環境変数\n```bash\n# ~/.profile に設定済み\ne"
+  },
+  {
+    "file": "/root/clawd/skills/web-search/SKILL.md",
+    "chunk_id": 5,
+    "text": "/root/clawd/skills/x-search/\n├── search-x.js           # X検索スクリプト\n└── node_modules/         # Puppeteer\n```\n## リッキーの使い方\n### 会話から自動判断\n```javascript\n// リッキーの内部ロジック\nif (message.includes(\"Xで\") || message."
+  },
+  {
+    "file": "/root/clawd/skills/web-search/SKILL.md",
+    "chunk_id": 6,
+    "text": "const braveResults = execSync(`unified-search.sh \"${keyword}\"`);\nconst xResults = execSync(`unified-search.sh --x \"${keyword}\"`);\n// 統合して報告\n}\n```\n### 結果の要約\n- 検索結果は上位5件を要約\n- URLは必ず提示\n- 関連ツール・手法を抽出\n- **"
+  },
+  {
+    "file": "/root/clawd/skills/web-search/SKILL.md",
+    "chunk_id": 7,
+    "text": "cd /root/clawd/skills/x-search\nnpm install --force\n```\n### レート制限\n- Brave: 月2000回制限（超過したら翌月まで待つ）\n- X: 連続検索時は5秒間隔を空ける\n## 今後の拡張\n- [ ] YouTube動画検索\n- [ ] GitHub検索\n- [ ] 学術論文検索（Google Scholar代替）\n- [ ] 画像検索\n"
+  },
+  {
+    "file": "/root/clawd/skills/x-search/SKILL.md",
+    "chunk_id": 0,
+    "text": "# x-search\nX (Twitter) の検索を自動化するスキル。Puppeteerを使ってブラウザ自動化で最新のツイートを取得します。\n## 機能\n- ✅ キーワード検索\n- ✅ 最新順（Live）で取得\n- ✅ ログイン状態を維持（cookie使用）\n- ✅ JSON出力対応\n- ✅ 全チャンネルで使用可能\n## 使い方\n### 基本的な検索\n```bash\nbash /root/cla"
+  },
+  {
+    "file": "/root/clawd/skills/x-search/SKILL.md",
+    "chunk_id": 1,
+    "text": "bash /root/clawd/skills/x-search/x-search.sh \"AI video enhancement tools 2025\"\n# JSON形式で取得\nbash /root/clawd/skills/x-search/x-search.sh \"video upscaling\" --json\n```\n## 出力例\n```\n🔍 X検索開始: \"Sora watermark"
+  },
+  {
+    "file": "/root/clawd/skills/x-search/SKILL.md",
+    "chunk_id": 2,
+    "text": "📝 ProPainter works great for Sora video watermark removal...\n🔗 https://twitter.com/another_user/status/987654321\n```\n## トリガーキーワード\nリッキーが自動的に使うキーワード：\n- \"Xで調べて\"\n- \"Twitterで検索\"\n- \"Xで〜を探して\"\n- \"最新情報を検索\"\n## "
+  },
+  {
+    "file": "/root/clawd/skills/x-search/SKILL.md",
+    "chunk_id": 3,
+    "text": "└── node_modules/     # 依存パッケージ（初回実行時に自動生成）\n```\n## トラブルシューティング\n### Puppeteerインストールエラー\n```bash\ncd /root/clawd/skills/x-search\nnpm install --force\n```\n### ブラウザが起動しない\n- VPS環境で必要なライブラリがない場合：\n```bash\napt-g"
+  },
+  {
+    "file": "/root/clawd/skills/x-search/SKILL.md",
+    "chunk_id": 4,
+    "text": "1. bash /root/clawd/skills/x-search/x-search.sh \"AI video tools 2025\" を実行\n2. 結果を要約して報告\n3. 関連URLを提示\n```\n### 自動トリガー例\n```javascript\n// 会話から検索意図を検出\nif (message.includes(\"Xで\") && message.includes(\"調べて\")) {"
+  },
+  {
+    "file": "/root/clawd/skills/youtube-analyzer/SKILL.md",
+    "chunk_id": 0,
+    "text": "---\nname: youtube-analyzer\ndescription: Analyze YouTube videos using Gemini API (supports video understanding)\n---\n# youtube-analyzer\nGemini APIを使ってYouTube動画を詳細分析するSkill\n## Requirements\n- Gemini API K"
+  },
+  {
+    "file": "/root/clawd/skills/youtube-analyzer/SKILL.md",
+    "chunk_id": 1,
+    "text": "- ✅ 具体的な手法や戦略の解説\n- ✅ 実用的な学びの提供\n## Limitations\n- レート制限あり（429エラー時は30秒待機）\n- Gemini APIのクォータに依存\n- 長時間動画は分析に時間がかかる場合あり\n## Environment Setup\n```bash\nexport GEMINI_API_KEY=\"YOUR_API_KEY\"\n```\n## Example Outpu"
+  }
+]

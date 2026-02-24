@@ -1,19 +1,5 @@
 {
   "positions": {
-    "AINUSDT": {
-      "entry_time": "2026-02-24T15:29:05.893625",
-      "entry_price": 0.041816,
-      "quantity": 79714.30393469805,
-      "position_size": 3333.3333333333335,
-      "position_type": "long",
-      "stop_loss": 0.04097968,
-      "take_profit": 0.0439068,
-      "trailing_stop": null,
-      "trailing_stop_used": false,
-      "highest_price": 0.042158,
-      "lowest_price": null,
-      "entry_reason": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + \u4fa1\u683c>EMA200"
-    },
     "SOLUSDT": {
       "entry_time": "2026-02-24T15:30:28.613082",
       "entry_price": 77.37,
@@ -27,8 +13,36 @@
       "highest_price": 77.44,
       "lowest_price": null,
       "entry_reason": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + \u4fa1\u683c>EMA200"
+    },
+    "IRUSDT": {
+      "entry_time": "2026-02-24T15:36:55.220955",
+      "entry_price": 0.07431,
+      "quantity": 45025.56061164437,
+      "position_size": 3345.849409051293,
+      "position_type": "long",
+      "stop_loss": 0.0728238,
+      "take_profit": 0.0780255,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": 0.07445,
+      "lowest_price": null,
+      "entry_reason": "\u30ed\u30f3\u30b0: SMA/EMA\u53cd\u767a + \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9"
+    },
+    "SNXUSDT": {
+      "entry_time": "2026-02-24T15:37:26.748754",
+      "entry_price": 0.3496,
+      "quantity": 9570.507462961363,
+      "position_size": 3345.8494090512927,
+      "position_type": "long",
+      "stop_loss": 0.342608,
+      "take_profit": 0.36708,
+      "trailing_stop": null,
+      "trailing_stop_used": false,
+      "highest_price": 0.3501,
+      "lowest_price": null,
+      "entry_reason": "\u30ed\u30f3\u30b0: SMA/EMA\u53cd\u767a + \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9"
     }
   },
-  "capital": 3333.3333333333326,
-  "timestamp": "2026-02-24T15:31:13.347184"
+  "capital": 12.516075717960575,
+  "timestamp": "2026-02-24T15:41:21.070660"
 }

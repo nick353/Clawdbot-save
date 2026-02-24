@@ -1,199 +1,140 @@
 #!/bin/bash
-# プロンプト最適化システム - テンプレート管理 + A/Bテスト
+# prompt-optimizer.sh - プロンプト最適化システム
 
 set -euo pipefail
 
 TEMPLATES_DIR="/root/clawd/config/prompt-templates"
 STATS_FILE="/root/clawd/config/prompt-stats.json"
 
-# ディレクトリ作成
-mkdir -p "$TEMPLATES_DIR"
-
-# 初期テンプレート作成
-init_templates() {
-  # Research テンプレート
-  cat > "$TEMPLATES_DIR/research.txt" <<'EOF'
-<タスク>
-{query} について徹底的に調査してください。
-
-**調査手順:**
-1. Brave検索で王道・確実な方法を確認
-2. X検索で最新情報・実際の使用例を確認
-3. 複数のアプローチを比較
-4. 最適な方法を選択・提示
-
-**出力形式:**
-- 調査結果の要約
-- 推奨アプローチ（理由を含む）
-- 代替案（あれば）
+# 初期化
+init() {
+    mkdir -p "$TEMPLATES_DIR"
+    
+    # Research テンプレート
+    cat > "$TEMPLATES_DIR/research.txt" <<'EOF'
+【調査タスク】
+1. 複数の検索エンジンを使用（web_search + bird）
+2. 公式ドキュメントを優先的に参照
+3. 最新情報と既存の知識を比較
+4. 信頼できる情報源を選択
 EOF
 
-  # Implementation テンプレート
-  cat > "$TEMPLATES_DIR/implementation.txt" <<'EOF'
-<タスク>
-{description} を実装してください。
+    # Implementation テンプレート
+    cat > "$TEMPLATES_DIR/implementation.txt" <<'EOF'
+【実装タスク】
+1. 既存のスキル・スクリプトを検索
+2. 段階的な実装計画を作成
+3. DRY_RUNモードで検証
+4. エラーケースを考慮
+5. 再利用可能な設計
+EOF
 
-**実装手順:**
-1. 既存のlessons.md/successes.mdを確認（類似タスク検索）
-2. 段階的に実装（まず動くものを作る）
-3. DRY_RUNモードでテスト
-4. エラーハンドリング追加
+    # Verification テンプレート
+    cat > "$TEMPLATES_DIR/verification.txt" <<'EOF'
+【検証タスク】
+1. エンドツーエンドテスト実施
+2. 実データでの動作確認
+3. エラーケースの検証
+4. パフォーマンスチェック
 5. ドキュメント更新
-
-**品質チェック:**
-- [ ] 動作確認完了
-- [ ] エラーハンドリング実装
-- [ ] ドキュメント更新
-- [ ] 成功パターンを記録
 EOF
 
-  # Verification テンプレート
-  cat > "$TEMPLATES_DIR/verification.txt" <<'EOF'
-<タスク>
-{target} の動作確認を実施してください。
-
-**確認項目:**
-1. 正常系テスト
-2. エッジケーステスト（空文字列、null、巨大ファイル等）
-3. エラーハンドリング確認
-4. 既存機能への影響確認
-
-**結果レポート:**
-- テスト結果（成功/失敗）
-- 問題点（あれば）
-- 改善提案（あれば）
-EOF
-
-  echo "✅ 初期テンプレート作成完了"
-}
-
-# 統計初期化
-init_stats() {
-  if [ ! -f "$STATS_FILE" ]; then
-    cat > "$STATS_FILE" <<'EOF'
+    # 統計ファイル初期化
+    if [ ! -f "$STATS_FILE" ]; then
+        cat > "$STATS_FILE" <<'EOF'
 {
-  "research": {
-    "total": 0,
-    "success": 0,
-    "failure": 0,
-    "success_rate": 0.0
-  },
-  "implementation": {
-    "total": 0,
-    "success": 0,
-    "failure": 0,
-    "success_rate": 0.0
-  },
-  "verification": {
-    "total": 0,
-    "success": 0,
-    "failure": 0,
-    "success_rate": 0.0
-  }
+  "research": {"success": 0, "failure": 0},
+  "implementation": {"success": 0, "failure": 0},
+  "verification": {"success": 0, "failure": 0}
 }
 EOF
-  fi
+    fi
+    
+    echo "✅ プロンプトテンプレート初期化完了"
 }
 
 # テンプレート取得
-get_template() {
-  local category="$1"
-  local query="${2:-}"
-  
-  local template_file="$TEMPLATES_DIR/${category}.txt"
-  
-  if [ ! -f "$template_file" ]; then
-    echo "❌ テンプレートが見つかりません: $category"
-    return 1
-  fi
-  
-  # プレースホルダー置換（簡易版）
-  if [ -n "$query" ]; then
-    sed "s/{query}/$query/g; s/{description}/$query/g; s/{target}/$query/g" "$template_file"
-  else
-    cat "$template_file"
-  fi
+get() {
+    local category="$1"
+    local task_desc="${2:-}"
+    
+    if [ ! -f "$TEMPLATES_DIR/$category.txt" ]; then
+        echo "⚠️ テンプレート未作成: $category"
+        return 1
+    fi
+    
+    echo "【$category テンプレート】"
+    cat "$TEMPLATES_DIR/$category.txt"
+    if [ -n "$task_desc" ]; then
+        echo ""
+        echo "【タスク概要】"
+        echo "$task_desc"
+    fi
 }
 
 # 統計更新
-update_stats() {
-  local category="$1"
-  local result="$2"  # success/failure
-  
-  init_stats
-  
-  # Python JSONパーサーで更新（jqがなくてもOK）
-  python3 <<EOF
-import json
-
-with open("$STATS_FILE") as f:
-    stats = json.load(f)
-
-if "$category" not in stats:
-    stats["$category"] = {"total": 0, "success": 0, "failure": 0, "success_rate": 0.0}
-
-stats["$category"]["total"] += 1
-stats["$category"]["$result"] += 1
-stats["$category"]["success_rate"] = stats["$category"]["success"] / stats["$category"]["total"]
-
-with open("$STATS_FILE", "w") as f:
-    json.dump(stats, f, indent=2)
-
-print(f"✅ 統計更新: {category} - {result}")
-EOF
+update() {
+    local category="$1"
+    local result="$2"  # success or failure
+    
+    if [ ! -f "$STATS_FILE" ]; then
+        init
+    fi
+    
+    # jqで統計更新
+    local current=$(jq -r ".$category.$result" "$STATS_FILE")
+    local new_count=$((current + 1))
+    jq ".$category.$result = $new_count" "$STATS_FILE" > "$STATS_FILE.tmp"
+    mv "$STATS_FILE.tmp" "$STATS_FILE"
+    
+    echo "✅ 統計更新: $category - $result ($new_count)"
 }
 
-# ベストテンプレート選択
-best_template() {
-  init_stats
-  
-  python3 <<'EOF'
-import json
-
-with open("/root/clawd/config/prompt-stats.json") as f:
-    stats = json.load(f)
-
-best = max(stats.items(), key=lambda x: x[1].get("success_rate", 0))
-print(f"🏆 最高成功率: {best[0]} ({best[1]['success_rate']:.2%})")
-EOF
+# ベストテンプレート選択（成功率が最も高いもの）
+best() {
+    if [ ! -f "$STATS_FILE" ]; then
+        echo "⚠️ 統計データなし"
+        return 1
+    fi
+    
+    echo "📊 成功率ランキング:"
+    for category in research implementation verification; do
+        local success=$(jq -r ".$category.success" "$STATS_FILE")
+        local failure=$(jq -r ".$category.failure" "$STATS_FILE")
+        local total=$((success + failure))
+        
+        if [ $total -gt 0 ]; then
+            local rate=$(echo "scale=2; $success / $total * 100" | bc)
+            echo "  $category: ${rate}% ($success/$total)"
+        else
+            echo "  $category: データなし"
+        fi
+    done
 }
 
-# 使い方
-usage() {
-  echo "使い方:"
-  echo "  初期化: bash prompt-optimizer.sh init"
-  echo "  テンプレート取得: bash prompt-optimizer.sh get <category> [query]"
-  echo "  統計更新: bash prompt-optimizer.sh update <category> <success|failure>"
-  echo "  ベスト選択: bash prompt-optimizer.sh best"
-  echo ""
-  echo "カテゴリ: research, implementation, verification"
-  exit 1
-}
-
-# コマンド処理
 case "${1:-}" in
-  init)
-    init_templates
-    init_stats
-    ;;
-  get)
-    if [ "$#" -lt 2 ]; then
-      echo "❌ カテゴリを指定してください"
-      usage
-    fi
-    get_template "$2" "${3:-}"
-    ;;
-  update)
-    if [ "$#" -lt 3 ]; then
-      echo "❌ カテゴリと結果を指定してください"
-      usage
-    fi
-    update_stats "$2" "$3"
-    ;;
-  best)
-    best_template
-    ;;
-  *)
-    usage
-    ;;
+    init)
+        init
+        ;;
+    get)
+        if [ $# -lt 2 ]; then
+            echo "使い方: $0 get <category> [task_desc]"
+            exit 1
+        fi
+        get "$2" "${3:-}"
+        ;;
+    update)
+        if [ $# -lt 3 ]; then
+            echo "使い方: $0 update <category> <success|failure>"
+            exit 1
+        fi
+        update "$2" "$3"
+        ;;
+    best)
+        best
+        ;;
+    *)
+        echo "使い方: $0 {init|get|update|best}"
+        exit 1
+        ;;
 esac

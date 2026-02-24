@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Facebook 投稿スクリプト v5 - スクロール修正版
- * Reels編集画面の左側パネルを確実にスクロールしてPostボタンを探す
+ * Facebook 投稿スクリプト v4 - Reels対応版
+ * 動画投稿時の "Edit reel" 画面をスクロールしてPostボタンを探す
  *
- * Usage: node post-to-facebook-v5-scroll-fix.cjs <image_path> <caption>
+ * Usage: node post-to-facebook-v4-reels-support.cjs <image_path> <caption>
  */
 
 const puppeteer = require('puppeteer-extra');
@@ -16,7 +16,7 @@ puppeteer.use(StealthPlugin());
 const [,, imagePath, caption] = process.argv;
 
 if (!imagePath || !caption) {
-  console.error('使い方: node post-to-facebook-v5-scroll-fix.cjs <image_path> <caption>');
+  console.error('使い方: node post-to-facebook-v4-reels-support.cjs <image_path> <caption>');
   process.exit(1);
 }
 
@@ -40,7 +40,7 @@ async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 function randomDelay(min, max) { return sleep(Math.floor(Math.random() * (max - min + 1) + min)); }
 
 async function postToFacebook() {
-  console.log('📘 Facebook に投稿開始 (v5 - スクロール修正版)');
+  console.log('📘 Facebook に投稿開始 (v4 - Reels対応版)');
   console.log(`🖼️  ${imagePath}`);
   console.log(`📝 ${caption.substring(0, 80)}`);
 
@@ -247,7 +247,7 @@ async function postToFacebook() {
 
     if (nextClicked) {
       console.log(`✅ Next ボタンクリック: ${nextClicked}`);
-      await randomDelay(8000, 12000); // Reels編集画面の読み込み待機（長めに）
+      await randomDelay(5000, 8000); // Reels編集画面の読み込み待機
       await page.screenshot({ path: '/tmp/facebook-after-next.png' });
     } else {
       console.warn('⚠️ Next ボタンが見つかりません');
@@ -257,84 +257,39 @@ async function postToFacebook() {
     console.log('🔍 Reels編集画面を確認中...');
 
     const isReelsScreen = await page.evaluate(() => {
-      // h1, h2だけでなく、全ての要素から"Edit reel"を探す
-      const allElements = Array.from(document.querySelectorAll('*'));
-      for (const el of allElements) {
-        if (el.textContent && el.textContent.includes('Edit reel')) {
-          return true;
-        }
-      }
-      return false;
+      const heading = document.querySelector('h1, h2');
+      return heading && heading.textContent.includes('Edit reel');
     });
-
-    console.log(`🔍 Reels編集画面判定: ${isReelsScreen}`);
 
     if (isReelsScreen) {
       console.log('✅ Reels編集画面を検出 - 左側パネルをスクロールします');
       
-      // 左側パネルを確実にスクロール（複数回試行）
-      for (let i = 0; i < 8; i++) {
-        const scrollResult = await page.evaluate(() => {
-          let scrolled = false;
-          
-          // 方法1: dialog内の全てのdivをスクロール（scrollHeight判定なし）
-          const dialogDivs = Array.from(document.querySelectorAll('[role="dialog"] div'));
-          for (const div of dialogDivs) {
-            try {
-              const beforeScroll = div.scrollTop;
-              div.scrollBy(0, 1000); // 1000pxずつスクロール
-              if (div.scrollTop !== beforeScroll) {
-                scrolled = true;
-              }
-            } catch(e) {}
-          }
-          
-          // 方法2: overflow属性のある要素を強制スクロール
-          const scrollables = Array.from(document.querySelectorAll('[role="dialog"] *'));
-          for (const el of scrollables) {
-            try {
-              const style = window.getComputedStyle(el);
-              if (style.overflow === 'scroll' || style.overflow === 'auto' || 
-                  style.overflowY === 'scroll' || style.overflowY === 'auto') {
-                const beforeScroll = el.scrollTop;
-                el.scrollBy(0, 1000);
-                if (el.scrollTop !== beforeScroll) {
-                  scrolled = true;
-                }
-              }
-            } catch(e) {}
-          }
-          
-          // 方法3: dialogの直接の子要素をスクロール
-          const dialog = document.querySelector('[role="dialog"]');
-          if (dialog && dialog.children.length > 0) {
-            for (const child of dialog.children) {
-              try {
-                const beforeScroll = child.scrollTop;
-                child.scrollBy(0, 1000);
-                if (child.scrollTop !== beforeScroll) {
-                  scrolled = true;
-                }
-              } catch(e) {}
+      // 左側パネルをスクロールdown
+      await page.evaluate(() => {
+        // 複数の方法で左側パネルをスクロール
+        const selectors = [
+          '[role="dialog"] > div > div',
+          '[role="dialog"] > div',
+          'div[style*="overflow"]',
+        ];
+        
+        for (const sel of selectors) {
+          const panels = document.querySelectorAll(sel);
+          for (const panel of panels) {
+            if (panel.scrollHeight > panel.clientHeight) {
+              panel.scrollTop = panel.scrollHeight;
+              console.log(`スクロール: ${sel}`);
             }
           }
-          
-          // 方法4: ページ全体をスクロール
-          try {
-            window.scrollBy(0, 1000);
-            scrolled = true;
-          } catch(e) {}
-          
-          return scrolled;
-        });
+        }
         
-        await sleep(1500); // 各スクロール後に1.5秒待機
-        console.log(`🔄 スクロール試行 ${i + 1}/8 ${scrollResult ? '✅' : '❌'}`);
-      }
+        // ページ全体もスクロール
+        window.scrollTo(0, document.body.scrollHeight);
+      });
       
+      await randomDelay(2000, 3000);
       await page.screenshot({ path: '/tmp/facebook-after-scroll.png' });
       console.log('📸 スクロール後スクリーンショット: /tmp/facebook-after-scroll.png');
-      await sleep(2000);
     }
 
     // ─── Step 6: "Post" または "Share" ボタンをクリック ───
@@ -348,25 +303,22 @@ async function postToFacebook() {
         '[role="button"]',
       ];
       
-      const keywords = ['Post', 'Share', '投稿', 'Publish', 'Share to reel', 'Post reel'];
-      
-      for (const sel of selectors) {
+      for (const sel of [].concat(selectors)) {
         const btns = Array.from(document.querySelectorAll(sel));
         for (const btn of btns) {
           const txt = btn.textContent.trim();
           const aria = btn.getAttribute('aria-label') || '';
           
-          // キーワードマッチング
-          for (const kw of keywords) {
-            if ((txt === kw || aria.includes(kw)) &&
-                !btn.getAttribute('aria-disabled') &&
-                btn.getAttribute('aria-disabled') !== 'true') {
-              
-              const r = btn.getBoundingClientRect();
-              if (r.width > 0 && r.height > 0) {
-                btn.click();
-                return `"${txt}" (aria: "${aria}", kw: "${kw}")`;
-              }
+          // Post, Share, 投稿ボタンを探す
+          if ((txt === 'Post' || txt === 'Share' || txt === '投稿' || 
+               txt === 'Publish' || aria.includes('Post')) &&
+              !btn.getAttribute('aria-disabled') &&
+              btn.getAttribute('aria-disabled') !== 'true') {
+            
+            const r = btn.getBoundingClientRect();
+            if (r.width > 0 && r.height > 0) {
+              btn.click();
+              return `"${txt}" (aria: "${aria}", position: ${r.top}x${r.left})`;
             }
           }
         }
@@ -387,13 +339,9 @@ async function postToFacebook() {
           text: btn.textContent.trim().substring(0, 50),
           aria: btn.getAttribute('aria-label'),
           disabled: btn.getAttribute('aria-disabled') || btn.getAttribute('disabled'),
-          position: btn.getBoundingClientRect().top,
-        })).filter(b => b.text || b.aria).sort((a, b) => a.position - b.position);
+        })).filter(b => b.text || b.aria);
       });
-      console.log('🔍 検出されたボタン（上から下へ）:');
-      allButtons.forEach((btn, i) => {
-        console.log(`  ${i + 1}. "${btn.text}" (aria: "${btn.aria}", pos: ${btn.position})`);
-      });
+      console.log('🔍 検出されたボタン:', JSON.stringify(allButtons, null, 2));
       
       throw new Error('Post/Share ボタンが見つかりません');
     }

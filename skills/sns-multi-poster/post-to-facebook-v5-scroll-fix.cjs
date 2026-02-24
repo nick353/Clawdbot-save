@@ -257,79 +257,41 @@ async function postToFacebook() {
     console.log('🔍 Reels編集画面を確認中...');
 
     const isReelsScreen = await page.evaluate(() => {
-      // h1, h2だけでなく、全ての要素から"Edit reel"を探す
-      const allElements = Array.from(document.querySelectorAll('*'));
-      for (const el of allElements) {
-        if (el.textContent && el.textContent.includes('Edit reel')) {
-          return true;
-        }
-      }
-      return false;
+      const heading = document.querySelector('h1, h2');
+      return heading && heading.textContent.includes('Edit reel');
     });
-
-    console.log(`🔍 Reels編集画面判定: ${isReelsScreen}`);
 
     if (isReelsScreen) {
       console.log('✅ Reels編集画面を検出 - 左側パネルをスクロールします');
       
       // 左側パネルを確実にスクロール（複数回試行）
-      for (let i = 0; i < 8; i++) {
-        const scrollResult = await page.evaluate(() => {
-          let scrolled = false;
-          
-          // 方法1: dialog内の全てのdivをスクロール（scrollHeight判定なし）
-          const dialogDivs = Array.from(document.querySelectorAll('[role="dialog"] div'));
-          for (const div of dialogDivs) {
-            try {
-              const beforeScroll = div.scrollTop;
-              div.scrollBy(0, 1000); // 1000pxずつスクロール
-              if (div.scrollTop !== beforeScroll) {
-                scrolled = true;
-              }
-            } catch(e) {}
-          }
-          
-          // 方法2: overflow属性のある要素を強制スクロール
-          const scrollables = Array.from(document.querySelectorAll('[role="dialog"] *'));
-          for (const el of scrollables) {
-            try {
-              const style = window.getComputedStyle(el);
-              if (style.overflow === 'scroll' || style.overflow === 'auto' || 
-                  style.overflowY === 'scroll' || style.overflowY === 'auto') {
-                const beforeScroll = el.scrollTop;
-                el.scrollBy(0, 1000);
-                if (el.scrollTop !== beforeScroll) {
-                  scrolled = true;
-                }
-              }
-            } catch(e) {}
-          }
-          
-          // 方法3: dialogの直接の子要素をスクロール
-          const dialog = document.querySelector('[role="dialog"]');
-          if (dialog && dialog.children.length > 0) {
-            for (const child of dialog.children) {
-              try {
-                const beforeScroll = child.scrollTop;
-                child.scrollBy(0, 1000);
-                if (child.scrollTop !== beforeScroll) {
-                  scrolled = true;
-                }
-              } catch(e) {}
+      for (let i = 0; i < 5; i++) {
+        await page.evaluate(() => {
+          // 方法1: 左側の全divを探してスクロール
+          const allDivs = Array.from(document.querySelectorAll('[role="dialog"] > div > div'));
+          for (const div of allDivs) {
+            if (div.scrollHeight > div.clientHeight) {
+              div.scrollBy(0, 500); // 500pxずつスクロール
             }
           }
           
-          // 方法4: ページ全体をスクロール
-          try {
-            window.scrollBy(0, 1000);
-            scrolled = true;
-          } catch(e) {}
+          // 方法2: overflow: scroll/auto の要素を探してスクロール
+          const scrollables = Array.from(document.querySelectorAll('[role="dialog"] *'));
+          for (const el of scrollables) {
+            const style = window.getComputedStyle(el);
+            if ((style.overflow === 'scroll' || style.overflow === 'auto' || 
+                 style.overflowY === 'scroll' || style.overflowY === 'auto') &&
+                el.scrollHeight > el.clientHeight) {
+              el.scrollBy(0, 500);
+            }
+          }
           
-          return scrolled;
+          // 方法3: ページ全体をスクロール
+          window.scrollBy(0, 500);
         });
         
-        await sleep(1500); // 各スクロール後に1.5秒待機
-        console.log(`🔄 スクロール試行 ${i + 1}/8 ${scrollResult ? '✅' : '❌'}`);
+        await sleep(1000); // 各スクロール後に1秒待機
+        console.log(`🔄 スクロール試行 ${i + 1}/5`);
       }
       
       await page.screenshot({ path: '/tmp/facebook-after-scroll.png' });

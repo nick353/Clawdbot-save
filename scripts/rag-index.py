@@ -1,166 +1,179 @@
 #!/usr/bin/env python3
 """
-RAG Indexing System - ナレッジベースのベクトル化
+rag-index.py - RAG検索システム（インデックス作成・検索）
 """
-import os
-import json
+
 import sys
+import json
+import os
 from pathlib import Path
-from sentence_transformers import SentenceTransformer
-import faiss
 import numpy as np
+
+# sentence-transformersとFAISSのインポート
+try:
+    from sentence_transformers import SentenceTransformer
+    import faiss
+except ImportError as e:
+    print(f"⚠️ 必要なパッケージがインストールされていません: {e}")
+    print("以下を実行してください:")
+    print("  source /root/venv/bin/activate && pip install sentence-transformers faiss-cpu numpy")
+    sys.exit(1)
 
 # 設定
 KNOWLEDGE_DIR = Path("/root/clawd/knowledge")
-INDEX_PATH = KNOWLEDGE_DIR / "embeddings.index"
-METADATA_PATH = KNOWLEDGE_DIR / "metadata.json"
-MODEL_NAME = "all-MiniLM-L6-v2"  # 軽量・高速モデル
+INDEX_FILE = KNOWLEDGE_DIR / "embeddings.index"
+METADATA_FILE = KNOWLEDGE_DIR / "metadata.json"
+MODEL_NAME = "all-MiniLM-L6-v2"  # 軽量で高速なモデル
 
-def load_documents():
-    """ナレッジベースから文書を読み込む"""
-    documents = []
+class RAGSystem:
+    def __init__(self):
+        self.model = None
+        self.index = None
+        self.metadata = []
+        
+    def load_model(self):
+        """埋め込みモデルの読み込み"""
+        if self.model is None:
+            print(f"🔄 モデル読み込み中: {MODEL_NAME}")
+            self.model = SentenceTransformer(MODEL_NAME)
+            print("✅ モデル読み込み完了")
     
-    # lessons.md
-    lessons_path = Path("/root/clawd/tasks/lessons.md")
-    if lessons_path.exists():
-        content = lessons_path.read_text()
-        # セクションごとに分割
-        sections = content.split("## ")
-        for section in sections[1:]:  # 最初の空セクションをスキップ
-            if section.strip():
-                documents.append({
-                    "source": "lessons.md",
-                    "category": "failure",
-                    "content": section.strip()
+    def chunk_text(self, text: str, chunk_size: int = 500) -> list[str]:
+        """テキストをチャンクに分割"""
+        # 改行で分割して、空行を削除
+        lines = [line.strip() for line in text.split('\n') if line.strip()]
+        
+        chunks = []
+        current_chunk = []
+        current_size = 0
+        
+        for line in lines:
+            line_size = len(line)
+            if current_size + line_size > chunk_size and current_chunk:
+                chunks.append('\n'.join(current_chunk))
+                current_chunk = [line]
+                current_size = line_size
+            else:
+                current_chunk.append(line)
+                current_size += line_size
+        
+        if current_chunk:
+            chunks.append('\n'.join(current_chunk))
+        
+        return chunks
+    
+    def create_index(self, file_paths: list[str]):
+        """インデックス作成"""
+        self.load_model()
+        
+        all_chunks = []
+        metadata = []
+        
+        print(f"📄 ファイル処理中...")
+        for file_path in file_paths:
+            path = Path(file_path)
+            if not path.exists():
+                print(f"⚠️ ファイルが存在しません: {file_path}")
+                continue
+            
+            print(f"  - {path.name}")
+            
+            # ファイル読み込み
+            with open(path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # チャンク分割
+            chunks = self.chunk_text(content)
+            
+            for i, chunk in enumerate(chunks):
+                all_chunks.append(chunk)
+                metadata.append({
+                    'file': str(path),
+                    'chunk_id': i,
+                    'text': chunk[:200]  # プレビュー用（最初の200文字）
                 })
+        
+        print(f"✅ 総チャンク数: {len(all_chunks)}")
+        
+        # 埋め込みベクトル生成
+        print("🔄 埋め込みベクトル生成中...")
+        embeddings = self.model.encode(all_chunks, show_progress_bar=True)
+        embeddings = np.array(embeddings).astype('float32')
+        
+        # FAISSインデックス作成
+        print("🔄 FAISSインデックス作成中...")
+        dimension = embeddings.shape[1]
+        index = faiss.IndexFlatL2(dimension)
+        index.add(embeddings)
+        
+        # 保存
+        KNOWLEDGE_DIR.mkdir(exist_ok=True)
+        faiss.write_index(index, str(INDEX_FILE))
+        with open(METADATA_FILE, 'w', encoding='utf-8') as f:
+            json.dump(metadata, f, ensure_ascii=False, indent=2)
+        
+        print(f"✅ インデックス保存: {INDEX_FILE}")
+        print(f"✅ メタデータ保存: {METADATA_FILE}")
     
-    # successes.md
-    successes_path = Path("/root/clawd/tasks/successes.md")
-    if successes_path.exists():
-        content = successes_path.read_text()
-        sections = content.split("## ")
-        for section in sections[1:]:
-            if section.strip():
-                documents.append({
-                    "source": "successes.md",
-                    "category": "success",
-                    "content": section.strip()
-                })
-    
-    # SKILL.md files
-    skills_dir = Path("/root/clawd/skills")
-    if skills_dir.exists():
-        for skill_md in skills_dir.rglob("SKILL.md"):
-            content = skill_md.read_text()
-            documents.append({
-                "source": f"skills/{skill_md.parent.name}/SKILL.md",
-                "category": "skill",
-                "content": content
-            })
-    
-    return documents
+    def search(self, query: str, top_k: int = 3):
+        """検索"""
+        self.load_model()
+        
+        # インデックス読み込み
+        if not INDEX_FILE.exists():
+            print("⚠️ インデックスファイルが存在しません")
+            return
+        
+        self.index = faiss.read_index(str(INDEX_FILE))
+        
+        with open(METADATA_FILE, 'r', encoding='utf-8') as f:
+            self.metadata = json.load(f)
+        
+        # クエリの埋め込みベクトル生成
+        query_embedding = self.model.encode([query])
+        query_embedding = np.array(query_embedding).astype('float32')
+        
+        # 検索実行
+        distances, indices = self.index.search(query_embedding, top_k)
+        
+        # 結果表示
+        print(f"\n📊 検索結果 (Top {top_k}):\n")
+        for i, (idx, distance) in enumerate(zip(indices[0], distances[0])):
+            meta = self.metadata[idx]
+            print(f"【結果 {i+1}】")
+            print(f"  ファイル: {Path(meta['file']).name}")
+            print(f"  距離: {distance:.4f}")
+            print(f"  プレビュー: {meta['text']}")
+            print()
 
-def create_index(documents):
-    """ベクトルインデックスを作成"""
-    print(f"📚 {len(documents)} 件の文書を読み込みました")
-    
-    # モデルロード
-    print(f"🤖 モデルロード中: {MODEL_NAME}")
-    model = SentenceTransformer(MODEL_NAME)
-    
-    # エンベディング生成
-    print("🔄 エンベディング生成中...")
-    texts = [doc["content"] for doc in documents]
-    embeddings = model.encode(texts, show_progress_bar=True)
-    
-    # FAISSインデックス作成
-    dimension = embeddings.shape[1]
-    index = faiss.IndexFlatL2(dimension)
-    index.add(embeddings.astype('float32'))
-    
-    # 保存
-    KNOWLEDGE_DIR.mkdir(exist_ok=True)
-    faiss.write_index(index, str(INDEX_PATH))
-    
-    # メタデータ保存
-    metadata = {
-        "documents": documents,
-        "model": MODEL_NAME,
-        "dimension": dimension,
-        "count": len(documents)
-    }
-    with open(METADATA_PATH, "w") as f:
-        json.dump(metadata, f, indent=2, ensure_ascii=False)
-    
-    print(f"✅ インデックス作成完了: {len(documents)} 件")
-    print(f"   - Index: {INDEX_PATH}")
-    print(f"   - Metadata: {METADATA_PATH}")
-
-def search(query, top_k=3):
-    """類似文書を検索"""
-    if not INDEX_PATH.exists() or not METADATA_PATH.exists():
-        print("❌ インデックスが見つかりません。先に rag-index.py を実行してください。")
-        sys.exit(1)
-    
-    # メタデータ読み込み
-    with open(METADATA_PATH) as f:
-        metadata = json.load(f)
-    
-    # モデルロード
-    model = SentenceTransformer(metadata["model"])
-    
-    # クエリのエンベディング
-    query_embedding = model.encode([query])
-    
-    # 検索
-    index = faiss.read_index(str(INDEX_PATH))
-    distances, indices = index.search(query_embedding.astype('float32'), top_k)
-    
-    # 結果整形
-    results = []
-    for i, idx in enumerate(indices[0]):
-        doc = metadata["documents"][idx]
-        results.append({
-            "rank": i + 1,
-            "distance": float(distances[0][i]),
-            "source": doc["source"],
-            "category": doc["category"],
-            "content": doc["content"][:500] + "..." if len(doc["content"]) > 500 else doc["content"]
-        })
-    
-    return results
-
-if __name__ == "__main__":
+def main():
     if len(sys.argv) < 2:
-        print("使い方:")
-        print("  インデックス作成: python3 rag-index.py index")
-        print("  検索: python3 rag-index.py search 'クエリ'")
+        print("使い方: python3 rag-index.py {index|search} [args...]")
         sys.exit(1)
     
     command = sys.argv[1]
+    rag = RAGSystem()
     
     if command == "index":
-        documents = load_documents()
-        if not documents:
-            print("⚠️ 文書が見つかりませんでした")
-            sys.exit(0)
-        create_index(documents)
+        if len(sys.argv) < 3:
+            print("使い方: python3 rag-index.py index <file1> <file2> ...")
+            sys.exit(1)
+        
+        file_paths = sys.argv[2:]
+        rag.create_index(file_paths)
     
     elif command == "search":
         if len(sys.argv) < 3:
-            print("❌ クエリを指定してください")
+            print("使い方: python3 rag-index.py search <query> [top_k]")
             sys.exit(1)
-        query = sys.argv[2]
-        results = search(query)
         
-        print(f"\n🔍 検索結果: '{query}'")
-        print("=" * 80)
-        for r in results:
-            print(f"\n【{r['rank']}】 {r['source']} (距離: {r['distance']:.4f})")
-            print(f"カテゴリ: {r['category']}")
-            print(f"内容:\n{r['content']}\n")
-            print("-" * 80)
+        query = sys.argv[2]
+        top_k = int(sys.argv[3]) if len(sys.argv) > 3 else 3
+        rag.search(query, top_k)
     
     else:
-        print(f"❌ 不明なコマンド: {command}")
+        print(f"⚠️ 未知のコマンド: {command}")
         sys.exit(1)
+
+if __name__ == "__main__":
+    main()
