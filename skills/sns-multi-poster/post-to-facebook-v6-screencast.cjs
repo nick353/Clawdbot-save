@@ -90,7 +90,14 @@ async function postToFacebook(videoPath, caption) {
     const frames = [];
     client.on('Page.screencastFrame', async ({ data, sessionId }) => {
       frames.push(data);
-      await client.send('Page.screencastFrameAck', { sessionId });
+      try {
+        await client.send('Page.screencastFrameAck', { sessionId });
+      } catch (err) {
+        // セッション閉じられた場合は無視
+        if (!err.message.includes('Session closed')) {
+          console.log(`⚠️ screencastFrameAck エラー: ${err.message}`);
+        }
+      }
     });
     
     console.log('🎬 画面録画開始');
@@ -363,8 +370,12 @@ async function postToFacebook(videoPath, caption) {
       console.log('🔄 DRY RUN: 投稿ボタンクリックをスキップ');
       
       // 画面録画停止
-      await client.send('Page.stopScreencast');
-      console.log('🎬 画面録画停止');
+      try {
+        await client.send('Page.stopScreencast');
+        console.log('🎬 画面録画停止');
+      } catch (err) {
+        console.log(`⚠️ 録画停止エラー（無視）: ${err.message}`);
+      }
       
       // 録画フレームを保存
       if (frames.length > 0) {
@@ -456,8 +467,12 @@ async function postToFacebook(videoPath, caption) {
     console.log('📸 投稿後のスクリーンショット保存');
     
     // 画面録画停止
-    await client.send('Page.stopScreencast');
-    console.log('🎬 画面録画停止');
+    try {
+      await client.send('Page.stopScreencast');
+      console.log('🎬 画面録画停止');
+    } catch (err) {
+      console.log(`⚠️ 録画停止エラー（無視）: ${err.message}`);
+    }
     
     // 録画フレームを保存
     if (frames.length > 0) {
