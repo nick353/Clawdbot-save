@@ -118,8 +118,12 @@ async function main() {
 
     await randomDelay(2000, 4000);
 
-    // 投稿
-    await page.click('div[role="button"]:has-text("Post"), button:has-text("Post")');
+    // 投稿ボタンをXPathで検索
+    const postButtons = await page.$x("//div[@role='button' and contains(., 'Post')] | //button[contains(., 'Post')]");
+    if (postButtons.length === 0) {
+      throw new Error('投稿ボタンが見つかりません');
+    }
+    await postButtons[0].click();
     console.log('✅ 投稿完了待機中...');
 
     await randomDelay(10000, 15000);

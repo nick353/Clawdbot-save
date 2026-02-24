@@ -84,8 +84,9 @@ async function postToPinterest(imagePath, caption, boardName) {
       timeout: 120000 
     });
     
-    // ページが読み込まれるまで待機
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // ページが読み込まれるまで待機（延長）
+    console.log('⏳ ページ読み込み待機中...');
+    await new Promise(resolve => setTimeout(resolve, 8000));
     
     // ログイン確認
     const isLoggedIn = await page.evaluate(() => {
@@ -104,12 +105,32 @@ async function postToPinterest(imagePath, caption, boardName) {
     // 画像アップロード（Pinterestは先に画像をアップロード）
     console.log('📷 画像アップロード中...');
     
-    // ファイル入力を探す
-    const fileInput = await page.$('input[type="file"][accept*="image"]');
+    // ファイル入力を探す（複数セレクタを試す）
+    const fileInputSelectors = [
+      'input[type="file"][accept*="image"]',
+      'input[type="file"]',
+      'input[name="media"]',
+      '[data-test-id="storyboard-upload-input"]'
+    ];
+
+    let fileInput = null;
+    for (const selector of fileInputSelectors) {
+      try {
+        await page.waitForSelector(selector, { timeout: 5000 });
+        fileInput = await page.$(selector);
+        if (fileInput) {
+          console.log(`✅ ファイル入力を発見: ${selector}`);
+          break;
+        }
+      } catch (e) {
+        console.log(`⚠️  ファイル入力失敗: ${selector}`);
+      }
+    }
     
     if (!fileInput) {
       console.error('❌ ファイル入力が見つかりません');
       await page.screenshot({ path: '/tmp/pinterest-no-file-input.png' });
+      console.log('📸 スクリーンショット保存: /tmp/pinterest-no-file-input.png');
       throw new Error('File input not found');
     }
     

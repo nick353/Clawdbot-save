@@ -77,8 +77,24 @@ async function main() {
 
     await randomDelay(3000, 6000);
 
-    // ツイート入力
-    const tweetBox = await page.$('div[contenteditable="true"][role="textbox"]');
+    // ツイート入力（複数セレクタを試す）
+    const tweetBoxSelectors = [
+      'div[contenteditable="true"][role="textbox"]',
+      'div[contenteditable="true"][data-testid="tweetTextarea_0"]',
+      'div[contenteditable="true"]',
+      'textarea[placeholder*="What is happening"]',
+      'textarea[placeholder*="happening" i]'
+    ];
+
+    let tweetBox = null;
+    for (const selector of tweetBoxSelectors) {
+      tweetBox = await page.$(selector);
+      if (tweetBox) {
+        console.log(`✅ ツイート入力欄を発見: ${selector}`);
+        break;
+      }
+    }
+
     if (!tweetBox) throw new Error('ツイート入力欄が見つかりません');
 
     await tweetBox.click();
@@ -100,8 +116,31 @@ async function main() {
 
     await randomDelay(3000, 5000);
 
-    // ツイートボタン
-    await page.click('button[data-testid="tweetButton"], button:has-text("Post")');
+    // ツイートボタン（複数セレクタを試す）
+    const tweetButtonSelectors = [
+      'button[data-testid="tweetButton"]',
+      'button[data-testid="tweetButtonInline"]',
+      'div[data-testid="tweetButton"]',
+      'div[role="button"][data-testid="tweetButton"]'
+    ];
+
+    let tweetButtonClicked = false;
+    for (const selector of tweetButtonSelectors) {
+      try {
+        await page.waitForSelector(selector, { timeout: 5000 });
+        await page.click(selector);
+        tweetButtonClicked = true;
+        console.log(`✅ 投稿ボタンをクリック: ${selector}`);
+        break;
+      } catch (e) {
+        console.log(`⚠️  投稿ボタン失敗: ${selector}`);
+      }
+    }
+
+    if (!tweetButtonClicked) {
+      throw new Error('投稿ボタンが見つかりません');
+    }
+
     console.log('✅ 投稿完了待機中...');
 
     await randomDelay(8000, 12000);
