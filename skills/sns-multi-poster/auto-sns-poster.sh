@@ -42,24 +42,39 @@ echo "🤖 Geminiでキャプション生成中..."
 declare -A CAPTIONS
 
 # Instagram
-CAPTIONS[instagram]=$(bash "$SCRIPT_DIR/generate-ai-caption.sh" "$MEDIA_PATH" "instagram" 2>/dev/null || echo "")
+CAPTIONS[instagram]=$(bash "$SCRIPT_DIR/generate-ai-caption.sh" "$MEDIA_PATH" "instagram" 2>&1 || echo "")
+if [ -z "${CAPTIONS[instagram]}" ]; then
+  echo "⚠️ Instagram: キャプション生成失敗" >&2
+fi
 sleep 2 # レート制限対策
 
 # Facebook
-CAPTIONS[facebook]=$(bash "$SCRIPT_DIR/generate-ai-caption.sh" "$MEDIA_PATH" "facebook" 2>/dev/null || echo "")
+CAPTIONS[facebook]=$(bash "$SCRIPT_DIR/generate-ai-caption.sh" "$MEDIA_PATH" "facebook" 2>&1 || echo "")
+if [ -z "${CAPTIONS[facebook]}" ]; then
+  echo "⚠️ Facebook: キャプション生成失敗" >&2
+fi
 sleep 2
 
 # Threads
-CAPTIONS[threads]=$(bash "$SCRIPT_DIR/generate-ai-caption.sh" "$MEDIA_PATH" "threads" 2>/dev/null || echo "")
+CAPTIONS[threads]=$(bash "$SCRIPT_DIR/generate-ai-caption.sh" "$MEDIA_PATH" "threads" 2>&1 || echo "")
+if [ -z "${CAPTIONS[threads]}" ]; then
+  echo "⚠️ Threads: キャプション生成失敗" >&2
+fi
 sleep 2
 
 # X
-CAPTIONS[x]=$(bash "$SCRIPT_DIR/generate-ai-caption.sh" "$MEDIA_PATH" "x" 2>/dev/null || echo "")
+CAPTIONS[x]=$(bash "$SCRIPT_DIR/generate-ai-caption.sh" "$MEDIA_PATH" "x" 2>&1 || echo "")
+if [ -z "${CAPTIONS[x]}" ]; then
+  echo "⚠️ X: キャプション生成失敗" >&2
+fi
 sleep 2
 
 # Pinterest（動画の場合はスキップ）
 if [ "$IS_VIDEO" = false ]; then
-  CAPTIONS[pinterest]=$(bash "$SCRIPT_DIR/generate-ai-caption.sh" "$MEDIA_PATH" "pinterest" 2>/dev/null || echo "")
+  CAPTIONS[pinterest]=$(bash "$SCRIPT_DIR/generate-ai-caption.sh" "$MEDIA_PATH" "pinterest" 2>&1 || echo "")
+  if [ -z "${CAPTIONS[pinterest]}" ]; then
+    echo "⚠️ Pinterest: キャプション生成失敗" >&2
+  fi
 else
   echo "⏭️  Pinterest: 動画はスキップ"
 fi

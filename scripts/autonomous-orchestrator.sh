@@ -147,18 +147,49 @@ spawn_subagent() {
     local task_type="$1"
     local task_description="$2"
     local session_label="$3"
+    local current_channel="${DISCORD_CHANNEL:-channel:1464650064357232948}"
     
-    local agent_info
-    agent_info=$(select_agent "$task_type")
+    local agents_yaml="/root/clawd/config/agents.yaml"
+    
+    if [ ! -f "$agents_yaml" ]; then
+        log_error "agents.yaml が見つかりません: $agents_yaml"
+        return 1
+    fi
+    
+    # agents.yamlから設定を読み込む
     local agent_model
-    agent_model=$(echo "$agent_info" | cut -d'|' -f1)
-    local agent_tools
-    agent_tools=$(echo "$agent_info" | cut -d'|' -f2)
+    agent_model=$(yq e ".agents.${task_type}.model // \"sonnet\"" "$agents_yaml")
     
-    log_info "サブエージェント起動: $session_label ($agent_model, tools: $agent_tools)"
+    local system_prompt
+    system_prompt=$(yq e ".agents.${task_type}.systemPrompt // \"\"" "$agents_yaml")
+    
+    local task_template=""
+    case "$task_type" in
+        research)
+            task_template=$(yq e '.templates.research_task' "$agents_yaml")
+            task_template="${task_template/\{objective\}/$task_description}"
+            ;;
+        implement)
+            task_template=$(yq e '.templates.implement_task' "$agents_yaml")
+            task_template="${task_template/\{objective\}/$task_description}"
+            ;;
+        verify)
+            task_template=$(yq e '.templates.verify_task' "$agents_yaml")
+            task_template="${task_template/\{target\}/$task_description}"
+            ;;
+        main)
+            task_template="$task_description"
+            ;;
+        *)
+            task_template="$task_description"
+            ;;
+    esac
+    
+    log_info "サブエージェント起動: $session_label ($agent_model)"
     
     if [ "$DRY_RUN" = "true" ]; then
         log_info "[DRY RUN] サブエージェント起動をスキップ"
+        log_info "[DRY RUN] タスク内容:\n$task_template"
         return 0
     fi
     
@@ -167,16 +198,42 @@ spawn_subagent() {
         echo ""
         echo "## $(date '+%Y-%m-%d %H:%M:%S') - $session_label"
         echo "- **タスク**: $task_description"
-        echo "- **エージェント**: $agent_model"
-        echo "- **ツール**: $agent_tools"
+        echo "- **エージェント**: $agent_model ($task_type)"
         echo "- **ステータス**: 🔄 実行中"
     } >> "$RUNNING_TASKS_FILE"
     
-    # サブエージェント起動（clawdbotコマンド使用）
-    # 注: 実際のサブエージェント起動は、clawdbot CLIで実装されている想定
-    # ここでは簡易的にバックグラウンドでタスクを実行
+    # サブエージェント起動
+    local full_task="$task_template
+
+【必須】
+完了後、以下を実行してください:
+1. task-progress-monitor.sh で完了報告:
+   bash /root/clawd/scripts/task-progress-monitor.sh complete \"$session_label\" \"<完了内容の要約>\"
+2. RUNNING_TASKS.md のステータスを更新（🔄 → ✅）
+3. message tool でDiscord通知:
+   - channel: discord
+   - target: $current_channel
+   - message: \"✅ $session_label 完了: <要約>\"
+
+【システムプロンプト】
+$system_prompt"
     
-    log_success "サブエージェント起動完了: $session_label"
+    if command -v clawdbot &>/dev/null; then
+        clawdbot sessions spawn \
+            --label "$session_label" \
+            --model "$agent_model" \
+            --cleanup delete \
+            --task "$full_task" 2>&1 | tee -a /var/log/autonomous-spawn.log || {
+                log_error "サブエージェント起動失敗: $session_label"
+                bash /root/clawd/scripts/task-progress-monitor.sh error "$session_label" "起動失敗"
+                return 1
+            }
+        
+        log_success "サブエージェント起動完了: $session_label"
+    else
+        log_error "clawdbot コマンドが見つかりません"
+        return 1
+    fi
 }
 
 # ========================================
@@ -235,17 +292,31 @@ learn_from_failure() {
     
     log_error "失敗を記録: $error_message"
     
-    {
-        echo ""
-        echo "## $(date '+%Y-%m-%d') - オーケストレーター実行失敗"
-        echo "**症状**: $error_message"
-        echo "**文脈**: $task_context"
-        echo "**原因**: （要分析）"
-        echo "**解決策**: （要実装）"
-        echo "**今後のルール**: （要追加）"
-        echo "**検証**: ⏳ 未検証"
-        echo ""
-    } >> "$LESSONS_FILE"
+    # auto-learning-system.shを使って記録
+    if [ -f "/root/clawd/scripts/auto-learning-system.sh" ]; then
+        bash /root/clawd/scripts/auto-learning-system.sh record \
+            "オーケストレーター実行失敗" \
+            "$error_message" \
+            "（要分析）" \
+            "（要実装）" \
+            "（要追加）" 2>/dev/null || {
+                # フォールバック: 直接lessons.mdに記録
+                {
+                    echo ""
+                    echo "## $(date '+%Y-%m-%d') - オーケストレーター実行失敗"
+                    echo "**症状**: $error_message"
+                    echo "**文脈**: $task_context"
+                    echo "**原因**: （要分析）"
+                    echo "**解決策**: （要実装）"
+                    echo "**今後のルール**: （要追加）"
+                    echo "**検証**: ⏳ 未検証"
+                    echo ""
+                } >> "$LESSONS_FILE"
+            }
+    fi
+    
+    # Obsidianにも記録
+    save_to_obsidian "error" "オーケストレーター失敗: $error_message (文脈: $task_context)"
 }
 
 # ========================================
@@ -291,18 +362,105 @@ main() {
         log_info "  - [$task_type] $task_desc"
     done
     
-    # ステップ3: エージェント起動
+    # ステップ3: エージェント起動（並列実行制御付き）
     local task_index=1
+    local max_concurrent=3  # デフォルト並列実行数
+    local running_agents=0
+    
+    # agents.yamlからglobal maxConcurrentを読み込む
+    if [ -f "/root/clawd/config/agents.yaml" ]; then
+        local global_max
+        global_max=$(yq e '.config.maxConcurrent // 3' /root/clawd/config/agents.yaml 2>/dev/null || echo "3")
+        max_concurrent="$global_max"
+    fi
+    
+    log_info "並列実行制御: 最大同時実行数 = $max_concurrent"
+    
     echo "$subtasks" | while IFS='|' read -r task_type task_desc; do
+        # 実行中のエージェント数をチェック（DRY_RUNではスキップ）
+        if [ "$DRY_RUN" != "true" ]; then
+            while true; do
+                running_agents=$(clawdbot sessions list --kinds main 2>/dev/null | grep -c "autonomous-" || echo "0")
+                
+                if [ "$running_agents" -lt "$max_concurrent" ]; then
+                    break
+                fi
+                
+                log_info "並列実行制御: 待機中（実行中: $running_agents/$max_concurrent）"
+                sleep 5
+            done
+        fi
+        
         local session_label="autonomous-${complexity}-${task_index}"
         spawn_subagent "$task_type" "$task_desc" "$session_label"
         task_index=$((task_index + 1))
+        
+        # 起動後の短い待機（起動処理完了を待つ）
+        if [ "$DRY_RUN" != "true" ]; then
+            sleep 2
+        fi
     done
     
     # ステップ4: 進捗監視
     monitor_progress
     
-    # ステップ5: 完了報告処理
+    # ステップ5: 完了待機（全サブエージェント完了まで）
+    if [ "$DRY_RUN" != "true" ]; then
+        log_info "全サブエージェント完了を待機中..."
+        local wait_count=0
+        local max_wait=720  # 最大1時間待機（5秒 × 720 = 3600秒）
+        
+        while true; do
+            local running_count
+            running_count=$(clawdbot sessions list --kinds main 2>/dev/null | grep -c "autonomous-" || echo "0")
+            
+            if [ "$running_count" -eq 0 ]; then
+                log_success "全サブエージェント完了"
+                break
+            fi
+            
+            wait_count=$((wait_count + 1))
+            if [ "$wait_count" -ge "$max_wait" ]; then
+                log_error "タイムアウト: サブエージェントが時間内に完了しませんでした"
+                
+                # 実行中のサブエージェントをリストアップ
+                log_error "実行中のサブエージェント:"
+                clawdbot sessions list --kinds main 2>/dev/null | grep "autonomous-" || true
+                
+                # Discord通知
+                if command -v clawdbot &>/dev/null; then
+                    echo "⚠️ オーケストレーター タイムアウト
+
+タスク: $task
+複雑度: $complexity
+経過時間: 1時間
+
+実行中のサブエージェント:
+$(clawdbot sessions list --kinds main 2>/dev/null | grep "autonomous-" || echo "（取得失敗）")
+
+手動で進捗を確認してください:
+\`\`\`bash
+clawdbot sessions list --kinds main
+cat /root/clawd/tasks/RUNNING_TASKS.md
+\`\`\`" | clawdbot message send --channel discord --target "$DISCORD_CHANNEL" 2>/dev/null || true
+                fi
+                
+                # 失敗を記録
+                learn_from_failure "タイムアウト: 1時間以内に完了せず" "$task"
+                break
+            fi
+            
+            log_info "待機中... (実行中: $running_count, 経過時間: $((wait_count * 5))秒)"
+            sleep 5
+            
+            # 定期的に完了報告をチェック
+            if [ $((wait_count % 12)) -eq 0 ]; then  # 1分ごと
+                process_completion_reports
+            fi
+        done
+    fi
+    
+    # ステップ6: 最終完了報告処理
     process_completion_reports
     
     # Obsidianに記録

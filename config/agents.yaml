@@ -1,6 +1,12 @@
 # 専門エージェント設定
 # 自律的マルチエージェントフレームワーク用
 
+# グローバル設定
+config:
+  maxConcurrent: 3  # オーケストレーターレベルでの最大同時実行数
+  defaultModel: sonnet
+  timeout: 3600  # タスクタイムアウト（秒）
+
 agents:
   # リサーチエージェント（情報収集・調査特化）
   research:
