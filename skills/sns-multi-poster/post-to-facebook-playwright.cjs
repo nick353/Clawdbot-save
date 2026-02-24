@@ -53,6 +53,31 @@ async function waitFor(page, selectors, desc, timeout = 30000) {
     }
     await page.waitForTimeout(500);
   }
+
+  // エラー時の自動デバッグ
+  console.error(`⚠️  "${desc}" が見つかりませんでした。デバッグ情報を保存します...`);
+  const ts = new Date().toISOString().replace(/[:.]/g, '-');
+  const debugDir = '/tmp';
+
+  try {
+    // スクリーンショット保存
+    const screenshotPath = path.join(debugDir, `fb-error-${desc.replace(/\s/g, '-')}-${ts}.png`);
+    await page.screenshot({ path: screenshotPath, fullPage: true });
+    console.error(`📸 スクリーンショット: ${screenshotPath}`);
+
+    // HTML解析
+    const html = await page.content();
+    const htmlPath = path.join(debugDir, `fb-error-${desc.replace(/\s/g, '-')}-${ts}.html`);
+    fs.writeFileSync(htmlPath, html);
+    console.error(`📄 HTML: ${htmlPath}`);
+
+    // セレクタ解析
+    console.error(`🔍 試したセレクタ: ${selectors.join(', ')}`);
+
+  } catch (debugErr) {
+    console.error(`⚠️  デバッグ情報の保存に失敗: ${debugErr.message}`);
+  }
+
   throw new Error(`Timeout waiting for ${desc}`);
 }
 
@@ -178,6 +203,29 @@ async function main() {
     console.error('');
     console.error('❌ エラーが発生しました:', error.message);
     console.error(error.stack);
+
+    // エラー時のデバッグ情報保存
+    try {
+      const page = context ? (await context.pages())[0] : null;
+      if (page) {
+        const ts = new Date().toISOString().replace(/[:.]/g, '-');
+        const debugDir = '/tmp';
+
+        // スクリーンショット
+        const screenshotPath = path.join(debugDir, `fb-main-error-${ts}.png`);
+        await page.screenshot({ path: screenshotPath, fullPage: true });
+        console.error(`📸 エラー時スクリーンショット: ${screenshotPath}`);
+
+        // HTML
+        const html = await page.content();
+        const htmlPath = path.join(debugDir, `fb-main-error-${ts}.html`);
+        fs.writeFileSync(htmlPath, html);
+        console.error(`📄 エラー時HTML: ${htmlPath}`);
+      }
+    } catch (debugErr) {
+      console.error(`⚠️  エラー時デバッグ情報の保存に失敗: ${debugErr.message}`);
+    }
+
     process.exit(1);
   } finally {
     await browser.close();
