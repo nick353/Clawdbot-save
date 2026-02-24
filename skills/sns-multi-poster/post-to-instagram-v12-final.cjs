@@ -24,8 +24,13 @@ async function loadCookies() {
     try {
       const data = fs.readFileSync(cookiePath, 'utf-8');
       const cookies = JSON.parse(data);
-      console.log(`✅ Loaded ${cookies.length} cookies`);
-      return cookies;
+      // Fix sameSite attribute
+      const fixedCookies = cookies.map(c => ({
+        ...c,
+        sameSite: (c.sameSite === 'unspecified' || !c.sameSite) ? 'Lax' : c.sameSite
+      }));
+      console.log(`✅ Loaded ${fixedCookies.length} cookies`);
+      return fixedCookies;
     } catch (e) {
       console.warn('⚠️ Failed to parse cookies');
       return [];
