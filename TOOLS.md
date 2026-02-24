@@ -112,6 +112,17 @@ bash /root/clawd/scripts/obsidian-auto-save.sh note "〇〇について話し合
 - 接続制限時: 30分待機して再試行
 - Graph API セットアップ (2026-02-22): トークン登録済み・API スクリプト実装済み・DRY RUN 確認済み
 
+#### Instagram "Next" ボタン2回クリック対応 (2026-02-24)
+- **症状**: "Share" ボタンが表示されない、ページ遷移が発生しない
+- **原因**: Instagramの投稿フローが変更（1回目: 編集→キャプション、2回目: キャプション→投稿確認）
+- **解決**: "Next" ボタンを2回クリックするロジック追加
+- **修正内容**:
+  1. Cookie sameSite属性の正規化（`no_restriction` → `None`、`null` → `Lax`）
+  2. "Next" ボタンを2回クリック対応
+  3. ボタン検出ロジック改善（`has-text()` → 正規表現マッチング）
+- **DRY_RUNテスト**: 完全成功 ✅
+- **トラブルシューティング**: `/root/clawd/skills/sns-multi-poster/TROUBLESHOOTING.md`
+
 #### Threads ハング問題修正 (2026-02-23)
 - **症状**: `networkidle2` でページ読み込みがハング → SIGKILL
 - **原因**: Threadsのバックグラウンド通信でネットワークアイドルにならない
