@@ -156,8 +156,24 @@ async function main() {
     // 作成ボタンを探す（aria-label="New post"のSVGアイコンを含む親要素）
     console.log('🔍 作成ボタンを探しています...');
     
-    // SVGを含む親のリンク要素をクリック
-    await page.click('a:has(svg[aria-label="New post"])');
+    // SVGを見つけてから親要素をクリック
+    const createSvg = await page.waitForSelector('svg[aria-label="New post"]', { timeout: 15000 });
+    console.log('✅ 作成アイコン見つかりました');
+    
+    // JavaScriptで親要素を取得してクリック
+    await page.evaluate(() => {
+      const svg = document.querySelector('svg[aria-label="New post"]');
+      if (svg) {
+        // SVGの親のリンク要素を探す
+        const link = svg.closest('a');
+        if (link) {
+          link.click();
+        } else {
+          // リンクがない場合はSVG自体をクリック
+          svg.click();
+        }
+      }
+    });
     console.log('✅ 作成ボタンをクリック');
 
     // モーダルダイアログの出現を待つ
