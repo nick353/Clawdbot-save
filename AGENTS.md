@@ -200,6 +200,79 @@ grep "ANTHROPIC_PREFIXES\|claude-sonnet\|claude-haiku\|claude-opus" /usr/lib/nod
 
 ### ブラウザ自動化の定石
 
+**🚨 全Web自動化で必須実装（2026-02-24決定・強化版）:**
+1. **全ステップでスクリーンショット撮影**: エラー時だけでなく、各アクション前後に必ず撮影
+2. **ステップごとの確認**: 各ステップで状態を可視化し、問題を早期発見
+3. **デバッグディレクトリ**: `/tmp/<platform>-visual-debug/` に統一
+4. **ファイル命名規則**: `01-page-loaded.png`, `02-before-click.png`, `03-after-click.png`, ..., `error-*.png`
+5. **ログ出力**: 各スクリーンショット撮影時に「📸 スクリーンショット: <ファイルパス>」とログ出力
+
+**実装パターン（テンプレート）:**
+```javascript
+const DEBUG_DIR = '/tmp/<platform>-visual-debug';
+if (!fs.existsSync(DEBUG_DIR)) {
+  fs.mkdirSync(DEBUG_DIR, { recursive: true });
+}
+
+// ステップカウンター
+let stepCounter = 1;
+
+// スクリーンショット撮影ヘルパー関数
+async function takeScreenshot(page, description) {
+  const filename = `${String(stepCounter).padStart(2, '0')}-${description}.png`;
+  const filepath = path.join(DEBUG_DIR, filename);
+  console.log(`📸 スクリーンショット: ${filepath}`);
+  await page.screenshot({ path: filepath });
+  stepCounter++;
+}
+
+// 使用例（各アクション前後に撮影）
+await takeScreenshot(page, 'page-loaded');
+
+// クリック前
+await takeScreenshot(page, 'before-button-click');
+await button.click();
+// クリック後
+await takeScreenshot(page, 'after-button-click');
+
+// テキスト入力前
+await takeScreenshot(page, 'before-text-input');
+await input.type('text');
+// テキスト入力後
+await takeScreenshot(page, 'after-text-input');
+
+// エラー時も必ず撮影
+if (!element) {
+  const errorFile = path.join(DEBUG_DIR, `error-${Date.now()}.png`);
+  await page.screenshot({ path: errorFile });
+  console.log(`📸 エラースクリーンショット: ${errorFile}`);
+  throw new Error('要素が見つかりません');
+}
+```
+
+**撮影タイミング（必須）:**
+1. ページ読み込み完了後
+2. **各ボタンクリック前後**
+3. **各テキスト入力前後**
+4. **各ファイルアップロード前後**
+5. **各セレクタ検索前後**（要素が見つからない場合）
+6. エラー発生時
+
+**ファイル命名規則（統一）:**
+- `01-page-loaded.png` - ページ読み込み完了
+- `02-before-button-click.png` - ボタンクリック前
+- `03-after-button-click.png` - ボタンクリック後
+- `04-before-file-upload.png` - ファイルアップロード前
+- `05-after-file-upload.png` - ファイルアップロード後
+- `06-before-text-input.png` - テキスト入力前
+- `07-after-text-input.png` - テキスト入力後
+- `error-<timestamp>.png` - エラー時のスクリーンショット
+
+**参考実装:**
+- Instagram: `/root/clawd/skills/sns-multi-poster/post-to-instagram-with-screenshots.cjs`
+- X (Twitter): `/root/clawd/skills/sns-multi-poster/post-to-x-with-screenshots.cjs`
+- Threads: `/root/clawd/skills/sns-multi-poster/post-to-threads-with-screenshots.cjs`
+
 #### ページ読み込み戦略（プラットフォーム別）
 
 **一般的なサイト（推奨）:**
@@ -279,6 +352,49 @@ if (!fileInput) {
 | `div:has(> button)` | `//div[button]` |
 
 **ルール**: Playwright構文は必ずXPathに変換してからPuppeteerで使用
+
+#### スクリーンショット確認方式（2026-02-24標準化）
+
+**目的**: 投稿フローの各ステップをビジュアル確認し、UI変更・セレクタ問題を早期発見
+
+**実装パターン（全SNSスクリプトで標準化）**:
+
+```javascript
+const DEBUG_DIR = '/tmp/<platform>-visual-debug';
+
+// デバッグディレクトリ作成
+if (!fs.existsSync(DEBUG_DIR)) {
+  fs.mkdirSync(DEBUG_DIR, { recursive: true });
+}
+
+// 各ステップでスクリーンショット撮影
+console.log('📸 スクリーンショット: ' + DEBUG_DIR + '/01-page-loaded.png');
+await page.screenshot({ path: DEBUG_DIR + '/01-page-loaded.png' });
+
+// エラー時も必ず撮影
+if (!element) {
+  await page.screenshot({ path: DEBUG_DIR + '/error-element-not-found.png' });
+  console.log('📸 エラースクリーンショット: ' + DEBUG_DIR + '/error-element-not-found.png');
+  throw new Error('要素が見つかりません');
+}
+```
+
+**ファイル命名規則**:
+- `01-page-loaded.png` - ページ読み込み完了
+- `02-before-upload.png` - ファイルアップロード前
+- `03-after-upload.png` - ファイルアップロード後
+- `04-before-caption.png` - キャプション入力前
+- `05-after-caption.png` - キャプション入力後
+- `06-before-post.png` - 投稿ボタンクリック前
+- `07-dry-run-final.png` - DRY RUN最終確認
+- `error-*.png` - エラー時のスクリーンショット
+
+**実装済みスクリプト**:
+- Instagram: `post-to-instagram-v13-with-screenshots.cjs`
+- X (Twitter): `post-to-x-v3-with-screenshots.cjs`
+- Threads: `post-to-threads-v3-with-screenshots.cjs`
+
+**参考**: `/root/clawd/skills/sns-multi-poster/post-to-instagram-v13-with-screenshots.cjs`
 
 ### DRY RUNモードの必須実装
 全てのスクリプトに以下を追加:

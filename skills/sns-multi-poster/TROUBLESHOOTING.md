@@ -27,10 +27,14 @@ bird search "Instagram login 429 error"
 ### 3️⃣ スクリーンショット確認
 ```bash
 # 最新のスクリーンショットを確認
-ls -lhtr screenshots/ | tail -5
+ls -lhtr /tmp/instagram-visual-debug/ | tail -10
+ls -lhtr /tmp/x-visual-debug/ | tail -10
+ls -lhtr /tmp/threads-visual-debug/ | tail -10
 
-# 画像をブラウザで確認（ローカル）
-# または Discord に投稿して確認
+# スクリーンショット自動撮影版スクリプト（2026-02-24実装）
+# Instagram: post-to-instagram-v13-with-screenshots.cjs
+# X: post-to-x-v3-with-screenshots.cjs
+# Threads: post-to-threads-v3-with-screenshots.cjs
 ```
 
 **確認ポイント:**
@@ -38,6 +42,30 @@ ls -lhtr screenshots/ | tail -5
 - エラーメッセージが表示されているか？
 - Cookie期限切れの警告が出ているか？
 - レート制限（429）の警告が出ているか？
+
+**スクリーンショット自動撮影機能（2026-02-24）**:
+
+各SNSスクリプトは投稿フローの各ステップで自動的にスクリーンショットを撮影します。
+
+**保存先:**
+- Instagram: `/tmp/instagram-visual-debug/01-page-loaded.png` ～ `07-dry-run-final.png`
+- X (Twitter): `/tmp/x-visual-debug/01-page-loaded.png` ～ `06-after-post.png`
+- Threads: `/tmp/threads-visual-debug/01-page-loaded.png` ～ `08-after-post.png`
+
+**ファイル命名規則:**
+1. `01-page-loaded.png` - ページ読み込み完了
+2. `02-before-upload.png` - ファイルアップロード前
+3. `03-after-upload.png` - ファイルアップロード後
+4. `04-before-caption.png` - キャプション入力前
+5. `05-after-caption.png` - キャプション入力後
+6. `06-before-post.png` - 投稿ボタンクリック前
+7. `07-dry-run-final.png` - DRY RUN最終確認（Instagram）
+8. `error-*.png` - エラー時のスクリーンショット
+
+**トラブルシューティング手順:**
+1. エラー発生 → `/tmp/<platform>-visual-debug/error-*.png` を確認
+2. UI変更検出 → セレクタを更新
+3. 新バージョンスクリプト作成 → DRY_RUNテスト → 本番実行
 
 ### 4️⃣ HTML解析
 ```javascript

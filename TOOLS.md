@@ -42,6 +42,7 @@
 | 14 | obsidian-auto-save | `/root/clawd/scripts/obsidian-auto-save.sh` | 重要な情報を自動的にObsidianに保存 | `obsidian-auto-save.sh <category> <message>` |
 | 15 | fxembed-converter | `/root/clawd/skills/fxembed-converter/` | "Twitterリンク変換"/"X投稿表示" | `bash convert-twitter-links.sh "テキスト"` |
 | 16 | rag-system | `/root/clawd/scripts/rag-*.sh` | "過去の実装例"/"類似タスク検索" | `bash rag-search.sh search "<クエリ>"` (初回: `bash rag-search.sh index`) |
+| 17 | web-automation-standard | `/root/clawd/skills/web-automation-standard/` | "ブラウザ自動化"/"Web自動化" / 新規Web自動化スクリプト作成時 | 参照: `/root/clawd/docs/web-automation-standard.md` |
 
 ---
 
@@ -138,6 +139,50 @@ bash /root/clawd/scripts/obsidian-auto-save.sh note "〇〇について話し合
 2. **段階的ログ出力**: 「✅ 〇〇完了」「❌ 〇〇失敗」で進捗確認
 3. **セレクタ検証**: 各セレクタで「⚠️ 〇〇なし」ログ出力
 
+#### スクリーンショット確認方式（2026-02-24実装）
+
+**目的**: 投稿フローの各ステップをビジュアル確認して、UIの変更・セレクタの問題を早期発見
+
+**実装状況**:
+- ✅ Instagram: `post-to-instagram-v13-with-screenshots.cjs` (エントリーポイント: `post-to-instagram.cjs`)
+- ✅ X (Twitter): `post-to-x-v3-with-screenshots.cjs` (エントリーポイント: `post-to-x.cjs`)
+- ✅ Threads: `post-to-threads-v3-with-screenshots.cjs` (エントリーポイント: `post-to-threads.cjs`)
+- 🔄 Facebook: `post-to-facebook-v4-reels-support.cjs` (部分的にスクリーンショット実装済み)
+- 🔄 Pinterest: `post-to-pinterest-v3-multi-selector.cjs` (エラー時のみスクリーンショット)
+
+**スクリーンショット保存先**:
+- Instagram: `/tmp/instagram-visual-debug/`
+- X (Twitter): `/tmp/x-visual-debug/`
+- Threads: `/tmp/threads-visual-debug/`
+- Facebook: `/tmp/facebook-*.png`
+- Pinterest: `/tmp/pinterest-*.png`
+
+**撮影タイミング**:
+1. ページ読み込み完了後
+2. ファイルアップロード前/後
+3. キャプション入力前/後
+4. 投稿ボタンクリック前/後
+5. エラー発生時（セレクタ未検出等）
+
+**ファイル命名規則**:
+- `01-page-loaded.png` - ページ読み込み完了
+- `02-before-upload.png` - ファイルアップロード前
+- `03-after-upload.png` - ファイルアップロード後
+- `04-before-caption.png` - キャプション入力前
+- `05-after-caption.png` - キャプション入力後
+- `06-before-post.png` - 投稿ボタンクリック前
+- `07-dry-run-final.png` - DRY RUN最終確認
+- `error-*.png` - エラー時のスクリーンショット
+
+**トラブルシューティング手順**:
+1. エラー発生 → スクリーンショットを確認
+2. UI変更を検出 → セレクタを更新
+3. 新しいバージョンのスクリプトを作成
+4. DRY_RUNテストで動作確認
+5. 本番テスト実行
+
+**参考**: `/root/clawd/skills/sns-multi-poster/post-to-instagram-v13-with-screenshots.cjs` がベストプラクティス実装例
+
 #### 接続制限対策
 - BAN対策チェック: 過去24時間の投稿回数を確認
 - ランダム遅延: 各アクション間に2-5秒のランダム待機
@@ -167,6 +212,63 @@ bash /root/clawd/scripts/obsidian-auto-save.sh note "〇〇について話し合
   - `post-to-x-v2-anti-ban.cjs` (networkidle2/120秒 → domcontentloaded/15秒)
 - **テスト結果**: 解決策1（3.7秒）、解決策2（3.2秒）、解決策3（6.5秒）全て成功
 - **ブラウザプロファイル初期化**: `/root/clawd/scripts/threads-browser-profile-init.cjs`
+
+---
+
+## Web自動化の標準ルール（2026-02-24決定・強化版）
+
+**🚨 全Web自動化で必須実装:**
+1. **全ステップでスクリーンショット撮影**: エラー時だけでなく、各アクション前後に必ず撮影
+2. **ステップごとの確認**: 各ステップで状態を可視化し、問題を早期発見
+3. **デバッグディレクトリ**: `/tmp/<platform>-visual-debug/` に統一
+4. **ファイル命名規則**: `01-page-loaded.png`, `02-before-click.png`, `03-after-click.png`, ..., `error-*.png`
+5. **ログ出力**: 各スクリーンショット撮影時に「📸 スクリーンショット: <ファイルパス>」とログ出力
+
+**実装テンプレート:**
+```javascript
+const DEBUG_DIR = '/tmp/<platform>-visual-debug';
+if (!fs.existsSync(DEBUG_DIR)) {
+  fs.mkdirSync(DEBUG_DIR, { recursive: true });
+}
+
+// ステップカウンター
+let stepCounter = 1;
+
+// スクリーンショット撮影ヘルパー関数
+async function takeScreenshot(page, description) {
+  const filename = `${String(stepCounter).padStart(2, '0')}-${description}.png`;
+  const filepath = path.join(DEBUG_DIR, filename);
+  console.log(`📸 スクリーンショット: ${filepath}`);
+  await page.screenshot({ path: filepath });
+  stepCounter++;
+}
+
+// 使用例（各アクション前後に撮影）
+await takeScreenshot(page, 'page-loaded');
+await takeScreenshot(page, 'before-button-click');
+await button.click();
+await takeScreenshot(page, 'after-button-click');
+
+// エラー時も必ず撮影
+if (!element) {
+  const errorFile = path.join(DEBUG_DIR, `error-${Date.now()}.png`);
+  await page.screenshot({ path: errorFile });
+  console.log(`📸 エラースクリーンショット: ${errorFile}`);
+  throw new Error('要素が見つかりません');
+}
+```
+
+**撮影タイミング（必須）:**
+- ページ読み込み完了後
+- **各ボタンクリック前後**
+- **各テキスト入力前後**
+- **各ファイルアップロード前後**
+- エラー発生時
+
+**参考実装:**
+- Instagram: `skills/sns-multi-poster/post-to-instagram-with-screenshots.cjs`
+- X: `skills/sns-multi-poster/post-to-x-with-screenshots.cjs`
+- Threads: `skills/sns-multi-poster/post-to-threads-with-screenshots.cjs`
 
 ---
 
