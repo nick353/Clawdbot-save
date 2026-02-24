@@ -100,15 +100,15 @@ X_STATUS="pending"
 FB_STATUS="pending"
 PIN_STATUS="pending"
 
-# ━━━━━ Instagram（v6-anti-ban） ━━━━━
+# ━━━━━ Instagram（Playwright Cookie版） ━━━━━
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "📸 [1/5] Instagram 投稿中（BAN対策版 v6）..."
+echo "📸 [1/5] Instagram 投稿中（Playwright Cookie認証）..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 cd "$SCRIPT_DIR"
 IG_FAIL=false
-IG_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" node post-to-instagram-v6-anti-ban.cjs "$MEDIA_FILE" "$CAPTION" 2>&1) || IG_FAIL=true
+IG_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" node post-to-instagram-playwright.cjs "$MEDIA_FILE" "$CAPTION" 2>&1) || IG_FAIL=true
 
 if [ "$IG_FAIL" = "true" ]; then
   echo "❌ Instagram投稿失敗"
@@ -121,15 +121,15 @@ else
   echo "$IG_OUTPUT" | tail -5
 fi
 
-# ━━━━━ Threads（v2-anti-ban） ━━━━━
+# ━━━━━ Threads（Playwright Cookie版） ━━━━━
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🧵 [2/5] Threads 投稿中（BAN対策版 v2）..."
+echo "🧵 [2/5] Threads 投稿中（Playwright Cookie認証）..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 cd "$SCRIPT_DIR"
 TH_FAIL=false
-TH_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" node post-to-threads-v2-anti-ban.cjs "$MEDIA_FILE" "$CAPTION" 2>&1) || TH_FAIL=true
+TH_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" node post-to-threads-playwright.cjs "$CAPTION" "$MEDIA_FILE" 2>&1) || TH_FAIL=true
 
 if [ "$TH_FAIL" = "true" ]; then
   echo "❌ Threads投稿失敗"
@@ -176,15 +176,15 @@ elif [ "$X_STATUS" != "dry_run" ]; then
   echo "$X_OUTPUT" | tail -5
 fi
 
-# ━━━━━ Facebook（v2-anti-ban） ━━━━━
+# ━━━━━ Facebook（Playwright Cookie版） ━━━━━
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "📘 [4/5] Facebook 投稿中（BAN対策版 v2）..."
+echo "📘 [4/5] Facebook 投稿中（Playwright Cookie認証）..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 cd "$SCRIPT_DIR"
 FB_FAIL=false
-FB_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" node post-to-facebook-v2-anti-ban.cjs "$MEDIA_FILE" "$CAPTION" 2>&1) || FB_FAIL=true
+FB_OUTPUT=$(timeout "$PLATFORM_TIMEOUT" node post-to-facebook-playwright.cjs "$CAPTION" "$MEDIA_FILE" 2>&1) || FB_FAIL=true
 
 if [ "$FB_FAIL" = "true" ]; then
   echo "❌ Facebook投稿失敗"
@@ -246,7 +246,7 @@ cat > "$RECORD_FILE" << EOF
   "timestamp": "$TIMESTAMP",
   "media_path": "$MEDIA_FILE",
   "media_type": "$MEDIA_TYPE",
-  "anti_ban_version": "v2",
+  "anti_ban_version": "playwright-cookie",
   "dry_run": $DRY_RUN,
   "caption": $(echo "$CAPTION" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().rstrip()))"),
   "platforms": {

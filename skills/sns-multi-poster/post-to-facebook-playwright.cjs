@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const [, , text, imagePath] = process.argv;
+const DRY_RUN = process.env.DRY_RUN === 'true';
 
 if (!text) {
   console.error('使い方: node post-to-facebook-playwright.cjs <text> [image_path]');
@@ -20,6 +21,17 @@ if (!text) {
 if (imagePath && !fs.existsSync(imagePath)) {
   console.error(`❌ 画像が見つかりません: ${imagePath}`);
   process.exit(1);
+}
+
+// DRY_RUNモード
+if (DRY_RUN) {
+  console.log('🔄 DRY RUN: Facebook投稿スキップ');
+  console.log('📝 テキスト:', text);
+  if (imagePath) {
+    console.log('📷 画像:', imagePath);
+  }
+  console.log('✅ DRY RUN完了（実際の投稿なし）');
+  process.exit(0);
 }
 
 // ブラウザプロファイルディレクトリ

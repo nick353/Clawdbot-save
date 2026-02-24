@@ -1,0 +1,16 @@
+{
+  "post_id": "2026-02-24_001",
+  "timestamp": "2026-02-24T03:48:56Z",
+  "media_path": "/root/clawd/skills/sns-multi-poster/test-image.jpg",
+  "media_type": "image",
+  "anti_ban_version": "v2",
+  "dry_run": true,
+  "caption": "\ud83d\udc25 \u7d71\u5408\u30c6\u30b9\u30c8\uff08DRY RUN\uff09#test",
+  "platforms": {
+    "instagram": {"status": "dry_run"},
+    "threads": {"status": "dry_run"},
+    "x": {"status": "dry_run"},
+    "facebook": {"status": "dry_run"},
+    "pinterest": {"status": "dry_run", "board": "Animal"}
+  }
+}
