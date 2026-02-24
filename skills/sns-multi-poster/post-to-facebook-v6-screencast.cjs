@@ -259,7 +259,48 @@ async function postToFacebook(videoPath, caption) {
       '//div[@role="button" and contains(text(), "Share")]',
     ];
     
-    // 左側パネルをスクロール
+    // "Next" ボタンを探す
+    console.log('🔍 "Next" ボタンを探す...');
+    const nextButtonSelectors = [
+      'div[aria-label="Next"]',
+      '//div[@role="button" and contains(text(), "Next")]',
+    ];
+    
+    let nextButton = null;
+    for (const selector of nextButtonSelectors) {
+      try {
+        if (selector.startsWith('//')) {
+          const elements = await page.$x(selector);
+          if (elements.length > 0) {
+            nextButton = elements[0];
+            console.log(`✅ "Next"ボタン発見（XPath）: ${selector}`);
+            break;
+          }
+        } else {
+          nextButton = await page.$(selector);
+          if (nextButton) {
+            console.log(`✅ "Next"ボタン発見: ${selector}`);
+            break;
+          }
+        }
+      } catch (err) {
+        console.log(`⚠️ ${selector} でエラー: ${err.message}`);
+      }
+      await randomDelay(1000, 2000);
+    }
+    
+    // "Next" ボタンが見つかった場合、クリックして画面遷移を待つ
+    if (nextButton) {
+      console.log('🖱️ "Next"ボタンをクリック...');
+      await nextButton.click();
+      await randomDelay(3000, 5000); // 画面遷移を待つ
+      
+      // スクリーンショット（Next後）
+      await page.screenshot({ path: `/tmp/facebook-screencast-after-next-${timestamp}.png`, fullPage: true });
+      console.log('📸 "Next"後のスクリーンショット保存');
+    }
+    
+    // 左側パネルをスクロール（Reels編集画面の場合、左側パネルに"Post"ボタンがある可能性）
     console.log('📜 左側パネルをスクロール...');
     await page.evaluate(() => {
       const leftPanel = document.querySelector('div[role="dialog"]');
@@ -273,6 +314,8 @@ async function postToFacebook(videoPath, caption) {
     await page.screenshot({ path: `/tmp/facebook-screencast-scrolled-${timestamp}.png`, fullPage: true });
     console.log('📸 スクロール後のスクリーンショット保存');
     
+    // 投稿ボタンを探す
+    console.log('🔍 "Post"ボタンを探す...');
     let postButton = null;
     for (const selector of postButtonSelectors) {
       try {
