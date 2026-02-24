@@ -10,14 +10,17 @@
 # これで「スクリプト自体がハング」するのを防ぐ
 bash /root/clawd/scripts/conversation-continuity-enforcer-lite.sh &
 
-# Obsidian自動保存（background）
-bash /root/clawd/scripts/obsidian-auto-save.sh note "【HEARTBEAT】会話文脈保護実行" &
+# 会話要点を Obsidian + Git に保存（background）
+# 【重要】直前の会話を記録するために必須
+RECENT_CONTEXT=$(git -C /root/clawd log --oneline -1 --pretty=format:"%s" 2>/dev/null || echo "no recent context")
+bash /root/clawd/scripts/conversation-context-saver.sh note "【HEARTBEAT】直前の文脈: $RECENT_CONTEXT" &
 
 # Git自動commit（background）
 bash /root/clawd/scripts/git-auto-commit.sh auto &
 ```
 **効果**: 
 - Memory plugin + Obsidian + Git の3層で文脈を保護
+- 会話の要点を自動保存（compaction後も復元可能）
 - ハング中タスクの自動検出
 - **スクリプト自体のハングを防止**（全て非同期実行）
 
