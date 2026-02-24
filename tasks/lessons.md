@@ -166,3 +166,11 @@ grep -i "browser\|api\|cron" /root/clawd/tasks/lessons.md -A 6
 
 **実践方法**:
 - 失敗発見 → lessons.md記録 → AGENTS.mdルール追加 → 検証 → ✅マーク
+## 2026-02-24 - Phase 3実装でディスク容量不足に遭遇
+
+**症状**: sentence-transformersインストール時にCUDAパッケージ（PyTorch）でディスク容量不足
+**原因**: CUDA版PyTorchは大容量（2GB以上）で、ディスク残量2.2GBでは不足
+**解決策**: CPU版PyTorchに変更（--index-url https://download.pytorch.org/whl/cpu）
+**今後のルール**: 大容量パッケージインストール前にディスク容量確認; CPU版で十分な場合はCPU版を優先
+
+---

@@ -41,6 +41,7 @@
 | 13 | duckduckgo-search | `/root/clawd/scripts/duckduckgo-search.sh` | Braveレート制限時のフォールバック | `bash duckduckgo-search.sh "クエリ"` |
 | 14 | obsidian-auto-save | `/root/clawd/scripts/obsidian-auto-save.sh` | 重要な情報を自動的にObsidianに保存 | `obsidian-auto-save.sh <category> <message>` |
 | 15 | fxembed-converter | `/root/clawd/skills/fxembed-converter/` | "Twitterリンク変換"/"X投稿表示" | `bash convert-twitter-links.sh "テキスト"` |
+| 16 | rag-system | `/root/clawd/scripts/rag-*.sh` | "過去の実装例"/"類似タスク検索" | `bash rag-search.sh search "<クエリ>"` (初回: `bash rag-search.sh index`) |
 
 ---
 
@@ -120,9 +121,12 @@ bash /root/clawd/scripts/obsidian-auto-save.sh note "〇〇について話し合
 | SNS | 問題 | 解決策 | スクリプト |
 |-----|------|-------|-----------|
 | **X** | ページ読み込み不完全 | `networkidle2` + 60秒タイムアウト + 8-12秒追加待機 | `post-to-x-v2-anti-ban.cjs` |
+| **X** | 投稿ボタンが見つからない（2026-02-24） | XPathフォールバック + スクリーンショット追加 | `post-to-x-v2-anti-ban.cjs` |
 | **Pinterest** | ファイル入力が見つからない | 10個のセレクタを順番に試す + 最終手段でJS evaluate | `post-to-pinterest-v3-multi-selector.cjs` |
 | **Threads** | Playwright構文エラー | `:has-text()` → XPath変換 | `post-to-threads-v2-anti-ban.cjs` |
+| **Threads** | ファイル入力が見つからない（2026-02-24） | 7個のセレクタ + evaluate フォールバック | `post-to-threads-v2-anti-ban.cjs` |
 | **Instagram** | "Next"ボタン2回クリック | 1回目: 編集→キャプション、2回目: キャプション→投稿確認 | `post-to-instagram-v12-final.cjs` |
+| **Facebook** | Reels編集画面でPostボタン見つからない（2026-02-24） | Reels画面検出 + 左側パネルスクロール + デバッグ出力強化 | `post-to-facebook-v4-reels-support.cjs` |
 | **全SNS** | Cookie sameSite エラー | `no_restriction` → `None`, `null` → `Lax` に正規化 | 全スクリプトで実装済み |
 
 #### ページ読み込み戦略（プラットフォーム別）

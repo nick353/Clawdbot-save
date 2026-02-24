@@ -1,1 +1,0 @@
-Error: browserContext.addCookies: cookies[5].sameSite: expected one of (Strict|Lax|None)

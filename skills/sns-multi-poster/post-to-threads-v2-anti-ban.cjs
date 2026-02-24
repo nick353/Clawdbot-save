@@ -88,18 +88,46 @@ async function main() {
 
     await randomDelay(2000, 5000);
 
-    await page.goto('https://www.threads.net/', { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.goto('https://www.threads.net/', { waitUntil: 'domcontentloaded', timeout: 45000 });
     console.log('✅ Threads読み込み完了');
 
-    await randomDelay(5000, 8000);
+    await randomDelay(8000, 12000);
 
     // 新規投稿ボタン
     await page.click('svg[aria-label="Create"], [aria-label="Create"]');
     await randomDelay(2000, 4000);
 
-    // ファイルアップロード
-    const fileInput = await page.$('input[type="file"]');
-    if (!fileInput) throw new Error('ファイル入力なし');
+    // ファイルアップロード（複数セレクタでフォールバック）
+    const fileSelectors = [
+      'input[type="file"]',
+      'input[type="file"][accept*="image"]',
+      'input[type="file"][accept*="video"]',
+      'input[accept="image/*,video/*"]',
+      '[data-testid="file-upload-input"]',
+      'input[name="file"]',
+      'input[style*="hidden"]',
+    ];
+
+    let fileInput = null;
+    for (const selector of fileSelectors) {
+      fileInput = await page.$(selector);
+      if (fileInput) {
+        console.log(`✅ ファイル入力発見: ${selector}`);
+        break;
+      }
+      await randomDelay(1000, 2000); // 待機してから次を試す
+    }
+
+    if (!fileInput) {
+      // 最終手段: JavaScript evaluate
+      fileInput = await page.evaluateHandle(() => document.querySelector('input[type="file"]'));
+      if (!fileInput) {
+        await page.screenshot({ path: '/tmp/threads-no-file-input.png' });
+        throw new Error('ファイル入力なし（スクリーンショット: /tmp/threads-no-file-input.png）');
+      }
+      console.log('✅ ファイル入力発見: evaluate');
+    }
+
     await fileInput.uploadFile(imagePath);
     console.log('✅ ファイルアップロード完了');
 

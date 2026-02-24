@@ -610,6 +610,137 @@ grep -i "<キーワード>" /root/clawd/tasks/lessons.md
 
 ---
 
+## 🚀 Phase 3: RAG統合による学習強化（2026-02-24実装）
+
+**基本方針**: 失敗だけでなく、成功パターンも学習し、過去の実装例を参照できるようにする
+
+### 3つの柱
+
+#### 1️⃣ 成功パターン記録（successes.md）
+
+**記録内容:**
+- 成功した実装・調査・修正のパターン
+- アプローチと成功要因
+- 再利用可能なテクニック
+
+**記録方法:**
+```bash
+bash /root/clawd/scripts/success-pattern-extractor.sh record \
+  "タスク名" \
+  "実装内容" \
+  "アプローチ" \
+  "成功要因" \
+  "関連スキル"
+```
+
+**例:**
+```bash
+bash success-pattern-extractor.sh record \
+  "Discord BOT実装" \
+  "メッセージ送信・リアクション機能" \
+  "Discord.js + Webhooks" \
+  "API仕様を最初に確認・段階的実装" \
+  "discord, nodejs"
+```
+
+#### 2️⃣ RAG検索システム（rag-search.sh）
+
+**目的**: 過去の実装例・成功パターン・失敗事例を検索して参照
+
+**使い方:**
+```bash
+# 初回: インデックス作成
+bash /root/clawd/scripts/rag-search.sh index
+
+# 検索
+bash /root/clawd/scripts/rag-search.sh search "Discord BOT実装"
+```
+
+**検索対象:**
+- `lessons.md` - 失敗パターン
+- `successes.md` - 成功パターン
+- `skills/*/SKILL.md` - スキル定義
+
+**検索エンジン:**
+- sentence-transformers（all-MiniLM-L6-v2）でベクトル化
+- FAISSで高速セマンティック検索
+- Top-K結果を距離スコア付きで返す
+
+#### 3️⃣ プロンプト最適化（prompt-optimizer.sh）
+
+**目的**: タスクカテゴリ別に最適なプロンプトテンプレートを管理
+
+**使い方:**
+```bash
+# 初期化（テンプレート作成）
+bash /root/clawd/scripts/prompt-optimizer.sh init
+
+# テンプレート取得
+bash prompt-optimizer.sh get research "Brave検索の代替"
+
+# 成功/失敗を記録（成功率トラッキング）
+bash prompt-optimizer.sh update research success
+
+# ベストテンプレート選択
+bash prompt-optimizer.sh best
+```
+
+**テンプレートカテゴリ:**
+- `research` - 調査タスク
+- `implementation` - 実装タスク
+- `verification` - 検証タスク
+
+### タスク開始時のワークフロー（Phase 3統合版）
+
+1. **過去の事例を検索**
+   ```bash
+   bash rag-search.sh search "<タスク名>"
+   ```
+
+2. **最適なプロンプトテンプレート取得**
+   ```bash
+   bash prompt-optimizer.sh get <category> "<タスク概要>"
+   ```
+
+3. **実装実行**（通常通り）
+
+4. **成功パターン記録**
+   ```bash
+   bash success-pattern-extractor.sh record "<タスク名>" "..." "..." "..." "..."
+   ```
+
+5. **プロンプト統計更新**
+   ```bash
+   bash prompt-optimizer.sh update <category> success
+   ```
+
+6. **RAGインデックス更新**
+   ```bash
+   bash rag-search.sh index
+   ```
+
+### 期待効果
+
+- **成功率向上**: 過去の成功パターン参照で初回成功率+30%
+- **実装時間短縮**: 類似タスクの実装例参照で-40%
+- **品質向上**: ベストプラクティスの自動適用
+
+### ファイル構成
+
+| ファイル | 用途 |
+|---------|------|
+| `/root/clawd/tasks/successes.md` | 成功パターン記録 |
+| `/root/clawd/knowledge/embeddings.index` | FAISSインデックス |
+| `/root/clawd/knowledge/metadata.json` | メタデータ |
+| `/root/clawd/config/prompt-templates/*.txt` | プロンプトテンプレート |
+| `/root/clawd/config/prompt-stats.json` | 成功率統計 |
+| `/root/clawd/scripts/rag-search.sh` | RAG検索スクリプト |
+| `/root/clawd/scripts/rag-index.py` | RAGインデックス作成 |
+| `/root/clawd/scripts/success-pattern-extractor.sh` | 成功パターン記録 |
+| `/root/clawd/scripts/prompt-optimizer.sh` | プロンプト最適化 |
+
+---
+
 ## 📋 プランモード（Plan Mode）必須ルール
 
 **基本方針**: Boris Cherny流「3ステップ以上または設計判断が必要な場合は必ずプラン作成→承認→実行」

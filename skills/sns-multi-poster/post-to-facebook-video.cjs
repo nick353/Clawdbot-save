@@ -223,7 +223,11 @@ async function postToFacebook() {
     await sleep(2000);
     await page.screenshot({ path: '/tmp/facebook-video-before-post.png' });
 
-    // ─── Step 4: モーダルをスクロールして Post ボタンを探す ───
+    // ─── Step 4: 動画処理完了を待つ ───
+    console.log('⏳ 動画処理完了を待機中...');
+    await sleep(15000); // 15秒待機（動画処理完了を待つ）
+
+    // ─── Step 5: モーダルをスクロールして Post ボタンを探す ───
     console.log('📤 Post ボタンを探しています...');
 
     try {
@@ -231,85 +235,48 @@ async function postToFacebook() {
         const modal = document.querySelector('[role="dialog"]');
         if (modal) modal.scrollTop = modal.scrollHeight;
       });
-      await sleep(1000);
+      await sleep(2000);
     } catch(e) {}
 
-    // Next ボタンを2回クリック（Instagram と同じパターン）
-    // 1回目: 編集 → キャプション
-    const nextResult1 = await page.evaluate(() => {
+    // デバッグ: 全てのボタンを出力
+    const allButtons = await page.evaluate(() => {
       const btns = Array.from(document.querySelectorAll('[role="dialog"] [role="button"], [role="dialog"] button'));
-      for (const btn of btns) {
-        const txt = btn.textContent.trim();
-        if (txt === 'Next' || txt === '次へ') {
-          const r = btn.getBoundingClientRect();
-          if (r.width > 0 && !btn.getAttribute('aria-disabled')) {
-            btn.click();
-            return txt;
-          }
-        }
-      }
-      return null;
+      return btns.map(btn => ({
+        text: btn.textContent.trim().substring(0, 50),
+        aria: btn.getAttribute('aria-label') || '',
+        disabled: btn.getAttribute('aria-disabled') || btn.getAttribute('disabled'),
+        width: btn.getBoundingClientRect().width,
+        top: btn.getBoundingClientRect().top,
+      }));
     });
+    console.log('🔍 モーダル内の全ボタン:', JSON.stringify(allButtons, null, 2));
 
-    if (nextResult1) {
-      console.log(`✅ Next ボタンクリック (1/2): ${nextResult1}`);
-      await sleep(3000);
-      await page.screenshot({ path: '/tmp/facebook-video-next-step-1.png' });
-    }
-
-    // 2回目: キャプション → 投稿確認
-    const nextResult2 = await page.evaluate(() => {
-      const btns = Array.from(document.querySelectorAll('[role="dialog"] [role="button"], [role="dialog"] button'));
-      for (const btn of btns) {
-        const txt = btn.textContent.trim();
-        if (txt === 'Next' || txt === '次へ') {
-          const r = btn.getBoundingClientRect();
-          if (r.width > 0 && !btn.getAttribute('aria-disabled')) {
-            btn.click();
-            return txt;
-          }
-        }
-      }
-      return null;
-    });
-
-    if (nextResult2) {
-      console.log(`✅ Next ボタンクリック (2/2): ${nextResult2}`);
-      await sleep(3000);
-      await page.screenshot({ path: '/tmp/facebook-video-next-step-2.png' });
-    }
-
-    // Post ボタンをクリック
+    // Post ボタンをクリック（複数パターン）
     const postClicked = await page.evaluate(() => {
       const selectors = [
         '[role="dialog"] [role="button"]',
         '[role="dialog"] button',
+        'button',
+        '[role="button"]',
       ];
-      for (const sel of [].concat(selectors)) {
+      
+      for (const sel of selectors) {
         const btns = Array.from(document.querySelectorAll(sel));
         for (const btn of btns) {
           const txt = btn.textContent.trim();
           const aria = btn.getAttribute('aria-label') || '';
-          if ((txt === 'Post' || txt === '投稿' || aria === 'Post') &&
-              !btn.getAttribute('aria-disabled') &&
-              btn.getAttribute('aria-disabled') !== 'true') {
+          const disabled = btn.getAttribute('aria-disabled') || btn.getAttribute('disabled');
+          
+          // Post ボタンを複数パターンで検出
+          if ((txt === 'Post' || txt === '投稿' || txt === 'Share' || 
+               aria === 'Post' || aria === 'Share' || 
+               txt.includes('Post') || aria.includes('Post')) &&
+              !disabled && disabled !== 'true') {
             const r = btn.getBoundingClientRect();
-            if (r.width > 0) {
+            if (r.width > 0 && r.top >= 0) {
               btn.click();
-              return `"${txt}" (aria: "${aria}")`;
+              return `"${txt}" (aria: "${aria}") at top=${r.top}`;
             }
-          }
-        }
-      }
-
-      const allBtns = Array.from(document.querySelectorAll('button, [role="button"]'));
-      for (const btn of allBtns) {
-        const txt = btn.textContent.trim();
-        if (txt === 'Post' && !btn.getAttribute('disabled')) {
-          const r = btn.getBoundingClientRect();
-          if (r.width > 50 && r.top > 300) {
-            btn.click();
-            return `fallback: "${txt}" at top=${r.top}`;
           }
         }
       }

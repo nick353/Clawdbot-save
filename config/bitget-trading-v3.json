@@ -25,7 +25,6 @@
     "OPUSDT",
     "AVAXUSDT",
     "LINKUSDT",
-    "MATICUSDT",
     "DOTUSDT",
     "UNIUSDT"
   ],
@@ -64,7 +63,7 @@
     "short_leverage": 5,
     "max_leverage": 20,
     "auto_adjust": false,
-    "comment": "ロング・ショート共に5倍。損切り3%時のリスク: 15%"
+    "comment": "\u30ed\u30f3\u30b0\u30fb\u30b7\u30e7\u30fc\u30c8\u5171\u306b5\u500d\u3002\u640d\u5207\u308a3%\u6642\u306e\u30ea\u30b9\u30af: 15%"
   },
   "risk_management": {
     "max_daily_loss": -500.0,
@@ -79,21 +78,21 @@
   "check_interval": 10,
   "auto_update_symbols": true,
   "max_monitored_symbols": 25,
-  "comment": "V3設定ファイル - ハイブリッド戦法（ロング/ショート両対応）実装版（2026-02-20）",
-  "_変更点": {
-    "long_pattern_1": "ロング: ゴールデンクロス(EMA>SMA) + 価格>EMA200 + MACD上抜け + 出来高増",
-    "long_pattern_2": "ロング: SMA/EMA接近(±3%) + ゴールデンクロス + MACD上抜け + 出来高増",
-    "short_pattern_1": "ショート: デッドクロス(EMA<SMA) + 価格<EMA200 + MACD下抜け + 出来高増",
-    "short_pattern_2": "ショート: SMA/EMA接近(±3%) + デッドクロス + MACD下抜け + 出来高増",
-    "rsi_filter_long": "RSI 45〜65（ロング）",
-    "rsi_filter_short": "RSI 35〜55（ショート）",
-    "btc_trend_filter": "BTCトレンド確認（無効化可能）",
-    "max_hold_time_minutes": "1440分（24時間）",
+  "comment": "V3\u8a2d\u5b9a\u30d5\u30a1\u30a4\u30eb - \u30cf\u30a4\u30d6\u30ea\u30c3\u30c9\u6226\u6cd5\uff08\u30ed\u30f3\u30b0/\u30b7\u30e7\u30fc\u30c8\u4e21\u5bfe\u5fdc\uff09\u5b9f\u88c5\u7248\uff082026-02-20\uff09",
+  "_\u5909\u66f4\u70b9": {
+    "long_pattern_1": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9(EMA>SMA) + \u4fa1\u683c>EMA200 + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897",
+    "long_pattern_2": "\u30ed\u30f3\u30b0: SMA/EMA\u63a5\u8fd1(\u00b13%) + \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897",
+    "short_pattern_1": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9(EMA<SMA) + \u4fa1\u683c<EMA200 + MACD\u4e0b\u629c\u3051 + \u51fa\u6765\u9ad8\u5897",
+    "short_pattern_2": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u63a5\u8fd1(\u00b13%) + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + MACD\u4e0b\u629c\u3051 + \u51fa\u6765\u9ad8\u5897",
+    "rsi_filter_long": "RSI 45\u301c65\uff08\u30ed\u30f3\u30b0\uff09",
+    "rsi_filter_short": "RSI 35\u301c55\uff08\u30b7\u30e7\u30fc\u30c8\uff09",
+    "btc_trend_filter": "BTC\u30c8\u30ec\u30f3\u30c9\u78ba\u8a8d\uff08\u7121\u52b9\u5316\u53ef\u80fd\uff09",
+    "max_hold_time_minutes": "1440\u5206\uff0824\u6642\u9593\uff09",
     "stop_loss_pct": "5%",
     "take_profit_pct": "10%",
     "trailing_stop_activation_pct": "2.0%",
-    "max_positions": "5個固定（ロング/ショート合計）",
-    "fixed_position_size": "$2,000/ポジション（総資金÷5で動的計算）"
+    "max_positions": "5\u500b\u56fa\u5b9a\uff08\u30ed\u30f3\u30b0/\u30b7\u30e7\u30fc\u30c8\u5408\u8a08\uff09",
+    "fixed_position_size": "$2,000/\u30dd\u30b8\u30b7\u30e7\u30f3\uff08\u7dcf\u8cc7\u91d1\u00f75\u3067\u52d5\u7684\u8a08\u7b97\uff09"
   },
   "last_symbol_update": "2026-02-24T01:02:00.000000Z"
 }

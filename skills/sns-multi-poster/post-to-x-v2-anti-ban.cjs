@@ -82,11 +82,11 @@ async function main() {
 
     await randomDelay(2000, 5000);
 
-    await page.goto('https://x.com/compose/post', { waitUntil: 'networkidle2', timeout: 60000 });
+    await page.goto('https://x.com/compose/post', { waitUntil: 'domcontentloaded', timeout: 90000 });
     console.log('✅ X読み込み完了');
 
     // 追加待機（ページが完全に表示されるまで）
-    await randomDelay(8000, 12000);
+    await randomDelay(10000, 15000);
 
     // スクリーンショット（デバッグ用）
     await page.screenshot({ path: '/tmp/x-debug-before-search.png' });
@@ -136,12 +136,16 @@ async function main() {
 
     await randomDelay(3000, 5000);
 
-    // ツイートボタン（複数セレクタを試す）
+    // ツイートボタン（複数セレクタ + XPath）
+    await page.screenshot({ path: '/tmp/x-before-post.png' });
+    console.log('📸 投稿前スクリーンショット: /tmp/x-before-post.png');
+
     const tweetButtonSelectors = [
       'button[data-testid="tweetButton"]',
       'button[data-testid="tweetButtonInline"]',
       'div[data-testid="tweetButton"]',
-      'div[role="button"][data-testid="tweetButton"]'
+      'div[role="button"][data-testid="tweetButton"]',
+      'button[role="button"][data-testid="tweetButton"]'
     ];
 
     let tweetButtonClicked = false;
@@ -157,7 +161,20 @@ async function main() {
       }
     }
 
+    // XPath フォールバック（"Post" または "Tweet" テキストを含むボタン）
     if (!tweetButtonClicked) {
+      console.log('🔍 XPath でボタン検索...');
+      const xpathButtons = await page.$x("//button[contains(., 'Post')] | //button[contains(., 'Tweet')] | //div[@role='button' and contains(., 'Post')]");
+      if (xpathButtons.length > 0) {
+        await xpathButtons[0].click();
+        tweetButtonClicked = true;
+        console.log('✅ 投稿ボタンをクリック: XPath');
+      }
+    }
+
+    if (!tweetButtonClicked) {
+      await page.screenshot({ path: '/tmp/x-no-post-button.png' });
+      console.log('📸 エラースクリーンショット: /tmp/x-no-post-button.png');
       throw new Error('投稿ボタンが見つかりません');
     }
 
