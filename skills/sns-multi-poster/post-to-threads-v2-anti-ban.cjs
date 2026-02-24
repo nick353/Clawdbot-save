@@ -42,10 +42,11 @@ async function main() {
     return;
   }
 
-  if (!isAllowedPostingTime()) {
-    console.error('❌ 投稿禁止時間帯です（7時〜23時のみ許可）');
-    process.exit(1);
-  }
+  // 時間帯制限を一時的に無効化（2026-02-24）
+  // if (!isAllowedPostingTime()) {
+  //   console.error('❌ 投稿禁止時間帯です（7時〜23時のみ許可）');
+  //   process.exit(1);
+  // }
 
   if (!(await checkRateLimit('threads'))) {
     console.error('❌ レート制限超過（Threads: 4投稿/時間、25投稿/日）');

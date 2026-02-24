@@ -234,8 +234,9 @@ async function postToFacebook() {
       await sleep(1000);
     } catch(e) {}
 
-    // Next → Post の2ステップの可能性
-    const nextResult = await page.evaluate(() => {
+    // Next ボタンを2回クリック（Instagram と同じパターン）
+    // 1回目: 編集 → キャプション
+    const nextResult1 = await page.evaluate(() => {
       const btns = Array.from(document.querySelectorAll('[role="dialog"] [role="button"], [role="dialog"] button'));
       for (const btn of btns) {
         const txt = btn.textContent.trim();
@@ -250,10 +251,32 @@ async function postToFacebook() {
       return null;
     });
 
-    if (nextResult) {
-      console.log(`✅ Next ボタンクリック: ${nextResult}`);
+    if (nextResult1) {
+      console.log(`✅ Next ボタンクリック (1/2): ${nextResult1}`);
       await sleep(3000);
-      await page.screenshot({ path: '/tmp/facebook-video-next-step.png' });
+      await page.screenshot({ path: '/tmp/facebook-video-next-step-1.png' });
+    }
+
+    // 2回目: キャプション → 投稿確認
+    const nextResult2 = await page.evaluate(() => {
+      const btns = Array.from(document.querySelectorAll('[role="dialog"] [role="button"], [role="dialog"] button'));
+      for (const btn of btns) {
+        const txt = btn.textContent.trim();
+        if (txt === 'Next' || txt === '次へ') {
+          const r = btn.getBoundingClientRect();
+          if (r.width > 0 && !btn.getAttribute('aria-disabled')) {
+            btn.click();
+            return txt;
+          }
+        }
+      }
+      return null;
+    });
+
+    if (nextResult2) {
+      console.log(`✅ Next ボタンクリック (2/2): ${nextResult2}`);
+      await sleep(3000);
+      await page.screenshot({ path: '/tmp/facebook-video-next-step-2.png' });
     }
 
     // Post ボタンをクリック

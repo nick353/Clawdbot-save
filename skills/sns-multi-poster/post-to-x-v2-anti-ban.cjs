@@ -41,10 +41,11 @@ async function main() {
     return;
   }
 
-  if (!isAllowedPostingTime()) {
-    console.error('❌ 投稿禁止時間帯です');
-    process.exit(1);
-  }
+  // 時間帯制限を一時的に無効化（2026-02-24）
+  // if (!isAllowedPostingTime()) {
+  //   console.error('❌ 投稿禁止時間帯です');
+  //   process.exit(1);
+  // }
 
   if (!(await checkRateLimit('x'))) {
     console.error('❌ レート制限超過（X: 10投稿/時間、100投稿/日）');
