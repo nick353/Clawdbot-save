@@ -1,2 +1,5 @@
-2026/02/24-04:01:14.969 17d65 Creating DB /root/clawd/skills/sns-multi-poster/browser-profiles/pinterest-profile/Default/Local Storage/leveldb since it was missing.
-2026/02/24-04:01:15.093 17d65 Delete type=3 #1
+2026/02/24-04:07:50.825 1830a Recovering log #3
+2026/02/24-04:07:51.046 1830a Level-0 table #5: started
+2026/02/24-04:07:51.049 1830a Level-0 table #5: 120 bytes OK
+2026/02/24-04:07:51.060 1830a Delete type=0 #3
+2026/02/24-04:07:51.060 1830a Delete type=3 #2

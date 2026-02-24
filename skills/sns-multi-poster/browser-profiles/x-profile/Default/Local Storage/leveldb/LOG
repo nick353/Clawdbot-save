@@ -1,2 +1,5 @@
-2026/02/24-04:00:28.817 17c90 Creating DB /root/clawd/skills/sns-multi-poster/browser-profiles/x-profile/Default/Local Storage/leveldb since it was missing.
-2026/02/24-04:00:29.044 17c90 Delete type=3 #1
+2026/02/24-04:06:45.170 18211 Recovering log #3
+2026/02/24-04:06:45.289 18211 Level-0 table #5: started
+2026/02/24-04:06:45.297 18211 Level-0 table #5: 120 bytes OK
+2026/02/24-04:06:45.304 18211 Delete type=0 #3
+2026/02/24-04:06:45.304 18211 Delete type=3 #2

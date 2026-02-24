@@ -1,2 +1,5 @@
-2026/02/24-04:00:28.948 17c98 Creating DB /root/clawd/skills/sns-multi-poster/browser-profiles/x-profile/Default/shared_proto_db/metadata since it was missing.
-2026/02/24-04:00:29.044 17c98 Delete type=3 #1
+2026/02/24-04:06:45.249 1821a Recovering log #3
+2026/02/24-04:06:45.288 1821a Level-0 table #5: started
+2026/02/24-04:06:45.292 1821a Level-0 table #5: 154 bytes OK
+2026/02/24-04:06:45.300 1821a Delete type=0 #3
+2026/02/24-04:06:45.300 1821a Delete type=3 #2

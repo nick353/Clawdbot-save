@@ -131,10 +131,11 @@ async function main() {
     // ファイルアップロード
     console.log('');
     console.log('📸 画像をアップロードしています...');
-    const fileInput = await page.$('input[type="file"]');
-    if (!fileInput) {
-      throw new Error('File input not found');
-    }
+    const fileInput = await waitFor(
+      page,
+      ['input[type="file"]'],
+      'file input'
+    );
 
     await fileInput.setInputFiles(path.resolve(imagePath));
     console.log('✅ 画像をアップロード');

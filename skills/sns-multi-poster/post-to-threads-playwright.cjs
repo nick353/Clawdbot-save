@@ -131,7 +131,17 @@ async function main() {
     console.log('✍️  テキストを入力しています...');
     await page.waitForTimeout(2000);
 
-    const textInput = await waitFor(page, ['textarea[placeholder*="何か思いついた"]', 'textarea'], 'text input');
+    const textInput = await waitFor(
+      page,
+      [
+        'div[aria-label*="compose"]',
+        'div[role="textbox"]',
+        'div[contenteditable="true"]',
+        'textarea[placeholder*="何か思いついた"]',
+        'textarea'
+      ],
+      'text input'
+    );
 
     await textInput.click();
     await textInput.fill(text);
