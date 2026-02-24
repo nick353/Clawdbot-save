@@ -113,7 +113,34 @@ async function main() {
     // Instagram にアクセス
     console.log('');
     console.log('🌐 Instagram にアクセスしています...');
-    await page.goto('https://www.instagram.com/', { waitUntil: 'domcontentloaded', timeout: 15000 });
+    
+    // リトライロジック付きでページ読み込み
+    let retries = 3;
+    let lastError;
+    
+    for (let i = 0; i < retries; i++) {
+      try {
+        await page.goto('https://www.instagram.com/', {
+          waitUntil: 'domcontentloaded',
+          timeout: 30000  // 30秒に延長
+        });
+        console.log('✅ Instagram ページ読み込み完了');
+        lastError = null;
+        break;  // 成功したらループ終了
+      } catch (err) {
+        lastError = err;
+        console.log(`⚠️ ページ読み込み失敗 (試行 ${i + 1}/${retries}): ${err.message}`);
+        if (i < retries - 1) {
+          console.log('🔄 5秒後にリトライします...');
+          await new Promise(resolve => setTimeout(resolve, 5000));
+        }
+      }
+    }
+    
+    if (lastError) {
+      throw lastError;  // 全て失敗したらエラーを投げる
+    }
+    
     await page.waitForTimeout(3000);
 
     // 「ログイン情報を保存」モーダルを閉じる

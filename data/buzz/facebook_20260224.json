@@ -1,0 +1,15 @@
+{
+  "collectedAt": "2026-02-24T09:06:33.879601+00:00",
+  "platform": "facebook",
+  "keywords": [
+    "浮世絵",
+    "japanart",
+    "ukiyoe"
+  ],
+  "totalPosts": 0,
+  "posts": [],
+  "topPost": null,
+  "maxLikes": 0,
+  "note": "Facebook buzz collection requires Graph API access - browser scraping not supported",
+  "status": "skipped"
+}
