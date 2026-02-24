@@ -36,8 +36,9 @@ async function main() {
 
   if (process.env.DRY_RUN === 'true') {
     console.log('🔄 DRY RUN: Threads投稿スキップ');
-    console.log(`📷 画像: ${imagePath}`);
-    console.log(`📝 キャプション: ${caption.substring(0, 80)}`);
+    console.log('📷 画像:', imagePath);
+    console.log('📝 キャプション:', caption);
+    console.log('✅ DRY RUN完了（実際の投稿なし）');
     return;
   }
 
