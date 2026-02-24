@@ -153,19 +153,17 @@ async function main() {
       console.log('ℹ️  モーダル処理でエラー:', e.message);
     }
 
-    // 作成ボタンを探す（aria-label="New post"のSVGアイコン）
+    // 作成ボタンを探す（aria-label="New post"のSVGアイコンを含む親要素）
     console.log('🔍 作成ボタンを探しています...');
-    const createButton = await waitFor(
-      page,
-      ['svg[aria-label="New post"]', 'a:has-text("Create")'],
-      'create button'
-    );
-
-    await createButton.click();
+    
+    // SVGを含む親のリンク要素をクリック
+    await page.click('a:has(svg[aria-label="New post"])');
     console.log('✅ 作成ボタンをクリック');
 
-    // モーダルが開くまで待機
-    await page.waitForTimeout(3000);
+    // モーダルダイアログの出現を待つ
+    console.log('⏳ 投稿モーダルの出現を待っています...');
+    await page.waitForSelector('[role="dialog"]', { timeout: 10000 });
+    console.log('✅ 投稿モーダルが開きました');
 
     // ファイルアップロード
     console.log('');
