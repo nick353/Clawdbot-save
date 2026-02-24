@@ -33,24 +33,10 @@
       "take_profit": 0.0556715,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": 0.04919,
+      "highest_price": 0.04925,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
-    },
-    "AVAXUSDT": {
-      "entry_time": "2026-02-24T17:08:23.039547",
-      "entry_price": 8.4,
-      "quantity": 396.8253968253968,
-      "position_size": 3333.3333333333335,
-      "position_type": "long",
-      "stop_loss": 8.232,
-      "take_profit": 8.82,
-      "trailing_stop": null,
-      "trailing_stop_used": false,
-      "highest_price": 8.44,
-      "lowest_price": null,
-      "entry_reason": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + \u4fa1\u683c>EMA200"
     }
   },
-  "capital": 1786.6666666666665,
-  "timestamp": "2026-02-24T19:08:21.707394"
+  "capital": 5120.0,
+  "timestamp": "2026-02-24T19:27:12.860764"
 }
