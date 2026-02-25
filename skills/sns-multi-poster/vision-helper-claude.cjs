@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Vision Helper - Claude Messages API統合
- * スクリーンショット → Vision API → UI要素座標検出
+ * Vision Helper - Claude Vision API統合
+ * スクリーンショット → Claude Vision API → UI要素座標検出
  * 
  * Features:
  * - Base64エンコーディング
@@ -20,7 +20,9 @@ if (!ANTHROPIC_API_KEY) {
   console.warn('⚠️  ANTHROPIC_API_KEY が設定されていません（Vision機能無効）');
 }
 
-const anthropic = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+const anthropic = new Anthropic({
+  apiKey: ANTHROPIC_API_KEY,
+});
 
 /**
  * 画像をBase64エンコード
@@ -33,7 +35,24 @@ function encodeImageToBase64(imagePath) {
 }
 
 /**
- * スクリーンショットからUI要素を検出（Vision API）
+ * 画像のMIMEタイプを取得
+ * @param {string} imagePath - 画像ファイルパス
+ * @returns {string} MIMEタイプ
+ */
+function getImageMimeType(imagePath) {
+  const ext = path.extname(imagePath).toLowerCase();
+  const mimeTypes = {
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.webp': 'image/webp',
+  };
+  return mimeTypes[ext] || 'image/jpeg';
+}
+
+/**
+ * スクリーンショットからUI要素を検出（Claude Vision API）
  * @param {string} screenshotPath - スクリーンショットのパス
  * @param {string} targetText - 検出したいUI要素のテキスト（例: "Create", "Next", "Share"）
  * @param {Object} options - オプション
@@ -55,13 +74,32 @@ async function detectUIElement(screenshotPath, targetText, options = {}) {
   }
 
   const base64Image = encodeImageToBase64(screenshotPath);
-  const mediaType = screenshotPath.endsWith('.png') ? 'image/png' : 'image/jpeg';
+  const mimeType = getImageMimeType(screenshotPath);
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       if (debug) {
-        console.log(`🔍 Vision API呼び出し (試行 ${attempt}/${maxRetries}): "${targetText}"`);
+        console.log(`🔍 Claude Vision API呼び出し (試行 ${attempt}/${maxRetries}): "${targetText}"`);
       }
+
+      const prompt = `この画像から、テキスト「${targetText}」を含むボタンまたはUI要素を探してください。
+
+要素が見つかった場合、以下のJSON形式で座標を返してください:
+{
+  "found": true,
+  "x": <中心のX座標（ピクセル）>,
+  "y": <中心のY座標（ピクセル）>,
+  "confidence": <確信度 0.0-1.0>,
+  "text": "<検出されたテキスト>"
+}
+
+要素が見つからなかった場合:
+{
+  "found": false,
+  "reason": "<見つからなかった理由>"
+}
+
+JSONのみを返してください（他の説明は不要）。`;
 
       const message = await anthropic.messages.create({
         model: 'claude-sonnet-4-5',
@@ -74,35 +112,13 @@ async function detectUIElement(screenshotPath, targetText, options = {}) {
                 type: 'image',
                 source: {
                   type: 'base64',
-                  media_type: mediaType,
+                  media_type: mimeType,
                   data: base64Image,
                 },
               },
               {
                 type: 'text',
-                text: `この画像から、テキスト「${targetText}」を含むボタンまたはUI要素を探してください。
-
-**重要**: 
-- ボタン全体ではなく、テキスト「${targetText}」が表示されている部分の中心座標を返してください
-- テキストが複数ある場合は、最も目立つ（大きい・濃い）ものを選択してください
-- アイコンではなく、必ずテキスト部分の座標を返してください
-
-要素が見つかった場合、以下のJSON形式で座標を返してください:
-{
-  "found": true,
-  "x": <テキスト中心のX座標（ピクセル）>,
-  "y": <テキスト中心のY座標（ピクセル）>,
-  "confidence": <確信度 0.0-1.0>,
-  "text": "<検出されたテキスト>"
-}
-
-要素が見つからなかった場合:
-{
-  "found": false,
-  "reason": "<見つからなかった理由>"
-}
-
-JSONのみを返してください（他の説明は不要）。`,
+                text: prompt,
               },
             ],
           },
@@ -110,8 +126,9 @@ JSONのみを返してください（他の説明は不要）。`,
       });
 
       const responseText = message.content[0].text.trim();
+
       if (debug) {
-        console.log('📥 Vision API応答:', responseText);
+        console.log('📥 Claude Vision API応答:', responseText);
       }
 
       // JSONパース（```json ... ``` を除去）
@@ -120,30 +137,30 @@ JSONのみを返してください（他の説明は不要）。`,
                         [null, responseText];
       const jsonText = jsonMatch[1] || responseText;
       
-      const result = JSON.parse(jsonText);
+      const parsedResult = JSON.parse(jsonText);
 
-      if (result.found) {
-        console.log(`✅ Vision API: "${targetText}" 検出成功 (x:${result.x}, y:${result.y}, 確信度:${result.confidence})`);
+      if (parsedResult.found) {
+        console.log(`✅ Claude Vision API: "${targetText}" 検出成功 (x:${parsedResult.x}, y:${parsedResult.y}, 確信度:${parsedResult.confidence})`);
         return {
-          x: result.x,
-          y: result.y,
-          confidence: result.confidence || 0.9,
-          text: result.text || targetText,
+          x: parsedResult.x,
+          y: parsedResult.y,
+          confidence: parsedResult.confidence || 0.9,
+          text: parsedResult.text || targetText,
         };
       } else {
-        console.log(`⚠️  Vision API: "${targetText}" が見つかりませんでした（${result.reason}）`);
+        console.log(`⚠️  Claude Vision API: "${targetText}" が見つかりませんでした（${parsedResult.reason}）`);
         return null;
       }
 
     } catch (error) {
-      console.error(`❌ Vision API エラー (試行 ${attempt}/${maxRetries}):`, error.message);
+      console.error(`❌ Claude Vision API エラー (試行 ${attempt}/${maxRetries}):`, error.message);
       
       if (attempt < maxRetries) {
         const waitTime = attempt * 2000; // 2秒、4秒、6秒...
         console.log(`⏳ ${waitTime / 1000}秒待機してリトライ...`);
         await new Promise(resolve => setTimeout(resolve, waitTime));
       } else {
-        console.error('❌ Vision API: 最大リトライ回数に到達');
+        console.error('❌ Claude Vision API: 最大リトライ回数に到達');
         return null;
       }
     }
@@ -239,7 +256,7 @@ async function detectMultipleElements(page, targetTexts, debugDir, fallbackSelec
     await page.screenshot({ path: screenshotPath });
     console.log(`📸 スクリーンショット: ${screenshotPath}`);
 
-    // Vision APIで検出試行
+    // Claude Vision APIで検出試行
     const visionResult = await detectUIElement(screenshotPath, targetText, { 
       debug: true,
       maxRetries: 2 
@@ -259,7 +276,7 @@ async function detectMultipleElements(page, targetTexts, debugDir, fallbackSelec
       await drawDebugOverlay(screenshotPath, [visionResult], overlayPath);
       
     } else {
-      console.log(`⚠️  Vision API失敗 → セレクタフォールバック試行`);
+      console.log(`⚠️  Claude Vision API失敗 → セレクタフォールバック試行`);
       
       // フォールバック: 従来のセレクタ方式
       const selectors = fallbackSelectors[targetText] || [];
@@ -289,7 +306,7 @@ async function detectMultipleElements(page, targetTexts, debugDir, fallbackSelec
       }
       
       if (!found) {
-        console.error(`❌ "${targetText}" の検出に失敗（Vision + セレクタ両方失敗）`);
+        console.error(`❌ "${targetText}" の検出に失敗（Claude Vision + セレクタ両方失敗）`);
       }
     }
     
