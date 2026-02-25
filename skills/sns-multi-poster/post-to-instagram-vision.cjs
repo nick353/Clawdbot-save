@@ -155,13 +155,10 @@ async function hybridClick(page, targetText, fallbackSelectors = [], timeout = 3
 }
 
 async function main() {
-  // DRY RUN チェック
-  if (process.env.DRY_RUN === 'true') {
-    console.log('🔄 DRY RUN: Instagram投稿スキップ');
-    console.log(`🎥 動画: ${videoPath}`);
-    console.log(`📝 キャプション: ${caption.substring(0, 80)}`);
-    console.log('✅ DRY RUN完了（実際の投稿なし）');
-    return;
+  const isDryRun = process.env.DRY_RUN === 'true';
+  
+  if (isDryRun) {
+    console.log('🔄 DRY RUN モード: 最後の投稿ボタンクリックのみスキップ');
   }
 
   console.log('🎥 Instagram Vision投稿開始');
@@ -219,10 +216,46 @@ async function main() {
     // ─── Step 3: ログイン確認 ───
     console.log('\n🔑 Step 3: ログイン確認...');
     const url = page.url();
+    
+    // URLチェック
     if (url.includes('/accounts/login')) {
-      console.error('❌ ログインが必要です（Cookie無効）');
-      throw new Error('Login required');
+      console.error('❌ ログインが必要です（URLに /accounts/login が含まれています）');
+      throw new Error('Login required (URL check)');
     }
+    
+    // ページ内容チェック（より確実）
+    const isLoggedIn = await page.evaluate(() => {
+      // ログインページの兆候をチェック
+      const loginIndicators = [
+        'Log in to Instagram',
+        'Sign up to see photos',
+        'Create new account',
+        'Log In',
+        'Sign Up'
+      ];
+      
+      const bodyText = document.body.textContent || '';
+      const hasLoginText = loginIndicators.some(indicator => bodyText.includes(indicator));
+      
+      // ログイン済みの兆候をチェック
+      const loggedInIndicators = [
+        document.querySelector('svg[aria-label="Home"]'),
+        document.querySelector('svg[aria-label="Search"]'),
+        document.querySelector('svg[aria-label="Notifications"]'),
+        document.querySelector('svg[aria-label="Create"]'),
+      ];
+      
+      const hasLoggedInElements = loggedInIndicators.some(el => el !== null);
+      
+      return hasLoggedInElements && !hasLoginText;
+    });
+    
+    if (!isLoggedIn) {
+      console.error('❌ ログインが必要です（Cookie無効 - ログインページが表示されています）');
+      await takeScreenshot(page, 'login-required');
+      throw new Error('Login required (page content check)');
+    }
+    
     console.log('✅ ログイン確認完了');
 
     // ─── Step 4: 新規投稿ボタン（Vision） ───
@@ -356,6 +389,15 @@ async function main() {
 
     // ─── Step 10: Share（Vision） ───
     console.log('\n🚀 Step 10: Share...');
+    
+    if (isDryRun) {
+      console.log('🔄 DRY RUN: Shareボタンクリックをスキップ');
+      await takeScreenshot(page, 'dry-run-final');
+      console.log('✅ DRY RUN完了（実際の投稿なし）');
+      console.log(`📁 デバッグファイル: ${DEBUG_DIR}`);
+      return;
+    }
+    
     const shareSuccess = await hybridClick(
       page, 
       'Share', 
