@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Vision Helper - Gemini Vision API統合
- * スクリーンショット → Gemini Vision API → UI要素座標検出
+ * Vision Helper - Claude Messages API統合
+ * スクリーンショット → Vision API → UI要素座標検出
  * 
  * Features:
  * - Base64エンコーディング
@@ -10,17 +10,17 @@
  * - ハイブリッド方式対応
  */
 
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const Anthropic = require('@anthropic-ai/sdk');
 const fs = require('fs');
 const path = require('path');
 const { createCanvas, loadImage } = require('canvas');
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
-if (!GEMINI_API_KEY) {
-  console.warn('⚠️  GEMINI_API_KEY が設定されていません（Vision機能無効）');
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
+if (!ANTHROPIC_API_KEY) {
+  console.warn('⚠️  ANTHROPIC_API_KEY が設定されていません（Vision機能無効）');
 }
 
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+const anthropic = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
 
 /**
  * 画像をBase64エンコード
@@ -33,7 +33,7 @@ function encodeImageToBase64(imagePath) {
 }
 
 /**
- * スクリーンショットからUI要素を検出（Gemini Vision API）
+ * スクリーンショットからUI要素を検出（Vision API）
  * @param {string} screenshotPath - スクリーンショットのパス
  * @param {string} targetText - 検出したいUI要素のテキスト（例: "Create", "Next", "Share"）
  * @param {Object} options - オプション
@@ -44,8 +44,8 @@ function encodeImageToBase64(imagePath) {
 async function detectUIElement(screenshotPath, targetText, options = {}) {
   const { maxRetries = 3, debug = false } = options;
   
-  if (!GEMINI_API_KEY) {
-    console.log('⚠️  Vision API無効: GEMINI_API_KEY未設定');
+  if (!ANTHROPIC_API_KEY) {
+    console.log('⚠️  Vision API無効: ANTHROPIC_API_KEY未設定');
     return null;
   }
 
@@ -55,18 +55,32 @@ async function detectUIElement(screenshotPath, targetText, options = {}) {
   }
 
   const base64Image = encodeImageToBase64(screenshotPath);
-  const mimeType = screenshotPath.endsWith('.png') ? 'image/png' : 'image/jpeg';
+  const mediaType = screenshotPath.endsWith('.png') ? 'image/png' : 'image/jpeg';
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       if (debug) {
-        console.log(`🔍 Gemini Vision API呼び出し (試行 ${attempt}/${maxRetries}): "${targetText}"`);
+        console.log(`🔍 Vision API呼び出し (試行 ${attempt}/${maxRetries}): "${targetText}"`);
       }
 
-      // Gemini 2.0 Flash (最新・高速)
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
-
-      const prompt = `この画像から、テキスト「${targetText}」を含むボタンまたはUI要素を探してください。
+      const message = await anthropic.messages.create({
+        model: 'claude-sonnet-4-5',
+        max_tokens: 1024,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'image',
+                source: {
+                  type: 'base64',
+                  media_type: mediaType,
+                  data: base64Image,
+                },
+              },
+              {
+                type: 'text',
+                text: `この画像から、テキスト「${targetText}」を含むボタンまたはUI要素を探してください。
 
 要素が見つかった場合、以下のJSON形式で座標を返してください:
 {
@@ -83,21 +97,16 @@ async function detectUIElement(screenshotPath, targetText, options = {}) {
   "reason": "<見つからなかった理由>"
 }
 
-JSONのみを返してください（他の説明は不要）。`;
+JSONのみを返してください（他の説明は不要）。`,
+              },
+            ],
+          },
+        ],
+      });
 
-      const imagePart = {
-        inlineData: {
-          data: base64Image,
-          mimeType: mimeType,
-        },
-      };
-
-      const result = await model.generateContent([prompt, imagePart]);
-      const response = await result.response;
-      const responseText = response.text().trim();
-
+      const responseText = message.content[0].text.trim();
       if (debug) {
-        console.log('📥 Gemini Vision API応答:', responseText);
+        console.log('📥 Vision API応答:', responseText);
       }
 
       // JSONパース（```json ... ``` を除去）
@@ -106,30 +115,30 @@ JSONのみを返してください（他の説明は不要）。`;
                         [null, responseText];
       const jsonText = jsonMatch[1] || responseText;
       
-      const parsedResult = JSON.parse(jsonText);
+      const result = JSON.parse(jsonText);
 
-      if (parsedResult.found) {
-        console.log(`✅ Gemini Vision API: "${targetText}" 検出成功 (x:${parsedResult.x}, y:${parsedResult.y}, 確信度:${parsedResult.confidence})`);
+      if (result.found) {
+        console.log(`✅ Vision API: "${targetText}" 検出成功 (x:${result.x}, y:${result.y}, 確信度:${result.confidence})`);
         return {
-          x: parsedResult.x,
-          y: parsedResult.y,
-          confidence: parsedResult.confidence || 0.9,
-          text: parsedResult.text || targetText,
+          x: result.x,
+          y: result.y,
+          confidence: result.confidence || 0.9,
+          text: result.text || targetText,
         };
       } else {
-        console.log(`⚠️  Gemini Vision API: "${targetText}" が見つかりませんでした（${parsedResult.reason}）`);
+        console.log(`⚠️  Vision API: "${targetText}" が見つかりませんでした（${result.reason}）`);
         return null;
       }
 
     } catch (error) {
-      console.error(`❌ Gemini Vision API エラー (試行 ${attempt}/${maxRetries}):`, error.message);
+      console.error(`❌ Vision API エラー (試行 ${attempt}/${maxRetries}):`, error.message);
       
       if (attempt < maxRetries) {
         const waitTime = attempt * 2000; // 2秒、4秒、6秒...
         console.log(`⏳ ${waitTime / 1000}秒待機してリトライ...`);
         await new Promise(resolve => setTimeout(resolve, waitTime));
       } else {
-        console.error('❌ Gemini Vision API: 最大リトライ回数に到達');
+        console.error('❌ Vision API: 最大リトライ回数に到達');
         return null;
       }
     }
@@ -225,7 +234,7 @@ async function detectMultipleElements(page, targetTexts, debugDir, fallbackSelec
     await page.screenshot({ path: screenshotPath });
     console.log(`📸 スクリーンショット: ${screenshotPath}`);
 
-    // Gemini Vision APIで検出試行
+    // Vision APIで検出試行
     const visionResult = await detectUIElement(screenshotPath, targetText, { 
       debug: true,
       maxRetries: 2 
@@ -245,7 +254,7 @@ async function detectMultipleElements(page, targetTexts, debugDir, fallbackSelec
       await drawDebugOverlay(screenshotPath, [visionResult], overlayPath);
       
     } else {
-      console.log(`⚠️  Gemini Vision API失敗 → セレクタフォールバック試行`);
+      console.log(`⚠️  Vision API失敗 → セレクタフォールバック試行`);
       
       // フォールバック: 従来のセレクタ方式
       const selectors = fallbackSelectors[targetText] || [];
@@ -275,7 +284,7 @@ async function detectMultipleElements(page, targetTexts, debugDir, fallbackSelec
       }
       
       if (!found) {
-        console.error(`❌ "${targetText}" の検出に失敗（Gemini Vision + セレクタ両方失敗）`);
+        console.error(`❌ "${targetText}" の検出に失敗（Vision + セレクタ両方失敗）`);
       }
     }
     
