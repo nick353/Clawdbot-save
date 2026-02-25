@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-02-20T15:00:03.432300",
-  "restart_count": 1,
+  "timestamp": "2026-02-25T14:00:02.487534",
+  "restart_count": 2,
   "causes": {
     "unknown": {
-      "count": 1,
+      "count": 2,
       "details": "\u539f\u56e0\u4e0d\u660e",
       "fix": "\u4e0d\u660e"
     }

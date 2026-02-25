@@ -1,11 +1,26 @@
 {
-  "timestamp": "2026-02-25T13:00:02.398340",
-  "issues": [],
-  "fixes": [],
+  "timestamp": "2026-02-25T14:00:16.799477",
+  "issues": [
+    {
+      "type": "unexpected_restart",
+      "severity": "high",
+      "message": "\u4e88\u671f\u3057\u306a\u3044\u518d\u8d77\u52d5\u3092\u691c\u51fa",
+      "details": "\u76f4\u8fd11000\u884c\u30672\u56de\u306e\u4e88\u671f\u3057\u306a\u3044\u518d\u8d77\u52d5\uff08\u6839\u672c\u539f\u56e0\u3092\u8abf\u67fb\u4e2d\uff09"
+    }
+  ],
+  "fixes": [
+    {
+      "issue_id": 0,
+      "type": "add_crash_logging",
+      "auto_apply": true,
+      "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+      "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316"
+    }
+  ],
   "summary": {
-    "total_issues": 0,
-    "high_severity": 0,
+    "total_issues": 1,
+    "high_severity": 1,
     "medium_severity": 0,
-    "auto_fixable": 0
+    "auto_fixable": 1
   }
 }

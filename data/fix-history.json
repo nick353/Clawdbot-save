@@ -469,5 +469,20 @@
         "message": "\u9069\u7528\u5931\u6557"
       }
     ]
+  },
+  {
+    "timestamp": "2026-02-25T14:00:30.868121",
+    "backup_path": "/root/clawd/data/backups/bitget-trader-v2_20260225_140030.py",
+    "fixes": [
+      {
+        "issue_id": 0,
+        "type": "add_crash_logging",
+        "auto_apply": true,
+        "description": "\u8a73\u7d30\u30af\u30e9\u30c3\u30b7\u30e5\u30ed\u30b0\u8ffd\u52a0",
+        "details": "\u30c8\u30ec\u30fc\u30b9\u30d0\u30c3\u30af\u51fa\u529b\u3092\u5f37\u5316",
+        "status": "already_applied",
+        "message": "\u65e2\u306b\u8a73\u7d30\u30ed\u30b0\u304c\u8ffd\u52a0\u3055\u308c\u3066\u3044\u307e\u3059"
+      }
+    ]
   }
 ]
