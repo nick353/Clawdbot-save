@@ -1,18 +1,16 @@
 # 実行中タスク
 
-## 1. ビジョンベースSNS自動投稿システム実装
-**開始**: 2026-02-24 19:07 UTC  
-**セッション**: agent:main:subagent:89e97971-99e5-4201-a5ec-82a05ff82244  
-**所要時間見込み**: 約4時間20分  
+## 1. ビジョンベースSNS投稿システム実装（Phase 1-4）
+**開始**: 2026-02-25 01:19 UTC  
+**セッション**: agent:main:subagent:1cd85d4b-3dec-4fd3-9c66-edec294a67d3  
+**所要時間見込み**: 約140分（〜03:39 UTC）  
 **状況**: サブエージェントで実装中（完了したら #sns-投稿 に報告します）
 
 **実装内容**:
-1. Phase 1: テンプレート作成（Vision API統合）
-2. Phase 2: Instagram版実装 + テスト
-3. Phase 3: X/Threads/Facebook/Pinterest版展開
-4. Phase 4: エントリーポイント更新
-5. Phase 5: ドキュメント整備
-6. Phase 6: 最終検証（DRY_RUN + 本番テスト）
+1. Phase 1: テンプレート作成（Vision API統合・座標検出ロジック）
+2. Phase 2: Instagram版実装（Visionベース + セレクタフォールバック）
+3. Phase 3: 動作検証（DRY_RUN + エラーケーステスト）
+4. Phase 4: ドキュメント更新（SKILL.md + TROUBLESHOOTING.md）
 
 ## 2. Bitgetデイリースクリーニング (cronジョブ)
 **開始**: 2026-02-25 00:11 UTC  

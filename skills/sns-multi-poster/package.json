@@ -6,7 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@hyperbrowser/agent": "^1.1.2",
+    "canvas": "^3.2.1",
     "discord.js": "^14.25.1",
     "playwright": "^1.58.2",
     "puppeteer": "^21.0.0",
