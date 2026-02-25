@@ -79,11 +79,9 @@ bash /root/clawd/scripts/backup-with-retry.sh
 ---
 
 ## 6. セッション最適化（トークン節約）
-```bash
-bash /root/clawd/scripts/session-optimizer.sh
-bash /root/clawd/scripts/aggressive-memory-saver.sh
-```
 **Note**: Compactionは `agents.defaults.compaction.mode=safeguard` 設定で自動動作（手動実行不要）
+- ~~session-optimizer.sh~~ - 削除（clawdbot CLI呼び出しでハング）
+- ~~aggressive-memory-saver.sh~~ - 削除（clawdbot CLI呼び出しでハング）
 
 ---
 

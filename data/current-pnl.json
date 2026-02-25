@@ -1,23 +1,23 @@
 {
-  "timestamp": "2026-02-25T04:24:36.894165",
-  "cash": 1755.2806861609874,
-  "total_position_value": 8135.952570870153,
-  "total_entry_value": 8197.640343080493,
-  "total_unrealized_pnl": -61.68777221034111,
-  "total_capital": 9891.233257031141,
-  "confirmed_pnl": -253.4557164724424,
+  "timestamp": "2026-02-25T05:14:29.218601",
+  "cash": 1724.2107398025314,
+  "total_position_value": 8097.363526163117,
+  "total_entry_value": 8182.1053699012655,
+  "total_unrealized_pnl": -84.74184373814865,
+  "total_capital": 9821.574265965648,
+  "confirmed_pnl": -310.2475255725444,
   "initial_capital": 10000.0,
-  "total_pnl": -108.76674296885903,
+  "total_pnl": -178.425734034352,
   "positions": [
     {
       "symbol": "ZROUSDT",
       "entry_price": 1.51,
-      "current_price": 1.485,
+      "current_price": 1.484,
       "quantity": 1324.5033112582782,
       "entry_value": 2000.0000000000002,
-      "current_value": 1966.8874172185433,
-      "unrealized_pnl": -33.11258278145692,
-      "unrealized_pnl_pct": -1.6556291390728461,
+      "current_value": 1965.5629139072848,
+      "unrealized_pnl": -34.43708609271539,
+      "unrealized_pnl_pct": -1.721854304635769,
       "entry_time": "2026-02-24T15:33:32.184222"
     },
     {
@@ -43,15 +43,15 @@
       "entry_time": "2026-02-24T15:46:49.572823"
     },
     {
-      "symbol": "SNXUSDT",
-      "entry_price": 0.3647,
-      "current_price": 0.3626,
-      "quantity": 9096.902503648185,
-      "entry_value": 3317.6403430804935,
-      "current_value": 3298.536847822832,
-      "unrealized_pnl": -19.103495257661507,
-      "unrealized_pnl_pct": -0.5758157389635412,
-      "entry_time": "2026-02-25T03:32:05.083159"
+      "symbol": "SKRUSDT",
+      "entry_price": 0.024584,
+      "current_price": 0.02428,
+      "quantity": 134319.28774411263,
+      "entry_value": 3302.105369901265,
+      "current_value": 3261.2723064270544,
+      "unrealized_pnl": -40.833063474210576,
+      "unrealized_pnl_pct": -1.2365766352099028,
+      "entry_time": "2026-02-25T05:13:58.142981"
     }
   ]
 }

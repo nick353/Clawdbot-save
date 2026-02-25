@@ -1,14 +1,130 @@
-# Web自動化標準パターン（2026-02-24決定・強化版）
+# Web自動化標準パターン（2026-02-25更新 - Vision統合版）
 
 ## 🎯 基本方針
 
 **全てのWeb自動化（ブラウザ自動化）タスクで以下を必須実装:**
 
-1. **全ステップでスクリーンショット撮影**: エラー時だけでなく、各アクション前後に必ず撮影
-2. **ステップごとの確認**: 各ステップで状態を可視化し、問題を早期発見
-3. **デバッグディレクトリ**: `/tmp/<platform>-visual-debug/` に統一
-4. **ファイル命名規則**: `01-page-loaded.png`, `02-before-click.png`, `03-after-click.png`, ..., `error-*.png`
-5. **ログ出力**: 各スクリーンショット撮影時に「📸 スクリーンショット: <ファイルパス>」とログ出力
+1. **Vision API統合（推奨）**: Claude Messages APIでUI要素座標検出 + セレクタフォールバック
+2. **全ステップでスクリーンショット撮影**: エラー時だけでなく、各アクション前後に必ず撮影
+3. **ステップごとの確認**: 各ステップで状態を可視化し、問題を早期発見
+4. **デバッグディレクトリ**: `/tmp/<platform>-vision-debug/` に統一（Vision統合版）
+5. **ファイル命名規則**: `01-page-loaded.png`, `02-before-click.png`, `03-after-click.png`, ..., `error-*.png`
+6. **ログ出力**: 各スクリーンショット撮影時に「📸 スクリーンショット: <ファイルパス>」とログ出力
+
+---
+
+## 🔍 Vision統合パターン（2026-02-25標準化 ✅ 正式版）
+
+### ハイブリッド方式（Vision API → セレクタフォールバック）
+
+**目的:** セレクタ依存を減らし、UI変更に強い自動化を実現
+
+**仕組み:**
+1. Vision API（Claude Messages API）でスクリーンショットからUI要素座標を検出
+2. Vision失敗時は従来のセレクタ方式にフォールバック
+3. 全ステップでスクリーンショット撮影（デバッグ用）
+
+**実装例:**
+
+```javascript
+const visionHelper = require('./vision-helper.cjs');
+const DEBUG_DIR = '/tmp/<platform>-vision-debug';
+
+// ハイブリッドクリック関数
+async function hybridClick(page, targetText, fallbackSelectors = [], timeout = 30000) {
+  console.log(`\n🎯 "${targetText}" をクリック試行（ハイブリッド方式）`);
+  
+  // スクリーンショット撮影
+  const screenshotPath = await takeScreenshot(page, `before-${targetText.toLowerCase().replace(/\s+/g, '-')}`);
+  
+  // Vision API試行
+  const visionResult = await visionHelper.detectUIElement(screenshotPath, targetText, {
+    debug: true,
+    maxRetries: 2
+  });
+  
+  if (visionResult && visionResult.confidence > 0.6) {
+    console.log(`✅ Vision検出成功: (${visionResult.x}, ${visionResult.y})`);
+    
+    // デバッグオーバーレイ作成
+    const overlayPath = path.join(DEBUG_DIR, `overlay-${targetText.toLowerCase().replace(/\s+/g, '-')}.png`);
+    await visionHelper.drawDebugOverlay(screenshotPath, [visionResult], overlayPath);
+    
+    // 座標クリック
+    try {
+      await page.mouse.click(visionResult.x, visionResult.y);
+      console.log(`✅ Vision座標でクリック成功`);
+      await randomDelay(1000, 2000);
+      await takeScreenshot(page, `after-${targetText.toLowerCase().replace(/\s+/g, '-')}-vision`);
+      return true;
+    } catch (err) {
+      console.error(`❌ Vision座標クリック失敗: ${err.message}`);
+    }
+  }
+  
+  // フォールバック: セレクタ方式
+  console.log(`⚠️  Vision失敗 → セレクタフォールバック`);
+  
+  for (const selector of fallbackSelectors) {
+    try {
+      const element = await page.$(selector);
+      if (element) {
+        const isVisible = await page.evaluate(el => {
+          const rect = el.getBoundingClientRect();
+          return rect.width > 0 && rect.height > 0;
+        }, element);
+        
+        if (isVisible) {
+          console.log(`✅ セレクタ検出: ${selector}`);
+          await element.click();
+          console.log(`✅ セレクタでクリック成功`);
+          await randomDelay(1000, 2000);
+          await takeScreenshot(page, `after-${targetText.toLowerCase().replace(/\s+/g, '-')}-selector`);
+          return true;
+        }
+      }
+    } catch (err) {
+      // 次のセレクタを試行
+    }
+  }
+  
+  console.error(`❌ タイムアウト: "${targetText}" が見つかりません`);
+  return false;
+}
+
+// 使用例
+await hybridClick(page, 'Create', [
+  'svg[aria-label="New post"]',
+  '[aria-label="Create"]',
+]);
+
+await hybridClick(page, 'Post', [
+  'button:has-text("Post")',
+  '[role="button"]:has-text("Post")',
+]);
+```
+
+**メリット:**
+- ✅ UI変更に強い（セレクタが変わっても動作）
+- ✅ テキストベースで直感的（"Create", "Post", "Share"等）
+- ✅ デバッグ容易（スクリーンショット + オーバーレイ）
+- ✅ フォールバック機能（Vision失敗時もセレクタで動作）
+
+**必須環境変数:**
+- `ANTHROPIC_API_KEY` - Claude Messages API認証（未設定時はセレクタモードのみ）
+
+**Vision Helper (`vision-helper.cjs`):**
+- Claude Messages API統合
+- Base64エンコーディング
+- リトライロジック（最大3回）
+- デバッグオーバーレイ（座標確認用）
+
+**実装済みスクリプト（正式版）:**
+- Instagram: `/root/clawd/skills/sns-multi-poster/post-to-instagram-vision.cjs`
+- X (Twitter): `/root/clawd/skills/sns-multi-poster/post-to-x-vision.cjs`
+- Threads: `/root/clawd/skills/sns-multi-poster/post-to-threads-vision.cjs`
+- Facebook: `/root/clawd/skills/sns-multi-poster/post-to-facebook-vision.cjs`
+- Pinterest: `/root/clawd/skills/sns-multi-poster/post-to-pinterest-vision.cjs`
 
 ---
 
