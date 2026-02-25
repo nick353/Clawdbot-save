@@ -44,13 +44,13 @@
       "position_type": "long",
       "stop_loss": 0.257299,
       "take_profit": 0.2756775,
-      "trailing_stop": null,
-      "trailing_stop_used": false,
-      "highest_price": 0.265,
+      "trailing_stop": 0.26185240000000004,
+      "trailing_stop_used": true,
+      "highest_price": 0.26584,
       "lowest_price": null,
       "entry_reason": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + \u4fa1\u683c>EMA200"
     }
   },
   "capital": 1843.445511245276,
-  "timestamp": "2026-02-25T13:31:12.169274"
+  "timestamp": "2026-02-25T13:42:27.790308"
 }
