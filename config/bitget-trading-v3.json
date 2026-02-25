@@ -3,7 +3,21 @@
   "initial_capital": 10000.0,
   "discord_channel": "1471389526592327875",
   "symbols": [
-    "INJUSDT"
+    "ESPUSDT",
+    "POWERUSDT",
+    "DENTUSDT",
+    "SKRUSDT",
+    "MYXUSDT",
+    "ENSOUSDT",
+    "GPSUSDT",
+    "PIEVERSEUSDT",
+    "UBUSDT",
+    "RAVEUSDT",
+    "TRIAUSDT",
+    "STEEMUSDT",
+    "AINUSDT",
+    "HOLOUSDT",
+    "SOMIUSDT"
   ],
   "strategy": {
     "sma_period": 200,
