@@ -77,23 +77,26 @@ async function hybridClick(page, targetText, fallbackSelectors = [], timeout = 3
     maxRetries: 2
   });
   
-  if (visionResult && visionResult.confidence > 0.6) {
-    console.log(`✅ Vision検出成功: (${visionResult.x}, ${visionResult.y})`);
+  if (visionResult && visionResult.confidence > 0.7) {
+    console.log(`✅ Claude Vision検出成功: (${visionResult.x}, ${visionResult.y}, 確信度:${visionResult.confidence})`);
     
     // デバッグオーバーレイ作成
     const overlayPath = path.join(DEBUG_DIR, `overlay-${targetText.toLowerCase().replace(/\s+/g, '-')}.png`);
     await visionHelper.drawDebugOverlay(screenshotPath, [visionResult], overlayPath);
     
-    // 座標クリック
+    // 座標クリック（テキスト部分を正確にクリック）
     try {
+      console.log(`🎯 テキスト「${targetText}」の中心座標をクリック: (${visionResult.x}, ${visionResult.y})`);
       await page.mouse.click(visionResult.x, visionResult.y);
-      console.log(`✅ Vision座標でクリック成功`);
+      console.log(`✅ Claude Vision座標でクリック成功`);
       await randomDelay(1000, 2000);
       await takeScreenshot(page, `after-${targetText.toLowerCase().replace(/\s+/g, '-')}-vision`);
       return true;
     } catch (err) {
       console.error(`❌ Vision座標クリック失敗: ${err.message}`);
     }
+  } else if (visionResult) {
+    console.log(`⚠️  Claude Vision検出成功だが確信度低い: ${visionResult.confidence} < 0.7 → セレクタフォールバック`);
   }
   
   // フォールバック: セレクタ方式
@@ -125,21 +128,33 @@ async function hybridClick(page, targetText, fallbackSelectors = [], timeout = 3
       }
     }
     
-    // XPath検索（最終フォールバック）
+    // XPath検索（最終フォールバック - テキストノード直接検索）
     const clicked = await page.evaluate((texts) => {
-      const xpathResult = document.evaluate(
-        `//button[contains(., '${texts[0]}')] | //div[@role='button' and contains(., '${texts[0]}')]`,
-        document,
-        null,
-        XPathResult.FIRST_ORDERED_NODE_TYPE,
-        null
-      );
-      const element = xpathResult.singleNodeValue;
-      if (element) {
-        const rect = element.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-          element.click();
-          return element.textContent.trim();
+      // テキストノードを直接検索
+      const xpathQueries = [
+        `//button[contains(text(), '${texts[0]}')]`,
+        `//div[@role='button' and contains(text(), '${texts[0]}')]`,
+        `//button[contains(., '${texts[0]}')]`,
+        `//div[@role='button' and contains(., '${texts[0]}')]`,
+        `//*[text()='${texts[0]}']`, // 完全一致
+      ];
+      
+      for (const query of xpathQueries) {
+        const xpathResult = document.evaluate(
+          query,
+          document,
+          null,
+          XPathResult.FIRST_ORDERED_NODE_TYPE,
+          null
+        );
+        const element = xpathResult.singleNodeValue;
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.width > 0 && rect.height > 0) {
+            console.log(`✅ XPath検出: ${query}`);
+            element.click();
+            return element.textContent.trim();
+          }
         }
       }
       return null;
@@ -303,9 +318,13 @@ async function main() {
     // ─── Step 6: Post（Vision） ───
     console.log('\n📤 Step 6: Post...');
     const postSuccess = await hybridClick(page, 'Post', [
+      'div[role="button"]:has-text("Post")',
+      'div[role="button"]:has-text("投稿")',
       'button:has-text("Post")',
       'button:has-text("投稿")',
-      '[role="button"]:has-text("Post")',
+      '[aria-label*="Post"]',
+      '[aria-label*="投稿"]',
+      'div[role="button"]', // 汎用フォールバック
     ]);
     
     if (!postSuccess) {

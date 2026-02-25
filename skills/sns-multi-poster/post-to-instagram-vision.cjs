@@ -282,59 +282,127 @@ async function main() {
 
     // ─── Step 5: Postサブメニュー（Vision） ───
     console.log('\n📋 Step 5: Postサブメニュー...');
-    await hybridClick(
-      page, 
-      'Post', 
-      [
-        '[role="menuitem"]',
-        'button:has-text("Post")',
-        'a:has-text("Post")',
-      ],
-      30000,
-      'Post menu item in the left sidebar, below Notifications'
-    );
     
+    // メニュー内の「Post」を正確にクリック
+    const postClicked = await page.evaluate(() => {
+      // メニュー内の全要素を検索
+      const menuItems = Array.from(document.querySelectorAll('[role="menuitem"], div[role="menuitem"]'));
+      
+      for (const item of menuItems) {
+        const text = item.textContent?.trim();
+        // "Post"のみを含む要素を探す（"Live video"や"Ad"を除外）
+        if (text === 'Post' || text === '投稿') {
+          console.log(`✅ メニュー項目発見: "${text}"`);
+          item.click();
+          return true;
+        }
+      }
+      
+      // フォールバック: span要素で"Post"のみを含むものを探す
+      const spans = Array.from(document.querySelectorAll('span'));
+      for (const span of spans) {
+        if (span.textContent?.trim() === 'Post' || span.textContent?.trim() === '投稿') {
+          // 親要素をクリック
+          const clickableParent = span.closest('div[role="menuitem"], a, button');
+          if (clickableParent) {
+            console.log(`✅ スパン要素の親をクリック: "${span.textContent}"`);
+            clickableParent.click();
+            return true;
+          }
+        }
+      }
+      
+      return false;
+    });
+    
+    if (!postClicked) {
+      console.error('❌ "Post"メニュー項目が見つかりません');
+      await takeScreenshot(page, 'error-post-not-found');
+      throw new Error('"Post"メニュー項目が見つかりません');
+    }
+    
+    console.log('✅ "Post"メニュー項目をクリック');
+    await takeScreenshot(page, 'after-post-click');
     await new Promise(r => setTimeout(r, 5000));
 
     // ─── Step 6: 動画アップロード ───
     console.log('\n📤 Step 6: 動画アップロード...');
+    
+    // モーダルウィンドウの表示を待つ
+    console.log('⏳ モーダルウィンドウを待機中...');
+    await new Promise(r => setTimeout(r, 3000));
     await takeScreenshot(page, 'before-upload');
     
-    let fileInput = await page.$('input[type="file"]');
+    // モーダル内で input[type="file"] を探す
+    console.log('📋 input[type="file"] を探してアップロード...');
     
-    if (!fileInput) {
-      console.log('📋 Select from computer...');
-      try {
-        const [fileChooser] = await Promise.all([
-          page.waitForFileChooser({ timeout: 15000 }),
-          page.evaluate(() => {
-            const btns = Array.from(document.querySelectorAll('button, [role="button"], div[tabindex]'));
-            for (const btn of btns) {
-              const txt = btn.textContent?.trim() || '';
-              if (txt.toLowerCase().includes('select from computer') ||
-                  txt.includes('コンピューターから選択')) {
-                btn.click();
-                return true;
-              }
-            }
-            return false;
-          })
-        ]);
-        await fileChooser.accept([videoPath]);
-        console.log('✅ FileChooser経由でアップロード');
-      } catch (fcErr) {
-        console.log(`⚠️  FileChooser失敗: ${fcErr.message}`);
-        fileInput = await page.$('input[type="file"]');
-        if (!fileInput) {
-          throw new Error('ファイル入力なし');
+    // 30秒間リトライ
+    const uploadTimeout = 30000;
+    const uploadStart = Date.now();
+    let uploadSuccess = false;
+    
+    while (Date.now() - uploadStart < uploadTimeout && !uploadSuccess) {
+      // 複数のセレクタを試行
+      const fileInputSelectors = [
+        'input[type="file"]',
+        'input[accept*="image"]',
+        'input[accept*="video"]',
+        'div[role="dialog"] input[type="file"]', // モーダル内のファイル入力
+      ];
+      
+      for (const selector of fileInputSelectors) {
+        const fileInput = await page.$(selector);
+        if (fileInput) {
+          console.log(`✅ ファイル入力発見: ${selector}`);
+          try {
+            await fileInput.uploadFile(videoPath);
+            console.log('✅ input[type="file"]経由でアップロード完了');
+            uploadSuccess = true;
+            break;
+          } catch (err) {
+            console.log(`⚠️  アップロード失敗 (${selector}): ${err.message}`);
+          }
         }
-        await fileInput.uploadFile(videoPath);
       }
-    } else {
-      await fileInput.uploadFile(videoPath);
+      
+      if (!uploadSuccess) {
+        // DOM全体を探索（最終手段）
+        console.log('⚠️  セレクタで見つからず、DOM全体を探索...');
+        const fileInputHandle = await page.evaluateHandle(() => {
+          const inputs = Array.from(document.querySelectorAll('input'));
+          return inputs.find(input => 
+            input.type === 'file' || 
+            input.accept?.includes('image') || 
+            input.accept?.includes('video')
+          );
+        });
+        
+        const isValidElement = await page.evaluate(el => el && el.tagName === 'INPUT', fileInputHandle);
+        if (isValidElement) {
+          console.log('✅ DOM探索でファイル入力発見');
+          try {
+            const fileInput = fileInputHandle.asElement();
+            await fileInput.uploadFile(videoPath);
+            console.log('✅ DOM探索経由でアップロード完了');
+            uploadSuccess = true;
+            break;
+          } catch (err) {
+            console.log(`⚠️  DOM探索アップロード失敗: ${err.message}`);
+          }
+        }
+      }
+      
+      if (!uploadSuccess) {
+        console.log('⏳ 2秒待機してリトライ...');
+        await new Promise(r => setTimeout(r, 2000));
+      }
     }
     
-    console.log('✅ アップロード完了');
+    if (!uploadSuccess) {
+      await takeScreenshot(page, 'error-no-file-input');
+      throw new Error('ファイル入力が見つかりません - 30秒間リトライしましたが失敗しました');
+    }
+    
     await new Promise(r => setTimeout(r, 10000));
     await takeScreenshot(page, 'after-upload');
 
