@@ -35,8 +35,22 @@
       "trailing_stop_used": false,
       "highest_price": 0.04925,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
+    },
+    "SOMIUSDT": {
+      "entry_time": "2026-02-25T00:33:49.752856",
+      "entry_price": 0.2237,
+      "quantity": 14801.569562409974,
+      "position_size": 3311.1111111111113,
+      "position_type": "long",
+      "stop_loss": 0.219226,
+      "take_profit": 0.234885,
+      "trailing_stop": 0.22359500000000002,
+      "trailing_stop_used": true,
+      "highest_price": 0.227,
+      "lowest_price": null,
+      "entry_reason": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + \u4fa1\u683c>EMA200"
     }
   },
-  "capital": 5120.0,
-  "timestamp": "2026-02-25T00:28:29.988349"
+  "capital": 1742.2222222222226,
+  "timestamp": "2026-02-25T00:34:48.781777"
 }
