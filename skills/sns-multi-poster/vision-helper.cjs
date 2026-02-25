@@ -63,8 +63,8 @@ async function detectUIElement(screenshotPath, targetText, options = {}) {
         console.log(`🔍 Gemini Vision API呼び出し (試行 ${attempt}/${maxRetries}): "${targetText}"`);
       }
 
-      // Gemini 2.0 Flash (最新・高速)
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+      // Gemini 2.5 Flash (最新・高速)
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
       const prompt = `この画像から、テキスト「${targetText}」を含むボタンまたはUI要素を探してください。
 
