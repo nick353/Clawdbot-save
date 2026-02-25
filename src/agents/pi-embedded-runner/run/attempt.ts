@@ -58,6 +58,10 @@ import {
   sanitizeSessionHistory,
   sanitizeToolsForGoogle,
 } from "../google.js";
+import {
+  sanitizeErrorAssistantPairs,
+  sanitizeToolUseResultPairing,
+} from "../../session-transcript-repair.js";
 import { getDmHistoryLimitFromSessionKey, limitHistoryTurns } from "../history.js";
 import { log } from "../logger.js";
 import { buildModelAliasLines } from "../model.js";
@@ -653,13 +657,22 @@ export async function runEmbeddedAttempt(
         // Repair orphaned trailing user messages so new prompts don't violate role ordering.
         const leafEntry = sessionManager.getLeafEntry();
         if (leafEntry?.type === "message" && leafEntry.message.role === "user") {
-          if (leafEntry.parentId) {
+          if (leafEntry.parentId && sessionManager.getEntry(leafEntry.parentId)) {
             sessionManager.branch(leafEntry.parentId);
           } else {
+            // parentId missing or points to an entry not in the session tree
+            // (e.g. truncated/compacted session file) — fall back to a clean reset.
             sessionManager.resetLeaf();
           }
           const sessionContext = sessionManager.buildSessionContext();
-          activeSession.agent.replaceMessages(sessionContext.messages);
+          // Re-sanitize the rebuilt context: buildSessionContext() returns raw (unsanitized)
+          // session messages that may contain errored/aborted assistant messages with tool calls.
+          // Without this, transformMessages() later skips those errored assistants while keeping
+          // their tool_result blocks, producing orphaned tool_use_id errors in the API payload.
+          const repairedCtx = sanitizeToolUseResultPairing(
+            sanitizeErrorAssistantPairs(sessionContext.messages),
+          );
+          activeSession.agent.replaceMessages(repairedCtx);
           log.warn(
             `Removed orphaned user message to prevent consecutive user turns. ` +
               `runId=${params.runId} sessionId=${params.sessionId}`,

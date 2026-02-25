@@ -10,12 +10,17 @@ import type { AgentMessage } from "@mariozechner/pi-agent-core";
 import type { ContextEvent, ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
 
 import { isGoogleModelApi } from "../pi-embedded-helpers.js";
-import { repairToolUseResultPairing } from "../session-transcript-repair.js";
+import { sanitizeErrorAssistantPairs, repairToolUseResultPairing } from "../session-transcript-repair.js";
 import { sanitizeToolCallIdsForCloudCodeAssist } from "../tool-call-id.js";
 
 export default function transcriptSanitizeExtension(api: ExtensionAPI): void {
   api.on("context", (event: ContextEvent, ctx: ExtensionContext) => {
     let next = event.messages as AgentMessage[];
+
+    // Strip errored/aborted assistant messages and their orphaned tool results first,
+    // mirroring sanitizeSessionHistory() as a defense against any bypass paths.
+    const stripped = sanitizeErrorAssistantPairs(next);
+    if (stripped !== next) next = stripped;
 
     const repaired = repairToolUseResultPairing(next);
     if (repaired.messages !== next) next = repaired.messages;
