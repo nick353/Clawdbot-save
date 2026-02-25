@@ -54,18 +54,26 @@ async function takeScreenshot(page, description) {
  * @param {string} targetText - 検出したいテキスト
  * @param {Array<string>} fallbackSelectors - フォールバックセレクタ
  * @param {number} timeout - タイムアウト（ミリ秒）
+ * @param {string} detailedDescription - Vision API用の詳細な説明（オプション）
  */
-async function hybridClick(page, targetText, fallbackSelectors = [], timeout = 30000) {
+async function hybridClick(page, targetText, fallbackSelectors = [], timeout = 30000, detailedDescription = null) {
   console.log(`\n🎯 "${targetText}" をクリック試行（ハイブリッド方式）`);
+  if (detailedDescription) {
+    console.log(`📝 詳細説明: "${detailedDescription}"`);
+  }
   
   // スクリーンショット撮影
   const screenshotPath = await takeScreenshot(page, `before-${targetText.toLowerCase().replace(/\s+/g, '-')}`);
   
-  // Vision API試行
-  const visionResult = await visionHelper.detectUIElement(screenshotPath, targetText, {
-    debug: true,
-    maxRetries: 2
-  });
+  // Vision API試行（詳細説明があればそれを使う）
+  const visionResult = await visionHelper.detectUIElement(
+    screenshotPath, 
+    detailedDescription || targetText, 
+    {
+      debug: true,
+      maxRetries: 2
+    }
+  );
   
   if (visionResult && visionResult.confidence > 0.6) {
     console.log(`✅ Vision検出成功: (${visionResult.x}, ${visionResult.y})`);
@@ -219,13 +227,19 @@ async function main() {
 
     // ─── Step 4: 新規投稿ボタン（Vision） ───
     console.log('\n➕ Step 4: 新規投稿ボタン...');
-    const createSuccess = await hybridClick(page, 'Create', [
-      'svg[aria-label="New post"]',
-      'svg[aria-label="新規投稿"]',
-      '[aria-label="New post"]',
-      '[aria-label="新規投稿"]',
-      'svg[aria-label="Create"]',
-    ]);
+    const createSuccess = await hybridClick(
+      page, 
+      'Create', 
+      [
+        'svg[aria-label="New post"]',
+        'svg[aria-label="新規投稿"]',
+        '[aria-label="New post"]',
+        '[aria-label="新規投稿"]',
+        'svg[aria-label="Create"]',
+      ],
+      30000,
+      'Create button with plus icon in the left sidebar'
+    );
     
     if (!createSuccess) {
       throw new Error('新規投稿ボタンが見つかりません');
@@ -235,11 +249,17 @@ async function main() {
 
     // ─── Step 5: Postサブメニュー（Vision） ───
     console.log('\n📋 Step 5: Postサブメニュー...');
-    await hybridClick(page, 'Post', [
-      '[role="menuitem"]',
-      'button:has-text("Post")',
-      'a:has-text("Post")',
-    ]);
+    await hybridClick(
+      page, 
+      'Post', 
+      [
+        '[role="menuitem"]',
+        'button:has-text("Post")',
+        'a:has-text("Post")',
+      ],
+      30000,
+      'Post menu item in the left sidebar, below Notifications'
+    );
     
     await new Promise(r => setTimeout(r, 5000));
 
@@ -288,11 +308,17 @@ async function main() {
     // ─── Step 7: Next × 2（Vision） ───
     for (let i = 1; i <= 2; i++) {
       console.log(`\n⏭️  Step ${6 + i}: Next (${i}/2)...`);
-      const nextSuccess = await hybridClick(page, 'Next', [
-        'button:has-text("Next")',
-        'button:has-text("次へ")',
-        '[role="button"]:has-text("Next")',
-      ]);
+      const nextSuccess = await hybridClick(
+        page, 
+        'Next', 
+        [
+          'button:has-text("Next")',
+          'button:has-text("次へ")',
+          '[role="button"]:has-text("Next")',
+        ],
+        30000,
+        'Next button in the bottom right corner'
+      );
       
       if (!nextSuccess) {
         throw new Error(`次へボタン ${i} が見つかりません`);
@@ -330,11 +356,17 @@ async function main() {
 
     // ─── Step 10: Share（Vision） ───
     console.log('\n🚀 Step 10: Share...');
-    const shareSuccess = await hybridClick(page, 'Share', [
-      'button:has-text("Share")',
-      'button:has-text("シェア")',
-      '[role="button"]:has-text("Share")',
-    ]);
+    const shareSuccess = await hybridClick(
+      page, 
+      'Share', 
+      [
+        'button:has-text("Share")',
+        'button:has-text("シェア")',
+        '[role="button"]:has-text("Share")',
+      ],
+      30000,
+      'Share button in the bottom right corner of the caption dialog'
+    );
     
     if (!shareSuccess) {
       throw new Error('Shareボタンが見つかりません');
