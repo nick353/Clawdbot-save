@@ -313,4 +313,210 @@ for (const btn of buttons) {
 
 ---
 
-**最終更新**: 2026-02-24 10:18 UTC
+## 🔍 Vision API関連（v6.0 - 2026-02-24追加）
+
+### Vision API未設定エラー
+
+**症状:**
+```
+⚠️  ANTHROPIC_API_KEY が設定されていません（Vision機能無効）
+⚠️  Vision API無効: ANTHROPIC_API_KEY未設定
+```
+
+**原因:**
+- `ANTHROPIC_API_KEY` 環境変数が設定されていない
+- Vision機能が無効化されている
+
+**解決策:**
+```bash
+# 環境変数設定
+export ANTHROPIC_API_KEY="sk-ant-api03-..."
+
+# gateway configに追加（全スクリプトで自動使用）
+gateway.config.patch({ 
+  env: { 
+    vars: { 
+      ANTHROPIC_API_KEY: "sk-ant-api03-..." 
+    } 
+  } 
+})
+
+# またはスクリプト実行時に直接指定
+ANTHROPIC_API_KEY=xxx node post-to-instagram-vision.cjs /path/to/video.mp4 "キャプション"
+```
+
+**注意:**
+- Vision機能が無効でも、セレクタフォールバックで動作します
+- Vision APIはオプション機能（コスト削減のため）
+
+---
+
+### Vision API検出失敗
+
+**症状:**
+```
+⚠️  Vision API: "Create" が見つかりませんでした（UI element not found in image）
+⚠️  Vision失敗 → セレクタフォールバック
+```
+
+**原因:**
+- UI要素が画像内に存在しない
+- UI要素のテキストが異なる（多言語・表記ゆれ）
+- 画像の解像度が低い
+- UI要素が隠れている（オーバーレイ・ポップアップ）
+
+**解決策:**
+
+1. **デバッグオーバーレイを確認:**
+```bash
+# デバッグディレクトリ確認
+ls -lhtr /tmp/instagram-vision-debug/
+
+# オーバーレイ画像確認（座標マーカー付き）
+open /tmp/instagram-vision-debug/overlay-create.png
+```
+
+2. **スクリーンショット確認:**
+- UI要素が画面内に表示されているか？
+- テキストが正しく表示されているか？
+- オーバーレイ・ポップアップで隠れていないか？
+
+3. **フォールバックセレクタ追加:**
+```javascript
+// post-to-instagram-vision.cjs
+const createSuccess = await hybridClick(page, 'Create', [
+  'svg[aria-label="New post"]',
+  'svg[aria-label="新規投稿"]',
+  '[aria-label="Create"]',  // ← 追加
+  'button[data-testid="create-button"]',  // ← 追加
+]);
+```
+
+4. **Vision検出のリトライ:**
+- 自動的に最大3回リトライされます
+- リトライ間隔: 2秒 → 4秒 → 6秒
+
+**回避策:**
+- ハイブリッド方式により、Vision失敗時は自動的にセレクタ方式にフォールバック
+- コスト削減のため、Vision失敗は許容範囲
+
+---
+
+### Vision API レート制限エラー
+
+**症状:**
+```
+❌ Vision API エラー (試行 1/3): rate_limit_exceeded
+⏳ 2秒待機してリトライ...
+```
+
+**原因:**
+- Anthropic APIのレート制限に到達
+- 短時間に大量のリクエストを送信
+
+**解決策:**
+
+1. **リトライロジック（自動対応）:**
+- 自動的に2秒 → 4秒 → 6秒待機してリトライ
+- 最大3回まで試行
+
+2. **並列実行を制限:**
+```bash
+# 並列実行数を制限（5 → 2に変更）
+# post-to-all-sns.sh
+MAX_PARALLEL=2  # ← 変更
+```
+
+3. **レート制限を確認:**
+```bash
+# Anthropic APIダッシュボードでレート制限確認
+# https://console.anthropic.com/settings/limits
+```
+
+---
+
+### Vision API コスト最適化
+
+**コスト目安:**
+- Vision API: 1回のUI検出で約$0.01〜$0.05（画像サイズによる）
+- Instagram投稿（6要素検出）: 約$0.06〜$0.30
+- 月100回投稿: 約$6〜$30
+
+**コスト削減策:**
+
+1. **ハイブリッド方式を活用:**
+- Vision失敗時にセレクタフォールバック（追加コストなし）
+- セレクタで検出可能な要素は Vision を使わない
+
+2. **リトライ回数を減らす:**
+```javascript
+// vision-helper.cjs
+const visionResult = await detectUIElement(screenshotPath, targetText, { 
+  maxRetries: 1  // 3 → 1に変更（コスト削減）
+});
+```
+
+3. **画像サイズを最適化:**
+```javascript
+// post-to-instagram-vision.cjs
+await page.screenshot({ 
+  path: screenshotPath,
+  quality: 80,  // 画質を下げる（コスト削減）
+});
+```
+
+4. **Vision使用を限定:**
+```javascript
+// 複雑なUI要素のみVisionを使用
+// 例: "Create" ボタンはセレクタ、"Share" ボタンのみVision
+if (targetText === 'Share') {
+  // Vision使用
+} else {
+  // セレクタ方式
+}
+```
+
+---
+
+### デバッグオーバーレイが表示されない
+
+**症状:**
+- `/tmp/instagram-vision-debug/overlay-*.png` が生成されない
+- Vision検出成功後もオーバーレイ画像がない
+
+**原因:**
+- `canvas` パッケージがインストールされていない
+- ファイル書き込み権限がない
+
+**解決策:**
+
+1. **canvasパッケージ確認:**
+```bash
+cd /root/clawd/skills/sns-multi-poster
+npm list canvas
+
+# インストールされていない場合
+npm install canvas
+```
+
+2. **ディレクトリ権限確認:**
+```bash
+ls -ld /tmp/instagram-vision-debug/
+# drwxr-xr-x ... のような権限が必要
+
+# 権限がない場合
+sudo chmod 755 /tmp/instagram-vision-debug/
+```
+
+3. **手動テスト:**
+```bash
+# Vision Helper単体テスト
+ANTHROPIC_API_KEY=xxx node test-vision-helper.cjs /tmp/screenshot.png "Create"
+
+# オーバーレイが生成されるか確認
+ls /tmp/screenshot-overlay.png
+```
+
+---
+
+**最終更新**: 2026-02-24 15:00 UTC

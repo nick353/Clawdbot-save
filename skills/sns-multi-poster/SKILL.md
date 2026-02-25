@@ -3,9 +3,54 @@ name: sns-multi-poster
 description: 5つのSNS（Instagram, Threads, Facebook, Pinterest, X）に画像・動画を自動投稿。AIキャプション生成・パフォーマンス収集・PDCA分析まで完全自動化。「SNS投稿」「マルチ投稿」でトリガー。
 ---
 
-# SNS Multi Poster - 完全自動化システム (v5.0 - Discord自動投稿)
+# SNS Multi Poster - 完全自動化システム (v6.0 - Vision API統合)
 
 **最終更新:** 2026-02-24
+
+## 🔍 Vision-based UI検出 (v6.0 - NEW!)
+
+**機能:**
+- Claude Messages API（Vision）を使ったUI要素の自動検出
+- スクリーンショット → Vision API → 座標抽出 → クリック
+- ハイブリッド方式: Vision失敗時にセレクタフォールバック
+- デバッグオーバーレイ機能（座標確認用）
+- リトライロジック（最大3回）
+
+**対応プラットフォーム:**
+- ✅ Instagram（Vision統合版）
+- 🔄 Threads（準備中）
+- 🔄 Facebook（準備中）
+- 🔄 X (Twitter)（準備中）
+- 🔄 Pinterest（準備中）
+
+**使い方:**
+```bash
+cd /root/clawd/skills/sns-multi-poster
+
+# Instagram Vision投稿
+ANTHROPIC_API_KEY=xxx node post-to-instagram-vision.cjs /path/to/video.mp4 "キャプション"
+
+# DRY_RUNテスト
+DRY_RUN=true node post-to-instagram-vision.cjs /path/to/video.mp4 "テスト"
+
+# Vision Helper単体テスト
+ANTHROPIC_API_KEY=xxx node test-vision-helper.cjs /tmp/screenshot.png "Create"
+```
+
+**デバッグ:**
+- スクリーンショット: `/tmp/instagram-vision-debug/`
+- オーバーレイ画像: `/tmp/instagram-vision-debug/overlay-*.png`
+- ステップごとのスクリーンショット: `01-page-loaded.png`, `02-before-create.png`, ...
+
+**コスト削減:**
+- Vision API: 1回のUI検出で約$0.01〜$0.05（画像サイズによる）
+- ハイブリッド方式: Vision失敗時にセレクタフォールバック（追加コストなし）
+- リトライロジック: 最大3回まで（コスト上限: $0.15）
+
+**参考:**
+- `vision-helper.cjs` - Vision API統合ヘルパー
+- `post-to-instagram-vision.cjs` - Instagram Vision統合版
+- `test-vision-helper.cjs` - Vision Helper単体テスト
 
 ## 🤖 Discord自動投稿 (v5.0 - NEW!)
 
