@@ -7,8 +7,8 @@ import urllib.error
 def analyze_youtube_with_gemini(video_url, api_key):
     """Analyze YouTube video directly with Gemini API"""
     
-    # Gemini 2.0 supports video understanding
-    endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+    # Gemini 2.5 Flash - latest stable multimodal model
+    endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
     
     payload = {
         "contents": [{
