@@ -36,21 +36,21 @@
       "highest_price": 0.04925,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
     },
-    "SKRUSDT": {
-      "entry_time": "2026-02-25T05:43:09.208581",
-      "entry_price": 0.024309,
-      "quantity": 135100.12649711338,
-      "position_size": 3284.1489750183296,
-      "position_type": "long",
-      "stop_loss": 0.02382282,
-      "take_profit": 0.02552445,
+    "TRIAUSDT": {
+      "entry_time": "2026-02-25T07:11:55.904435",
+      "entry_price": 0.020124,
+      "quantity": 162107.66490350864,
+      "position_size": 3262.254648518208,
+      "position_type": "short",
+      "stop_loss": 0.02052648,
+      "take_profit": 0.019117799999999997,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": 0.024344,
-      "lowest_price": null,
-      "entry_reason": "\u30ed\u30f3\u30b0: SMA/EMA\u53cd\u767a + \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9"
+      "highest_price": null,
+      "lowest_price": 0.019989,
+      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: SMA/EMA\u53cd\u767a + \u30c7\u30c3\u30c9\u30af\u30ed\u30b9"
     }
   },
-  "capital": 1688.2979500366596,
-  "timestamp": "2026-02-25T06:55:35.073847"
+  "capital": 1644.5092970364153,
+  "timestamp": "2026-02-25T07:25:04.889691"
 }

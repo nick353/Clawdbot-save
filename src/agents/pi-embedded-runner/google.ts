@@ -9,7 +9,10 @@ import {
   sanitizeGoogleTurnOrdering,
   sanitizeSessionMessagesImages,
 } from "../pi-embedded-helpers.js";
-import { sanitizeToolUseResultPairing } from "../session-transcript-repair.js";
+import {
+  sanitizeErrorAssistantPairs,
+  sanitizeToolUseResultPairing,
+} from "../session-transcript-repair.js";
 import { log } from "./logger.js";
 import { describeUnknownError } from "./utils.js";
 import { isAntigravityClaude } from "../pi-embedded-helpers/google.js";
@@ -227,9 +230,10 @@ export async function sanitizeSessionHistory(params: {
       : undefined,
   });
   const repairedTools = sanitizeToolUseResultPairing(sanitizedImages);
+  const strippedErrors = sanitizeErrorAssistantPairs(repairedTools);
 
   return applyGoogleTurnOrderingFix({
-    messages: repairedTools,
+    messages: strippedErrors,
     modelApi: params.modelApi,
     sessionManager: params.sessionManager,
     sessionId: params.sessionId,

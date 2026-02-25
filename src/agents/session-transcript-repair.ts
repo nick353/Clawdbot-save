@@ -56,6 +56,52 @@ function makeMissingToolResult(params: {
 
 export { makeMissingToolResult };
 
+/**
+ * Strips errored/aborted assistant messages together with any immediately-following
+ * toolResult messages from the transcript.
+ *
+ * Background: the upstream transformMessages() in @mariozechner/pi-ai skips all
+ * assistant messages whose stopReason is "error" or "aborted". When those messages
+ * contained tool calls, any toolResult messages saved for those calls end up as
+ * orphans in the API payload, which triggers:
+ *   "unexpected tool_use_id found in tool_result blocks"
+ *
+ * This function mirrors what transformMessages() does — it removes the errored/aborted
+ * assistant turn together with its toolResult tail — so the transcript is already clean
+ * before it reaches the LLM provider. Consecutive user turns produced by the removal are
+ * later merged by validateAnthropicTurns().
+ */
+export function sanitizeErrorAssistantPairs(messages: AgentMessage[]): AgentMessage[] {
+  let changed = false;
+  const result: AgentMessage[] = [];
+
+  for (let i = 0; i < messages.length; i += 1) {
+    const msg = messages[i] as AgentMessage;
+    if (!msg || typeof msg !== "object") {
+      result.push(msg);
+      continue;
+    }
+
+    const role = (msg as { role?: unknown }).role;
+    const stopReason = (msg as { stopReason?: unknown }).stopReason;
+
+    if (role === "assistant" && (stopReason === "error" || stopReason === "aborted")) {
+      // Skip this errored/aborted assistant AND any immediately-following toolResult messages.
+      let j = i + 1;
+      while (j < messages.length && (messages[j] as { role?: unknown }).role === "toolResult") {
+        j += 1;
+      }
+      i = j - 1;
+      changed = true;
+      continue;
+    }
+
+    result.push(msg);
+  }
+
+  return changed ? result : messages;
+}
+
 export function sanitizeToolUseResultPairing(messages: AgentMessage[]): AgentMessage[] {
   return repairToolUseResultPairing(messages).messages;
 }
