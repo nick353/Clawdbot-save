@@ -108,6 +108,44 @@ bash /root/clawd/scripts/obsidian-auto-save.sh note "〇〇について話し合
 
 ### sns-multi-poster
 
+#### Vision統合方式（2026-02-25標準化 ✅ 正式版）
+
+**全SNSでVision API統合完了:**
+- ✅ Instagram: `post-to-instagram-vision.cjs`（正式版 - エントリーポイント）
+- ✅ X (Twitter): `post-to-x-vision.cjs`（正式版 - エントリーポイント）
+- ✅ Threads: `post-to-threads-vision.cjs`（正式版 - エントリーポイント）
+- ✅ Facebook: `post-to-facebook-vision.cjs`（正式版 - エントリーポイント）
+- ✅ Pinterest: `post-to-pinterest-vision.cjs`（正式版 - エントリーポイント）
+
+**ハイブリッド方式:**
+1. Vision API（Claude Messages API）でスクリーンショットからUI要素座標を検出
+2. Vision失敗時は従来のセレクタ方式にフォールバック
+3. 全ステップでスクリーンショット撮影（デバッグ用）
+
+**メリット:**
+- UI変更に強い（セレクタが変わっても動作）
+- テキストベースで直感的（"Create", "Post", "Share"等）
+- デバッグ容易（スクリーンショット + オーバーレイ）
+- フォールバック機能（Vision失敗時もセレクタで動作）
+
+**必須環境変数:**
+- `ANTHROPIC_API_KEY` - Claude Messages API認証（未設定時はセレクタモードのみ）
+
+**エントリーポイント（全てVision版にリンク）:**
+```bash
+post-to-instagram.cjs -> post-to-instagram-vision.cjs
+post-to-x.cjs -> post-to-x-vision.cjs
+post-to-threads.cjs -> post-to-threads-vision.cjs
+post-to-facebook.cjs -> post-to-facebook-vision.cjs
+post-to-pinterest.cjs -> post-to-pinterest-vision.cjs
+```
+
+**旧バージョン（archive/に移動済み）:**
+- `post-to-x-v3-with-screenshots.cjs`
+- `post-to-threads-v3-with-screenshots.cjs`
+- `post-to-facebook-v4-reels-support.cjs`
+- `post-to-instagram-reels-v2-wait-completion.cjs`
+
 #### 認証方式
 - **Instagram**: Cookie認証 `cookies/instagram.json`（期限切れ時ブラウザから再取得）
 - **Facebook**: 2つの認証方式を併用

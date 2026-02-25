@@ -1,1 +1,1 @@
-post-to-threads-v3-with-screenshots.cjs
+post-to-threads-vision.cjs

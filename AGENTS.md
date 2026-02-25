@@ -353,6 +353,114 @@ if (!fileInput) {
 
 **ルール**: Playwright構文は必ずXPathに変換してからPuppeteerで使用
 
+#### Vision API統合方式（2026-02-25標準化 ✅ 正式版）
+
+**目的**: セレクタ依存を減らし、UI変更に強い自動化を実現
+
+**ハイブリッド方式（Vision API → セレクタフォールバック）:**
+1. Vision API（Claude Messages API）でスクリーンショットからUI要素座標を検出
+2. Vision失敗時はセレクタ方式にフォールバック
+3. 全ステップでスクリーンショット撮影（デバッグ用）
+
+**実装パターン:**
+```javascript
+const visionHelper = require('./vision-helper.cjs');
+
+// ハイブリッドクリック関数
+async function hybridClick(page, targetText, fallbackSelectors = [], timeout = 30000) {
+  console.log(`\n🎯 "${targetText}" をクリック試行（ハイブリッド方式）`);
+  
+  // スクリーンショット撮影
+  const screenshotPath = await takeScreenshot(page, `before-${targetText.toLowerCase().replace(/\s+/g, '-')}`);
+  
+  // Vision API試行
+  const visionResult = await visionHelper.detectUIElement(screenshotPath, targetText, {
+    debug: true,
+    maxRetries: 2
+  });
+  
+  if (visionResult && visionResult.confidence > 0.6) {
+    console.log(`✅ Vision検出成功: (${visionResult.x}, ${visionResult.y})`);
+    
+    // デバッグオーバーレイ作成
+    const overlayPath = path.join(DEBUG_DIR, `overlay-${targetText.toLowerCase().replace(/\s+/g, '-')}.png`);
+    await visionHelper.drawDebugOverlay(screenshotPath, [visionResult], overlayPath);
+    
+    // 座標クリック
+    try {
+      await page.mouse.click(visionResult.x, visionResult.y);
+      console.log(`✅ Vision座標でクリック成功`);
+      await randomDelay(1000, 2000);
+      await takeScreenshot(page, `after-${targetText.toLowerCase().replace(/\s+/g, '-')}-vision`);
+      return true;
+    } catch (err) {
+      console.error(`❌ Vision座標クリック失敗: ${err.message}`);
+    }
+  }
+  
+  // フォールバック: セレクタ方式
+  console.log(`⚠️  Vision失敗 → セレクタフォールバック`);
+  
+  for (const selector of fallbackSelectors) {
+    try {
+      const element = await page.$(selector);
+      if (element) {
+        const isVisible = await page.evaluate(el => {
+          const rect = el.getBoundingClientRect();
+          return rect.width > 0 && rect.height > 0;
+        }, element);
+        
+        if (isVisible) {
+          console.log(`✅ セレクタ検出: ${selector}`);
+          await element.click();
+          console.log(`✅ セレクタでクリック成功`);
+          await randomDelay(1000, 2000);
+          await takeScreenshot(page, `after-${targetText.toLowerCase().replace(/\s+/g, '-')}-selector`);
+          return true;
+        }
+      }
+    } catch (err) {
+      // 次のセレクタを試行
+    }
+  }
+  
+  console.error(`❌ タイムアウト: "${targetText}" が見つかりません`);
+  return false;
+}
+
+// 使用例
+await hybridClick(page, 'Create', [
+  'svg[aria-label="New post"]',
+  '[aria-label="Create"]',
+]);
+```
+
+**Vision統合版スクリプト（正式版）:**
+- ✅ Instagram: `post-to-instagram-vision.cjs` → `post-to-instagram.cjs`（シンボリックリンク）
+- ✅ X (Twitter): `post-to-x-vision.cjs` → `post-to-x.cjs`（シンボリックリンク）
+- ✅ Threads: `post-to-threads-vision.cjs` → `post-to-threads.cjs`（シンボリックリンク）
+- ✅ Facebook: `post-to-facebook-vision.cjs` → `post-to-facebook.cjs`（シンボリックリンク）
+- ✅ Pinterest: `post-to-pinterest-vision.cjs` → `post-to-pinterest.cjs`（シンボリックリンク）
+
+**Vision Helper (`vision-helper.cjs`):**
+- Claude Messages API統合
+- Base64エンコーディング
+- リトライロジック（最大3回）
+- デバッグオーバーレイ（座標確認用）
+
+**メリット:**
+1. UI変更に強い（セレクタが変わっても動作）
+2. テキストベースで直感的（"Create", "Post", "Share"等）
+3. デバッグ容易（スクリーンショット + オーバーレイ）
+4. フォールバック機能（Vision失敗時もセレクタで動作）
+
+**必須環境変数:**
+- `ANTHROPIC_API_KEY` - Claude Messages API認証（未設定時はセレクタモードのみ）
+
+**参考実装:**
+- `/root/clawd/skills/sns-multi-poster/post-to-instagram-vision.cjs`
+- `/root/clawd/skills/sns-multi-poster/vision-helper.cjs`
+
 #### スクリーンショット確認方式（2026-02-24標準化）
 
 **目的**: 投稿フローの各ステップをビジュアル確認し、UI変更・セレクタ問題を早期発見

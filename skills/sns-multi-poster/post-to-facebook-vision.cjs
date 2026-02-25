@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Threads 投稿スクリプト - Vision API統合版
+ * Facebook 投稿スクリプト - Vision API統合版
  * ハイブリッド方式: Vision API → セレクタフォールバック
  * 
- * Usage: node post-to-threads-vision.cjs <image_path> <caption>
+ * Usage: node post-to-facebook-vision.cjs <image_path> <caption>
  */
 
 const puppeteer = require('puppeteer-extra');
@@ -12,21 +12,12 @@ const fs = require('fs');
 const path = require('path');
 const visionHelper = require('./vision-helper.cjs');
 
-const {
-  checkRateLimit,
-  logPost,
-  randomDelay,
-  getRandomUserAgent,
-  bypassChromeDetection,
-  config,
-} = require('./lib/anti-ban-helpers.js');
-
 puppeteer.use(StealthPlugin());
 
 const [,, imagePath, caption] = process.argv;
 
 if (!imagePath || !caption) {
-  console.error('使い方: node post-to-threads-vision.cjs <image_path> <caption>');
+  console.error('使い方: node post-to-facebook-vision.cjs <image_path> <caption>');
   process.exit(1);
 }
 
@@ -35,8 +26,8 @@ if (!fs.existsSync(imagePath)) {
   process.exit(1);
 }
 
-const COOKIES_PATH = path.join(__dirname, 'cookies/threads.json');
-const DEBUG_DIR = '/tmp/threads-vision-debug';
+const COOKIES_PATH = path.join(__dirname, 'cookies/facebook.json');
+const DEBUG_DIR = '/tmp/facebook-vision-debug';
 
 // デバッグディレクトリ作成
 if (!fs.existsSync(DEBUG_DIR)) {
@@ -45,6 +36,9 @@ if (!fs.existsSync(DEBUG_DIR)) {
 
 // ステップカウンター
 let stepCounter = 1;
+
+async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function randomDelay(min, max) { return sleep(Math.floor(Math.random() * (max - min + 1) + min)); }
 
 /**
  * スクリーンショット撮影ヘルパー
@@ -104,8 +98,8 @@ async function hybridClick(page, targetText, fallbackSelectors = [], timeout = 3
     // セレクタで検索
     for (const selector of fallbackSelectors) {
       try {
-        const element = await page.$(selector);
-        if (element) {
+        const elements = await page.$$(selector);
+        for (const element of elements) {
           const isVisible = await page.evaluate(el => {
             const rect = el.getBoundingClientRect();
             return rect.width > 0 && rect.height > 0;
@@ -125,30 +119,27 @@ async function hybridClick(page, targetText, fallbackSelectors = [], timeout = 3
       }
     }
     
-    // XPath検索（最終フォールバック）
+    // テキストベース検索（最終フォールバック）
     const clicked = await page.evaluate((texts) => {
-      const xpathResult = document.evaluate(
-        `//button[contains(., '${texts[0]}')] | //div[@role='button' and contains(., '${texts[0]}')]`,
-        document,
-        null,
-        XPathResult.FIRST_ORDERED_NODE_TYPE,
-        null
-      );
-      const element = xpathResult.singleNodeValue;
-      if (element) {
-        const rect = element.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-          element.click();
-          return element.textContent.trim();
+      const elements = Array.from(document.querySelectorAll('[role="button"], button, a'));
+      for (const el of elements) {
+        const text = el.textContent?.trim().toLowerCase();
+        const aria = el.getAttribute('aria-label')?.toLowerCase() || '';
+        if (texts.some(t => text.includes(t.toLowerCase()) || aria.includes(t.toLowerCase()))) {
+          const rect = el.getBoundingClientRect();
+          if (rect.width > 0 && rect.height > 0) {
+            el.click();
+            return el.textContent.trim() || el.getAttribute('aria-label');
+          }
         }
       }
       return null;
     }, [targetText]);
     
     if (clicked) {
-      console.log(`✅ XPathでクリック: "${clicked}"`);
+      console.log(`✅ テキストベースでクリック: "${clicked}"`);
       await randomDelay(1000, 2000);
-      await takeScreenshot(page, `after-${targetText.toLowerCase().replace(/\s+/g, '-')}-xpath`);
+      await takeScreenshot(page, `after-${targetText.toLowerCase().replace(/\s+/g, '-')}-text`);
       return true;
     }
     
@@ -161,44 +152,31 @@ async function hybridClick(page, targetText, fallbackSelectors = [], timeout = 3
 }
 
 async function main() {
-  console.log('🛡️  BAN対策チェック (Threads)...');
-
   // DRY RUN チェック
   if (process.env.DRY_RUN === 'true') {
-    console.log('🔄 DRY RUN: Threads投稿スキップ');
+    console.log('🔄 DRY RUN: Facebook投稿スキップ');
     console.log(`📷 画像: ${imagePath}`);
     console.log(`📝 キャプション: ${caption.substring(0, 80)}`);
     console.log('✅ DRY RUN完了（実際の投稿なし）');
     return;
   }
 
-  if (!(await checkRateLimit('threads'))) {
-    console.error('❌ レート制限超過（Threads: 4投稿/時間、25投稿/日）');
-    process.exit(1);
-  }
-
-  console.log('✅ BAN対策チェック完了\n');
-  console.log('📸 Threads Vision投稿開始');
-  console.log(`📷 ${imagePath}`);
+  console.log('📘 Facebook Vision投稿開始');
+  console.log(`🖼️  ${imagePath}`);
   console.log(`📝 ${caption.substring(0, 80)}`);
   console.log(`🔍 Vision API統合モード`);
 
-  const userAgent = getRandomUserAgent();
   const browser = await puppeteer.launch({
     headless: 'new',
-    args: config.browserArgs,
+    args: ['--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage','--disable-gpu','--window-size=1280,900','--disable-blink-features=AutomationControlled']
   });
 
   try {
     const page = await browser.newPage();
-    await page.setViewport({ width: 1920, height: 1080 });
-    await page.setUserAgent(userAgent);
-    await bypassChromeDetection(page);
-    await page.emulateTimezone('Asia/Tokyo');
-    await page.setExtraHTTPHeaders({ 'Accept-Language': 'ja-JP,ja;q=0.9' });
-
     page.setDefaultNavigationTimeout(120000);
     page.setDefaultTimeout(60000);
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    await page.setViewport({ width: 1280, height: 900 });
 
     // ─── Step 1: Cookie設定 ───
     console.log('\n🔐 Step 1: Cookie設定...');
@@ -206,105 +184,93 @@ async function main() {
     const cookies = rawCookies.map(c => ({
       name: c.name,
       value: decodeURIComponent(c.value),
-      domain: c.domain || '.threads.net',
+      domain: c.domain || '.facebook.com',
       path: c.path || '/',
       secure: c.secure !== false,
       httpOnly: c.httpOnly === true,
-      sameSite: c.sameSite === 'no_restriction' ? 'None' : (c.sameSite || 'None'),
+      sameSite: c.sameSite === 'no_restriction' ? 'None' : (c.sameSite || 'Lax'),
       expires: c.expirationDate ? Math.floor(c.expirationDate) : undefined,
     }));
     await page.setCookie(...cookies);
     console.log(`✅ Cookie設定完了 (${cookies.length}件)`);
 
-    await randomDelay(2000, 5000);
-
-    // ─── Step 2: Threads移動 ───
-    console.log('\n🌐 Step 2: Threads移動...');
-    await page.goto('https://www.threads.net/', { waitUntil: 'domcontentloaded', timeout: 45000 });
-    console.log('✅ ページ読み込み完了');
-
-    await randomDelay(8000, 12000);
+    // ─── Step 2: Facebook移動 ───
+    console.log('\n🌐 Step 2: Facebook移動...');
+    await page.goto('https://www.facebook.com/', { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await randomDelay(3000, 5000);
+    
+    const currentUrl = page.url();
+    console.log(`📍 URL: ${currentUrl}`);
+    if (currentUrl.includes('/login')) {
+      await takeScreenshot(page, 'login-error');
+      throw new Error('ログイン必要 - Cookie期限切れの可能性があります');
+    }
+    console.log('✅ ログイン確認完了');
     await takeScreenshot(page, 'page-loaded');
 
-    // ─── Step 3: Create（Vision） ───
-    console.log('\n➕ Step 3: 新規投稿ボタン...');
-    const createSuccess = await hybridClick(page, 'Create', [
-      'svg[aria-label="Create"]',
-      '[aria-label="Create"]',
-      'svg[aria-label="新規投稿"]',
-      '[aria-label="新規投稿"]',
+    // ─── Step 3: 投稿エリアクリック（Vision） ───
+    console.log('\n📝 Step 3: 投稿エリアを開く...');
+    const modalSuccess = await hybridClick(page, "What's on your mind", [
+      '[aria-label*="Create a post"]',
+      '[aria-label*="Write something"]',
+      '[role="button"]:has-text("What\'s on your mind")',
     ]);
     
-    if (!createSuccess) {
-      throw new Error('Createボタンが見つかりません');
+    if (!modalSuccess) {
+      console.warn('⚠️  投稿エリアボタン検出失敗（続行）');
     }
+    
+    await randomDelay(3000, 5000);
+
+    // ─── Step 4: Photo/videoボタン（Vision） ───
+    console.log('\n📷 Step 4: 写真追加...');
+    await hybridClick(page, 'Photo/video', [
+      '[aria-label="Photo/video"]',
+      '[aria-label="写真/動画"]',
+      '[role="button"]:has-text("Photo")',
+    ]);
     
     await randomDelay(2000, 4000);
 
-    // ─── Step 4: ファイルアップロード ───
-    console.log('\n📷 Step 4: ファイルアップロード...');
+    // ─── Step 5: ファイルアップロード ───
+    console.log('\n📤 Step 5: ファイルアップロード...');
     await takeScreenshot(page, 'before-upload');
     
-    const fileSelectors = [
-      'input[type="file"]',
-      'input[type="file"][accept*="image"]',
-      'input[type="file"][accept*="video"]',
-      'input[accept="image/*,video/*"]',
-      '[data-testid="file-upload-input"]',
-      'input[name="file"]',
-      'input[style*="hidden"]',
-    ];
-
-    let fileInput = null;
-    for (const selector of fileSelectors) {
-      fileInput = await page.$(selector);
-      if (fileInput) {
-        console.log(`✅ ファイル入力発見: ${selector}`);
-        break;
-      }
-      await randomDelay(1000, 2000);
-    }
-
+    const fileInput = await page.$('input[type="file"][accept*="image"]');
     if (!fileInput) {
-      fileInput = await page.evaluateHandle(() => document.querySelector('input[type="file"]'));
-      if (!fileInput) {
-        await takeScreenshot(page, 'error-no-file-input');
-        throw new Error('ファイル入力なし');
-      }
-      console.log('✅ ファイル入力発見: evaluate');
+      await takeScreenshot(page, 'error-no-file-input');
+      throw new Error('ファイル入力なし');
     }
-
+    
     await fileInput.uploadFile(imagePath);
     console.log('✅ ファイルアップロード完了');
-
-    await randomDelay(4000, 6000);
+    
+    await randomDelay(5000, 7000);
     await takeScreenshot(page, 'after-upload');
 
-    // ─── Step 5: キャプション入力 ───
-    console.log('\n📝 Step 5: キャプション...');
+    // ─── Step 6: キャプション入力 ───
+    console.log('\n📝 Step 6: キャプション...');
     await takeScreenshot(page, 'before-caption');
     
-    const textArea = await page.$('div[contenteditable="true"], textarea[placeholder*="thread"]');
+    const textArea = await page.$('[role="textbox"], [contenteditable="true"]');
     if (textArea) {
       await textArea.click();
       await randomDelay(500, 1000);
-      for (const char of caption) {
-        await page.keyboard.type(char);
-        await randomDelay(50, 150);
-      }
+      await textArea.type(caption, { delay: 50 });
       console.log('✅ キャプション入力完了');
     } else {
-      console.log('⚠️  キャプション入力欄なし（投稿は続行）');
+      console.warn('⚠️  キャプション入力欄なし');
     }
-
-    await randomDelay(2000, 4000);
+    
+    await randomDelay(2000, 3000);
     await takeScreenshot(page, 'after-caption');
 
-    // ─── Step 6: Post（Vision） ───
-    console.log('\n📤 Step 6: Post...');
+    // ─── Step 7: Post（Vision） ───
+    console.log('\n🚀 Step 7: Post...');
     const postSuccess = await hybridClick(page, 'Post', [
+      '[aria-label="Post"]',
+      '[aria-label="投稿"]',
       'button:has-text("Post")',
-      'button:has-text("投稿")',
       '[role="button"]:has-text("Post")',
     ]);
     
@@ -313,11 +279,10 @@ async function main() {
     }
 
     console.log('✅ 投稿完了待機中...');
-    await randomDelay(10000, 15000);
+    await randomDelay(8000, 12000);
     await takeScreenshot(page, 'final');
 
-    await logPost('threads');
-    console.log('\n🎉 Threads Vision投稿完了！');
+    console.log('\n🎉 Facebook Vision投稿完了！');
     console.log(`📁 デバッグファイル: ${DEBUG_DIR}`);
 
   } catch (error) {
