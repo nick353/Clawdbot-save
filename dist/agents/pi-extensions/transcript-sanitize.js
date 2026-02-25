@@ -6,11 +6,16 @@
  * - Cloud Code Assist tool call ID constraints + collision-safe sanitization
  */
 import { isGoogleModelApi } from "../pi-embedded-helpers.js";
-import { repairToolUseResultPairing } from "../session-transcript-repair.js";
+import { sanitizeErrorAssistantPairs, repairToolUseResultPairing } from "../session-transcript-repair.js";
 import { sanitizeToolCallIdsForCloudCodeAssist } from "../tool-call-id.js";
 export default function transcriptSanitizeExtension(api) {
     api.on("context", (event, ctx) => {
         let next = event.messages;
+        // Strip errored/aborted assistant messages and their orphaned tool results first,
+        // mirroring sanitizeSessionHistory() as a defense against any bypass paths.
+        const stripped = sanitizeErrorAssistantPairs(next);
+        if (stripped !== next)
+            next = stripped;
         const repaired = repairToolUseResultPairing(next);
         if (repaired.messages !== next)
             next = repaired.messages;
