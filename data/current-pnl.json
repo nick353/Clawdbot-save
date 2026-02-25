@@ -1,57 +1,46 @@
 {
-  "timestamp": "2026-02-25T05:14:29.218601",
-  "cash": 1724.2107398025314,
-  "total_position_value": 8097.363526163117,
-  "total_entry_value": 8182.1053699012655,
-  "total_unrealized_pnl": -84.74184373814865,
-  "total_capital": 9821.574265965648,
-  "confirmed_pnl": -310.2475255725444,
+  "timestamp": "2026-02-25T05:41:24.902031",
+  "cash": 5140.726847064595,
+  "total_position_value": 4855.666910969731,
+  "total_entry_value": 4899.755276108443,
+  "total_unrealized_pnl": -44.08836513871074,
+  "total_capital": 9996.393758034326,
+  "confirmed_pnl": -376.37133043868516,
   "initial_capital": 10000.0,
-  "total_pnl": -178.425734034352,
+  "total_pnl": -3.6062419656736893,
   "positions": [
     {
+      "symbol": "MANTAUSDT",
+      "entry_price": 0.0636,
+      "current_price": 0.0635,
+      "quantity": 31573.84315463219,
+      "entry_value": 2008.0964246346075,
+      "current_value": 2004.9390403191442,
+      "unrealized_pnl": -3.1573843154633323,
+      "unrealized_pnl_pct": -0.15723270440252135,
+      "entry_time": "2026-02-25T04:32:13.217903"
+    },
+    {
       "symbol": "ZROUSDT",
-      "entry_price": 1.51,
-      "current_price": 1.484,
-      "quantity": 1324.5033112582782,
-      "entry_value": 2000.0000000000002,
-      "current_value": 1965.5629139072848,
-      "unrealized_pnl": -34.43708609271539,
-      "unrealized_pnl_pct": -1.721854304635769,
-      "entry_time": "2026-02-24T15:33:32.184222"
+      "entry_price": 1.487,
+      "current_price": 1.461,
+      "quantity": 1080.347773845115,
+      "entry_value": 1606.477139707686,
+      "current_value": 1578.388097587713,
+      "unrealized_pnl": -28.0890421199731,
+      "unrealized_pnl_pct": -1.7484868863483591,
+      "entry_time": "2026-02-25T04:48:08.645912"
     },
     {
       "symbol": "STGUSDT",
-      "entry_price": 0.1315,
-      "current_price": 0.1302,
-      "quantity": 12167.300380228136,
-      "entry_value": 1600.0,
-      "current_value": 1584.1825095057036,
-      "unrealized_pnl": -15.817490494296408,
-      "unrealized_pnl_pct": -0.9885931558935255,
-      "entry_time": "2026-02-24T15:38:07.543225"
-    },
-    {
-      "symbol": "TNSRUSDT",
-      "entry_price": 0.04841,
-      "current_price": 0.04865,
-      "quantity": 26440.81801280727,
-      "entry_value": 1280.0,
-      "current_value": 1286.3457963230737,
-      "unrealized_pnl": 6.345796323073728,
-      "unrealized_pnl_pct": 0.495765337740135,
-      "entry_time": "2026-02-24T15:46:49.572823"
-    },
-    {
-      "symbol": "SKRUSDT",
-      "entry_price": 0.024584,
-      "current_price": 0.02428,
-      "quantity": 134319.28774411263,
-      "entry_value": 3302.105369901265,
-      "current_value": 3261.2723064270544,
-      "unrealized_pnl": -40.833063474210576,
-      "unrealized_pnl_pct": -1.2365766352099028,
-      "entry_time": "2026-02-25T05:13:58.142981"
+      "entry_price": 0.1301,
+      "current_price": 0.1288,
+      "quantity": 9878.414387134118,
+      "entry_value": 1285.1817117661487,
+      "current_value": 1272.3397730628744,
+      "unrealized_pnl": -12.841938703274309,
+      "unrealized_pnl_pct": -0.9992313604919258,
+      "entry_time": "2026-02-25T05:03:58.052403"
     }
   ]
 }
