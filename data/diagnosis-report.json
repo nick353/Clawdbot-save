@@ -1,27 +1,11 @@
 {
-  "timestamp": "2026-02-25T05:00:02.739981",
-  "issues": [
-    {
-      "type": "timeout_issue",
-      "severity": "medium",
-      "message": "\u30bf\u30a4\u30e0\u30a2\u30a6\u30c8\u304c\u983b\u767a\u3057\u3066\u3044\u307e\u3059",
-      "count": 2,
-      "details": "  \u26a0\ufe0f  Discord\u901a\u77e5\u30a8\u30e9\u30fc: Command '['clawdbot', 'message', 'send', '--target', '1471389526592327875', '--message', '\ud83d\udfe2 **\u30a8\u30f3\u30c8\u30ea\u30fc**\\n\\n**\u9298\u67c4:** MANTAUSDT\\n**\u4fa1\u683c:** $0.063600\\n**\u7406\u7531:** SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897\\n*"
-    }
-  ],
-  "fixes": [
-    {
-      "issue_id": 0,
-      "type": "increase_timeout",
-      "auto_apply": false,
-      "description": "\u30bf\u30a4\u30e0\u30a2\u30a6\u30c8\u5ef6\u9577",
-      "details": "subprocess \u30bf\u30a4\u30e0\u30a2\u30a6\u30c8\u309230\u79d2\u306b\u5ef6\u9577"
-    }
-  ],
+  "timestamp": "2026-02-25T06:00:01.920670",
+  "issues": [],
+  "fixes": [],
   "summary": {
-    "total_issues": 1,
+    "total_issues": 0,
     "high_severity": 0,
-    "medium_severity": 1,
+    "medium_severity": 0,
     "auto_fixable": 0
   }
 }
