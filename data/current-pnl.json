@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-02-25T13:09:38.463067",
-  "cash": 1793.8994726735823,
-  "total_position_value": 8247.639903773783,
-  "total_entry_value": 8246.582650499455,
-  "total_unrealized_pnl": 1.0572532743283318,
-  "total_capital": 10041.539376447365,
-  "confirmed_pnl": -365.75897781143107,
+  "timestamp": "2026-02-25T13:19:14.719988",
+  "cash": 1839.181948912053,
+  "total_position_value": 8360.153645641785,
+  "total_entry_value": 8269.22388861869,
+  "total_unrealized_pnl": 90.92975702309559,
+  "total_capital": 10199.335594553839,
+  "confirmed_pnl": -368.19537636978276,
   "initial_capital": 10000.0,
-  "total_pnl": 41.5393764473647,
+  "total_pnl": 199.33559455383875,
   "positions": [
     {
       "symbol": "MANTAUSDT",
@@ -23,35 +23,35 @@
     {
       "symbol": "ZROUSDT",
       "entry_price": 1.487,
-      "current_price": 1.499,
+      "current_price": 1.495,
       "quantity": 1080.347773845115,
       "entry_value": 1606.477139707686,
-      "current_value": 1619.4413129938275,
-      "unrealized_pnl": 12.964173286141431,
-      "unrealized_pnl_pct": 0.8069939475453967,
+      "current_value": 1615.119921898447,
+      "unrealized_pnl": 8.642782190760954,
+      "unrealized_pnl_pct": 0.5379959650302644,
       "entry_time": "2026-02-25T04:48:08.645912"
     },
     {
       "symbol": "STGUSDT",
       "entry_price": 0.1301,
-      "current_price": 0.1318,
+      "current_price": 0.1313,
       "quantity": 9878.414387134118,
       "entry_value": 1285.1817117661487,
-      "current_value": 1301.9750162242767,
-      "unrealized_pnl": 16.793304458127977,
-      "unrealized_pnl_pct": 1.3066871637202133,
+      "current_value": 1297.0358090307097,
+      "unrealized_pnl": 11.854097264561005,
+      "unrealized_pnl_pct": 0.9223674096848627,
       "entry_time": "2026-02-25T05:03:58.052403"
     },
     {
-      "symbol": "SKRUSDT",
-      "entry_price": 0.022476,
-      "current_price": 0.021944,
-      "quantity": 148906.71713788097,
-      "entry_value": 3346.8273743910127,
-      "current_value": 3267.6090008736605,
-      "unrealized_pnl": -79.21837351735212,
-      "unrealized_pnl_pct": -2.3669692116034717,
-      "entry_time": "2026-02-25T12:48:13.040594"
+      "symbol": "RAVEUSDT",
+      "entry_price": 0.26056,
+      "current_price": 0.2621,
+      "quantity": 12931.641896339605,
+      "entry_value": 3369.4686125102476,
+      "current_value": 3389.38334103061,
+      "unrealized_pnl": 19.914728520362587,
+      "unrealized_pnl_pct": 0.5910346945041328,
+      "entry_time": "2026-02-25T13:18:48.203913"
     }
   ]
 }
