@@ -54,6 +54,10 @@ cookies/
 **/google-credentials.json
 .google-credentials/
 
+# Memory & Browser Profiles (may contain sensitive data)
+memory/
+browser-profiles/
+
 # Logs
 logs/
 *.log.*
