@@ -35,22 +35,8 @@
       "trailing_stop_used": false,
       "highest_price": 0.04925,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
-    },
-    "TRIAUSDT": {
-      "entry_time": "2026-02-25T02:42:51.934798",
-      "entry_price": 0.021059,
-      "quantity": 159190.3852744457,
-      "position_size": 3352.390323494552,
-      "position_type": "long",
-      "stop_loss": 0.02063782,
-      "take_profit": 0.022111950000000002,
-      "trailing_stop": null,
-      "trailing_stop_used": false,
-      "highest_price": 0.021059,
-      "lowest_price": null,
-      "entry_reason": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + \u4fa1\u683c>EMA200"
     }
   },
-  "capital": 1824.7806469891038,
-  "timestamp": "2026-02-25T02:42:51.935040"
+  "capital": 5088.994707268679,
+  "timestamp": "2026-02-25T04:29:16.673856"
 }
