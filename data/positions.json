@@ -9,7 +9,7 @@
       "take_profit": 1.7365,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": 1.537,
+      "highest_price": 1.532,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
     },
     "STGUSDT": {
@@ -21,7 +21,7 @@
       "take_profit": 0.151225,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": 0.1341,
+      "highest_price": 0.133,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
     },
     "TNSRUSDT": {
@@ -33,24 +33,24 @@
       "take_profit": 0.0556715,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": 0.04925,
+      "highest_price": 0.04919,
       "entry_reason": "SMA/EMA\u53cd\u767a + MACD\u4e0a\u629c\u3051 + \u51fa\u6765\u9ad8\u5897"
     },
-    "TRIAUSDT": {
-      "entry_time": "2026-02-25T08:38:19.695337",
-      "entry_price": 0.01976,
-      "quantity": 164874.412771608,
-      "position_size": 3257.9183963669743,
-      "position_type": "short",
-      "stop_loss": 0.0201552,
-      "take_profit": 0.018772,
+    "FUNUSDT": {
+      "entry_time": "2026-02-25T08:58:01.847090",
+      "entry_price": 0.04952,
+      "quantity": 66957.91556833603,
+      "position_size": 3315.7559789440006,
+      "position_type": "long",
+      "stop_loss": 0.0485296,
+      "take_profit": 0.051996,
       "trailing_stop": null,
       "trailing_stop_used": false,
-      "highest_price": null,
-      "lowest_price": 0.019697,
-      "entry_reason": "\u30b7\u30e7\u30fc\u30c8: \u30c7\u30c3\u30c9\u30af\u30ed\u30b9 + \u4fa1\u683c<EMA200"
+      "highest_price": 0.0499,
+      "lowest_price": null,
+      "entry_reason": "\u30ed\u30f3\u30b0: \u30b4\u30fc\u30eb\u30c7\u30f3\u30af\u30ed\u30b9 + \u4fa1\u683c>EMA200"
     }
   },
-  "capital": 1635.836792733949,
-  "timestamp": "2026-02-25T08:41:18.869113"
+  "capital": 1751.5119578880026,
+  "timestamp": "2026-02-25T09:00:56.779945"
 }
